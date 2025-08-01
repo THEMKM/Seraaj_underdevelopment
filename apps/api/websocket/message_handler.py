@@ -12,6 +12,8 @@ from models import (
     MessageType,
 )
 from websocket.connection_manager import connection_manager
+from services.push_notification_service import get_push_notification_service
+from models.push_notification import NotificationType
 
 logger = logging.getLogger(__name__)
 
@@ -121,6 +123,30 @@ class MessageHandler:
         await connection_manager.send_to_conversation(
             message_response, conversation_id, sender_id=user_id
         )
+
+        # Send push notification to offline participants
+        participants = session.exec(
+            select(ConversationParticipant.user_id).where(
+                ConversationParticipant.conversation_id == conversation_id
+            )
+        ).all()
+        offline_users = [
+            pid
+            for (pid,) in participants
+            if not connection_manager.is_user_online(pid) and pid != user_id
+        ]
+
+        if offline_users:
+            push_service = get_push_notification_service(session)
+            for offline_id in offline_users:
+                await push_service.send_notification(
+                    user_id=offline_id,
+                    notification_type=NotificationType.MESSAGE_RECEIVED,
+                    title=f"New message from {sender.first_name}",
+                    body=content,
+                    data={"conversation_id": conversation_id,
+                          "message_id": db_message.id},
+                )
 
         # Update conversation last activity
         conversation = session.get(Conversation, conversation_id)
