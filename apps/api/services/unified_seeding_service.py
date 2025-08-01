@@ -28,7 +28,7 @@ from models import (
     Volunteer,
     Organisation,
     Opportunity,
-    OpportunityStatus,
+    OpportunityState,
     Application,
     ApplicationStatus,
     Conversation,
@@ -661,11 +661,11 @@ class UnifiedSeedingService:
                 end_date=end_date.date(),
                 max_volunteers=random.randint(1, 5),
                 is_remote=random.random() > 0.7,
-                status=random.choice([
-                    OpportunityStatus.OPEN,
-                    OpportunityStatus.OPEN,
-                    OpportunityStatus.OPEN,  # More likely to be open
-                    OpportunityStatus.FILLED,
+                state=random.choice([
+                    OpportunityState.ACTIVE,
+                    OpportunityState.ACTIVE,
+                    OpportunityState.ACTIVE,  # More likely to be active
+                    OpportunityState.FILLED,
                 ]),
                 urgency=random.choice(["low", "medium", "high"]),
                 created_at=datetime.now(datetime.timezone.utc) - timedelta(days=random.randint(1, 30)),
@@ -683,7 +683,7 @@ class UnifiedSeedingService:
 
         volunteers = self.session.exec(select(Volunteer)).all()
         opportunities = self.session.exec(
-            select(Opportunity).where(Opportunity.status == OpportunityStatus.OPEN)
+            select(Opportunity).where(Opportunity.state == OpportunityState.ACTIVE)
         ).all()
 
         applications_created = 0

@@ -20,7 +20,7 @@ from models import (
     PerformanceMetric,
 )
 from routers.auth import get_current_user
-from utils.data_seeder import DataSeeder
+from services.unified_seeding_service import seed_database
 from utils.response_formatter import success_with_data
 
 router = APIRouter(prefix="/v1/admin", tags=["admin"])
@@ -580,15 +580,12 @@ async def update_system_config(
 @router.post("/seed-data")
 async def seed_sample_data(
     admin_user: Annotated[User, Depends(require_admin)],
-    session: Annotated[Session, Depends(get_session)],
     force: bool = Query(False, description="Force seeding even if data exists"),
 ):
     """Seed database with sample data for development/testing"""
 
-    seeder = DataSeeder(session)
-
     try:
-        results = await seeder.seed_sample_data(force=force)
+        results = seed_database(clear_existing=force)
 
         return success_with_data(results, "Sample data seeded successfully")
 
