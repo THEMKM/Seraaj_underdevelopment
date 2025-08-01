@@ -1,0 +1,1 @@
+# PWA (Progressive Web App) package for offline capabilities

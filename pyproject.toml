@@ -1,0 +1,103 @@
+[tool.python]
+# Prevent bytecode cache to avoid SQLAlchemy relationship corruption
+dont-write-bytecode = true
+
+[tool.pytest.ini_options]
+# Prevent pytest from generating bytecode cache during testing
+addopts = "-B --tb=short"
+testpaths = ["apps/api/tests", "apps/web/tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+
+[tool.black]
+line-length = 88
+target-version = ['py311']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+  | __pycache__
+)/
+'''
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+known_first_party = ["seraaj"]
+skip_glob = ["**/migrations/*", "**/__pycache__/*"]
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+cache_dir = ".mypy_cache"
+# Exclude bytecode cache directories
+exclude = [
+    "__pycache__",
+    ".*/__pycache__/.*",
+]
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "seraaj"
+version = "2.0.0"
+description = "Seraaj - Volunteer Platform"
+readme = "README.md"
+requires-python = ">=3.11"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+]
+dependencies = [
+    "fastapi>=0.104.0",
+    "uvicorn[standard]>=0.24.0",
+    "sqlmodel>=0.0.14",
+    "alembic>=1.12.0",
+    "python-multipart>=0.0.6",
+    "python-jose[cryptography]>=3.3.0",
+    "passlib[bcrypt]>=1.7.4",
+    "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+    "black>=23.0.0",
+    "isort>=5.12.0",
+    "mypy>=1.5.0",
+    "pre-commit>=3.4.0",
+]
+
+# Critical: Prevent Python from creating bytecode cache
+[tool.setuptools]
+zip-safe = false
+
+# Environment variable to prevent bytecode generation
+[tool.coverage.run]
+omit = [
+    "*/migrations/*",
+    "*/__pycache__/*",
+    "*/tests/*",
+    "*/venv/*",
+    "*/env/*",
+]

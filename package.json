@@ -1,0 +1,40 @@
+{
+  "name": "seraaj-v2",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Two-sided volunteer marketplace for MENA nonprofits",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "setup": "python setup-database.py",
+    "start:api": "cd apps/api && python -m uvicorn main:app --host localhost --port 8000 --reload",
+    "start:web": "cd apps/web && npm run dev",
+    "start:dev": "concurrently \"npm run start:api\" \"npm run start:web\"",
+    "start:servers": "python start-servers.py",
+    "start:servers:api": "python start-servers.py --api-only",
+    "start:servers:web": "python start-servers.py --frontend-only",
+    "start:servers:debug": "python start-servers.py --debug",
+    "db:setup": "python setup-database.py",
+    "db:reset": "rm -f apps/api/seraaj_dev.db && python setup-database.py",
+    "check:health": "curl -f http://localhost:8000/health || echo 'API not running'",
+    "check:endpoints": "curl -f http://localhost:8000/docs || echo 'API docs not accessible'"
+  },
+  "devDependencies": {
+    "turbo": "^1.10.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "packageManager": "pnpm@8.6.0",
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  }
+}

@@ -1,0 +1,379 @@
+"""
+Realistic User Personas for Seraaj Demo Data
+Creates compelling backstories for volunteers and organizations in the MENA region
+"""
+from typing import Dict, List, Any
+from datetime import datetime, timedelta
+import random
+
+# MENA Cities with coordinates for realistic location data
+MENA_CITIES = {
+    "Dubai, UAE": {"lat": 25.2048, "lng": 55.2708, "country": "UAE"},
+    "Cairo, Egypt": {"lat": 30.0444, "lng": 31.2357, "country": "Egypt"},
+    "Amman, Jordan": {"lat": 31.9539, "lng": 35.9106, "country": "Jordan"},
+    "Beirut, Lebanon": {"lat": 33.8938, "lng": 35.5018, "country": "Lebanon"},
+    "Riyadh, Saudi Arabia": {"lat": 24.7136, "lng": 46.6753, "country": "Saudi Arabia"},
+    "Doha, Qatar": {"lat": 25.2854, "lng": 51.5310, "country": "Qatar"},
+    "Kuwait City, Kuwait": {"lat": 29.3759, "lng": 47.9774, "country": "Kuwait"},
+    "Manama, Bahrain": {"lat": 26.0667, "lng": 50.5577, "country": "Bahrain"},
+    "Muscat, Oman": {"lat": 23.5859, "lng": 58.4059, "country": "Oman"},
+    "Tunis, Tunisia": {"lat": 36.8065, "lng": 10.1815, "country": "Tunisia"},
+    "Casablanca, Morocco": {"lat": 33.5731, "lng": -7.5898, "country": "Morocco"},
+    "Algiers, Algeria": {"lat": 36.7538, "lng": 3.0588, "country": "Algeria"},
+}
+
+# Professional skills relevant to MENA volunteer sector
+VOLUNTEER_SKILLS = [
+    "Arabic Language", "English Language", "French Language", "Teaching", "Education", 
+    "Youth Mentoring", "Community Outreach", "Social Work", "Healthcare", "Nursing",
+    "Emergency Response", "Disaster Relief", "Environmental Conservation", "Climate Action",
+    "Technology Training", "Digital Literacy", "Data Analysis", "Project Management",
+    "Grant Writing", "Fundraising", "Marketing", "Social Media", "Content Creation",
+    "Photography", "Videography", "Graphic Design", "Web Development", "Translation",
+    "Legal Aid", "Human Rights", "Women's Rights", "Child Protection", "Elder Care",
+    "Microfinance", "Entrepreneurship", "Business Development", "Agriculture", "Food Security"
+]
+
+# Cause areas relevant to MENA region
+CAUSE_AREAS = [
+    "Education", "Healthcare", "Poverty Alleviation", "Women's Empowerment", 
+    "Youth Development", "Environmental Protection", "Climate Change", 
+    "Refugee Support", "Emergency Relief", "Food Security", "Water & Sanitation",
+    "Community Development", "Human Rights", "Digital Inclusion", 
+    "Economic Empowerment", "Arts & Culture", "Heritage Preservation"
+]
+
+class PersonaGenerator:
+    """Generates realistic personas for volunteers and organizations"""
+    
+    def __init__(self):
+        self.used_emails = set()
+        self.used_phone_numbers = set()
+    
+    def generate_volunteer_personas(self) -> List[Dict[str, Any]]:
+        """Generate diverse volunteer personas with rich backstories"""
+        
+        personas = [
+            {
+                "name": "Layla Al-Mansouri",
+                "email": "layla.almansouri@gmail.com",
+                "phone": "+971555123456",
+                "location": "Dubai, UAE",
+                "age": 28,
+                "profession": "Software Engineer at Emirates Group",
+                "backstory": "Born in Lebanon, raised in Dubai. Passionate about bridging the digital divide in underserved communities. Fluent in Arabic, English, and French. Started volunteering after witnessing the impact of technology training on refugee children.",
+                "skills": ["Technology Training", "Web Development", "Arabic Language", "English Language", "Youth Mentoring"],
+                "interests": ["Digital Inclusion", "Education", "Refugee Support"],
+                "availability": "weekends",
+                "experience_level": "intermediate",
+                "languages": ["Arabic", "English", "French"],
+                "motivation": "Using technology skills to create social impact in my adopted home"
+            },
+            {
+                "name": "Omar Hassan",
+                "email": "omar.hassan.volunteer@outlook.com",
+                "phone": "+20123456789",
+                "location": "Cairo, Egypt",
+                "age": 35,
+                "profession": "Medical Doctor at Cairo University Hospital",
+                "backstory": "Emergency medicine physician who grew up in a working-class neighborhood in Cairo. Deeply committed to healthcare equity. Volunteers in rural clinics during his time off and trains community health workers.",
+                "skills": ["Healthcare", "Emergency Response", "Community Outreach", "Teaching", "Arabic Language"],
+                "interests": ["Healthcare", "Emergency Relief", "Community Development"],
+                "availability": "flexible",
+                "experience_level": "expert",
+                "languages": ["Arabic", "English"],
+                "motivation": "Ensuring healthcare access reaches every Egyptian, regardless of economic status"
+            },
+            {
+                "name": "Fatima Al-Zahra",
+                "email": "fatima.zahra2024@gmail.com",
+                "phone": "+962777555888",
+                "location": "Amman, Jordan",
+                "age": 24,
+                "profession": "Recent Graduate in International Relations",
+                "backstory": "Recent university graduate passionate about women's rights and education. Daughter of Palestinian refugees, she understands the power of education to transform lives. Currently seeking full-time work while dedicating time to volunteer activities.",
+                "skills": ["Teaching", "English Language", "Social Work", "Grant Writing", "Youth Mentoring"],
+                "interests": ["Women's Empowerment", "Education", "Refugee Support", "Youth Development"],
+                "availability": "full-time",
+                "experience_level": "beginner",
+                "languages": ["Arabic", "English"],
+                "motivation": "Empowering women and girls through education, just like I was empowered"
+            },
+            {
+                "name": "Khalid Benali",
+                "email": "k.benali.volunteer@gmail.com",
+                "phone": "+212661234567",
+                "location": "Casablanca, Morocco",
+                "age": 42,
+                "profession": "Environmental Engineer & Father of Three",
+                "backstory": "Senior environmental engineer concerned about climate change impacts on Morocco. Father of three children aged 8-16. Started volunteering after the 2023 earthquake to combine his professional skills with community service.",
+                "skills": ["Environmental Conservation", "Project Management", "French Language", "Arabic Language", "Community Outreach"],
+                "interests": ["Environmental Protection", "Climate Change", "Community Development", "Emergency Relief"],
+                "availability": "evenings",
+                "experience_level": "expert",
+                "languages": ["Arabic", "French", "English"],
+                "motivation": "Building a sustainable future for my children and their generation"
+            },
+            {
+                "name": "Nour Abdallah",
+                "email": "nour.creative@gmail.com",
+                "phone": "+961712345678",
+                "location": "Beirut, Lebanon",
+                "age": 26,
+                "profession": "Graphic Designer & Social Media Specialist",
+                "backstory": "Creative professional who survived the 2020 Beirut blast. Uses her design skills to help NGOs and social causes tell their stories effectively. Believes in the power of visual storytelling to drive social change.",
+                "skills": ["Graphic Design", "Social Media", "Photography", "Content Creation", "Marketing"],
+                "interests": ["Arts & Culture", "Community Development", "Youth Development", "Women's Empowerment"],
+                "availability": "evenings",
+                "experience_level": "intermediate",
+                "languages": ["Arabic", "English", "French"],
+                "motivation": "Rebuilding Lebanon through creativity and community solidarity"
+            },
+            {
+                "name": "Ahmed Al-Rashid",
+                "email": "ahmed.rashid.sa@gmail.com",
+                "phone": "+966551234567",
+                "location": "Riyadh, Saudi Arabia",
+                "age": 31,
+                "profession": "Corporate Finance Manager",
+                "backstory": "Finance professional committed to economic empowerment of Saudi youth. Grew up in a modest family and believes in giving back. Particularly passionate about entrepreneurship training and microfinance initiatives.",
+                "skills": ["Business Development", "Entrepreneurship", "Microfinance", "Project Management", "Arabic Language"],
+                "interests": ["Economic Empowerment", "Youth Development", "Education", "Poverty Alleviation"],
+                "availability": "weekends",
+                "experience_level": "intermediate",
+                "languages": ["Arabic", "English"],
+                "motivation": "Enabling the next generation of Saudi entrepreneurs to achieve their dreams"
+            },
+            {
+                "name": "Zeinab Khoury",
+                "email": "zeinab.khoury.teacher@gmail.com",
+                "phone": "+961798765432",
+                "location": "Beirut, Lebanon",
+                "age": 38,
+                "profession": "High School History Teacher",
+                "backstory": "Experienced educator passionate about preserving Lebanese heritage while preparing students for the future. Volunteers with refugee education programs and heritage preservation projects. Mother of two teenagers.",
+                "skills": ["Teaching", "Education", "Heritage Preservation", "Arabic Language", "French Language"],
+                "interests": ["Education", "Arts & Culture", "Heritage Preservation", "Youth Development"],
+                "availability": "weekends",
+                "experience_level": "expert",
+                "languages": ["Arabic", "French", "English"],
+                "motivation": "Preserving our rich heritage while building bridges to the future"
+            },
+            {
+                "name": "Youssef Ben Salah",
+                "email": "youssef.bensalah.tn@gmail.com",
+                "phone": "+216987654321",
+                "location": "Tunis, Tunisia",
+                "age": 29,
+                "profession": "Agricultural Engineer",
+                "backstory": "Agricultural engineer focused on sustainable farming and food security. Grew up in rural Tunisia and witnessed firsthand the challenges facing small farmers. Volunteers with farming cooperatives and food security initiatives.",
+                "skills": ["Agriculture", "Food Security", "Environmental Conservation", "Community Outreach", "Arabic Language"],
+                "interests": ["Food Security", "Environmental Protection", "Community Development", "Economic Empowerment"],
+                "availability": "flexible",
+                "experience_level": "expert",
+                "languages": ["Arabic", "French"],
+                "motivation": "Ensuring food security and sustainable livelihoods for rural communities"
+            }
+        ]
+        
+        return personas
+    
+    def generate_organization_personas(self) -> List[Dict[str, Any]]:
+        """Generate diverse organization personas representing MENA civil society"""
+        
+        organizations = [
+            {
+                "name": "Hope Education Initiative",
+                "email": "contact@hopeeducation.org",
+                "phone": "+971444567890",
+                "location": "Dubai, UAE",
+                "org_type": "NGO",
+                "size": "medium",
+                "founded_year": 2018,
+                "backstory": "Founded by a group of educators and tech professionals to address educational inequality in the UAE and broader MENA region. Focuses on STEM education for underprivileged youth and digital literacy for adults.",
+                "mission": "Bridging educational gaps through innovative learning programs and technology access",
+                "focus_areas": ["Education", "Digital Inclusion", "Youth Development", "Technology Training"],
+                "target_population": "Underprivileged youth aged 8-18, adult learners",
+                "languages": ["Arabic", "English"],
+                "achievements": ["Reached 2,500+ students", "Established 15 learning centers", "100% college acceptance rate for graduates"],
+                "current_needs": ["Volunteer teachers", "Technology trainers", "Curriculum developers", "Fundraising support"]
+            },
+            {
+                "name": "Green Jordan Environmental Society",
+                "email": "info@greenjordan.org",
+                "phone": "+962799123456",
+                "location": "Amman, Jordan",
+                "org_type": "Environmental NGO",
+                "size": "small",
+                "founded_year": 2015,
+                "backstory": "Grassroots environmental organization started by young Jordanian environmentalists concerned about water scarcity and climate change impacts. Now leads Jordan's largest youth environmental movement.",
+                "mission": "Protecting Jordan's natural heritage and building climate resilience through community action",
+                "focus_areas": ["Environmental Protection", "Climate Change", "Water Conservation", "Youth Development"],
+                "target_population": "Local communities, schools, youth groups",
+                "languages": ["Arabic", "English"],
+                "achievements": ["Planted 10,000+ trees", "Trained 500+ youth environmental leaders", "Reduced water waste by 30% in partner communities"],
+                "current_needs": ["Environmental scientists", "Community organizers", "Grant writers", "Social media specialists"]
+            },
+            {
+                "name": "Women's Economic Empowerment Center",
+                "email": "contact@weec-lebanon.org",
+                "phone": "+961701234567",
+                "location": "Beirut, Lebanon",
+                "org_type": "Women's Rights Organization",
+                "size": "medium",
+                "founded_year": 2012,
+                "backstory": "Established by Lebanese women entrepreneurs to support women's economic participation amid challenging economic conditions. Provides microfinance, business training, and advocacy for women's economic rights.",
+                "mission": "Empowering women to achieve economic independence and leadership in their communities",
+                "focus_areas": ["Women's Empowerment", "Economic Empowerment", "Microfinance", "Business Development"],
+                "target_population": "Women entrepreneurs, unemployed women, female heads of households",
+                "languages": ["Arabic", "French", "English"],
+                "achievements": ["Supported 800+ women entrepreneurs", "Created 2,000+ jobs", "90% loan repayment rate"],
+                "current_needs": ["Business mentors", "Legal advisors", "Marketing specialists", "Microfinance experts"]
+            },
+            {
+                "name": "Cairo Community Health Network",
+                "email": "info@cchn-egypt.org",
+                "phone": "+201234567890",
+                "location": "Cairo, Egypt",
+                "org_type": "Healthcare NGO",
+                "size": "large",
+                "founded_year": 2010,
+                "backstory": "Healthcare network serving Cairo's underserved neighborhoods. Started by a group of doctors and nurses committed to healthcare equity. Operates mobile clinics and community health programs.",
+                "mission": "Ensuring quality healthcare access for all Cairo residents regardless of economic status",
+                "focus_areas": ["Healthcare", "Community Development", "Emergency Relief", "Health Education"],
+                "target_population": "Low-income families, elderly, children, chronic disease patients",
+                "languages": ["Arabic", "English"],
+                "achievements": ["Served 50,000+ patients", "Operates 8 mobile clinics", "Reduced infant mortality by 40% in partner areas"],
+                "current_needs": ["Medical volunteers", "Health educators", "Data analysts", "Community health workers"]
+            },
+            {
+                "name": "Moroccan Heritage Preservation Foundation",
+                "email": "contact@mhpf-morocco.org",
+                "phone": "+212523456789",
+                "location": "Casablanca, Morocco",
+                "org_type": "Cultural Heritage Organization",
+                "size": "small",
+                "founded_year": 2016,
+                "backstory": "Cultural foundation dedicated to preserving Morocco's rich Amazigh, Arab, and Jewish heritage. Works with local communities to document traditions, restore historical sites, and educate youth about their heritage.",
+                "mission": "Preserving and celebrating Morocco's diverse cultural heritage for future generations",
+                "focus_areas": ["Heritage Preservation", "Arts & Culture", "Education", "Youth Development"],
+                "target_population": "Local communities, youth, cultural practitioners, tourists",
+                "languages": ["Arabic", "French", "Amazigh"],
+                "achievements": ["Documented 200+ oral traditions", "Restored 15 historical sites", "Trained 300+ youth cultural ambassadors"],
+                "current_needs": ["Historians", "Archaeologists", "Documentary filmmakers", "Cultural researchers", "Tour guides"]
+            },
+            {
+                "name": "Tech for Good Tunisia",
+                "email": "hello@techforgood.tn",
+                "phone": "+216912345678",
+                "location": "Tunis, Tunisia",
+                "org_type": "Technology NGO",
+                "size": "small",
+                "founded_year": 2019,
+                "backstory": "Tech startup turned social enterprise focused on using technology to solve social problems in Tunisia. Founded by young Tunisian tech entrepreneurs who wanted to give back to their community.",
+                "mission": "Leveraging technology innovation to address Tunisia's most pressing social challenges",
+                "focus_areas": ["Digital Inclusion", "Technology Training", "Youth Development", "Economic Empowerment"],
+                "target_population": "Youth, unemployed graduates, small businesses, rural communities",
+                "languages": ["Arabic", "French"],
+                "achievements": ["Trained 1,000+ in digital skills", "Developed 5 social impact apps", "Created 200+ tech jobs"],
+                "current_needs": ["Software developers", "UX designers", "Digital marketing specialists", "Data scientists"]
+            }
+        ]
+        
+        return organizations
+    
+    def generate_opportunity_scenarios(self) -> List[Dict[str, Any]]:
+        """Generate realistic volunteer opportunities with compelling descriptions"""
+        
+        opportunities = [
+            {
+                "title": "STEM Education Mentor for Refugee Youth",
+                "organization": "Hope Education Initiative",
+                "location": "Dubai, UAE",
+                "type": "ongoing",
+                "remote_allowed": False,
+                "time_commitment": "4 hours/week",
+                "urgency": "medium",
+                "description": "Join our team of volunteer mentors working with refugee youth aged 12-17 to build confidence in science, technology, engineering, and mathematics. You'll work one-on-one with students, helping them with homework, conducting fun experiments, and showing them the exciting career possibilities in STEM fields.",
+                "skills_required": ["Teaching", "Youth Mentoring", "Arabic Language", "English Language"],
+                "skills_preferred": ["Technology Training", "Science Education"],
+                "requirements": ["Background check required", "Minimum 6-month commitment", "Fluency in Arabic or English"],
+                "benefits": ["Free training provided", "Certificate of appreciation", "Reference letter", "Professional development opportunities"],
+                "impact_story": "Last year, our volunteer mentors helped 85% of participating students improve their math scores by at least one grade level, and 3 students received full scholarships to top universities.",
+                "contact_person": "Sarah Al-Mahmoud, Program Director",
+                "application_deadline": datetime.now() + timedelta(days=30)
+            },
+            {
+                "title": "Community Health Educator - Maternal Health",
+                "organization": "Cairo Community Health Network",
+                "location": "Cairo, Egypt", 
+                "type": "ongoing",
+                "remote_allowed": True,
+                "time_commitment": "6 hours/week",
+                "urgency": "high",
+                "description": "We're seeking passionate volunteers to educate women in underserved Cairo neighborhoods about maternal health, prenatal care, and family planning. You'll conduct workshops, distribute educational materials, and connect women with healthcare services.",
+                "skills_required": ["Healthcare", "Community Outreach", "Arabic Language", "Teaching"],
+                "skills_preferred": ["Nursing", "Social Work", "Public Health"],
+                "requirements": ["Medical or social work background preferred", "Cultural sensitivity training", "Commitment to women's health"],
+                "benefits": ["Healthcare training certification", "Transportation allowance", "Impact reporting"],
+                "impact_story": "Our community health educators have reached over 5,000 women in the past year, contributing to a 40% reduction in maternal complications in our target areas.",
+                "contact_person": "Dr. Mona Hassan, Community Health Director",
+                "application_deadline": datetime.now() + timedelta(days=14)
+            },
+            {
+                "title": "Climate Action Workshop Facilitator",
+                "organization": "Green Jordan Environmental Society",
+                "location": "Amman, Jordan",
+                "type": "project-based",
+                "remote_allowed": False,
+                "time_commitment": "10 hours/week for 3 months",
+                "urgency": "high",
+                "description": "Lead climate action workshops for high school students across Amman. You'll teach students about climate science, help them develop environmental projects, and mentor them in presenting solutions to local government officials.",
+                "skills_required": ["Environmental Conservation", "Teaching", "Youth Mentoring", "Arabic Language"],
+                "skills_preferred": ["Climate Science", "Project Management", "Public Speaking"],
+                "requirements": ["Environmental science background", "Experience working with youth", "Available for weekend workshops"],
+                "benefits": ["Environmental education certification", "Networking with climate professionals", "Travel opportunities"],
+                "impact_story": "Previous workshop participants have initiated 12 school recycling programs and influenced 3 municipal environmental policies.",
+                "contact_person": "Laith Abuzaid, Youth Programs Coordinator",
+                "application_deadline": datetime.now() + timedelta(days=21)
+            },
+            {
+                "title": "Women's Business Mentorship Program",
+                "organization": "Women's Economic Empowerment Center",
+                "location": "Beirut, Lebanon",
+                "type": "ongoing",
+                "remote_allowed": True,
+                "time_commitment": "3 hours/week",
+                "urgency": "medium",
+                "description": "Mentor women entrepreneurs starting their own businesses. Provide guidance on business planning, marketing, financial management, and help them navigate challenges. Perfect for professionals wanting to share their expertise.",
+                "skills_required": ["Business Development", "Entrepreneurship", "Arabic Language"],
+                "skills_preferred": ["Marketing", "Finance", "Legal Knowledge"],
+                "requirements": ["Business experience required", "Mentoring training provided", "6-month minimum commitment"],
+                "benefits": ["Professional development", "Networking opportunities", "Recognition events"],
+                "impact_story": "Our mentorship program has helped launch 150+ women-led businesses with an 85% success rate after 2 years.",
+                "contact_person": "Rima Khalil, Mentorship Program Manager",
+                "application_deadline": datetime.now() + timedelta(days=45)
+            },
+            {
+                "title": "Digital Heritage Documentation Project",
+                "organization": "Moroccan Heritage Preservation Foundation",
+                "location": "Casablanca, Morocco",
+                "type": "project-based",
+                "remote_allowed": True,
+                "time_commitment": "8 hours/week for 4 months",
+                "urgency": "medium",
+                "description": "Help preserve Morocco's cultural heritage by documenting traditional crafts, stories, and practices. You'll interview elderly artisans, photograph traditional techniques, and help create digital archives for future generations.",
+                "skills_required": ["Photography", "Content Creation", "Arabic Language"],
+                "skills_preferred": ["Heritage Preservation", "French Language", "Videography"],
+                "requirements": ["Photography skills essential", "Cultural sensitivity", "Available for field visits"],
+                "benefits": ["Cultural immersion experience", "Professional portfolio development", "Published attribution"],
+                "impact_story": "Our documentation projects have preserved 200+ traditional practices and created digital archives accessed by researchers worldwide.",
+                "contact_person": "Aicha Benali, Heritage Documentation Lead",
+                "application_deadline": datetime.now() + timedelta(days=60)
+            }
+        ]
+        
+        return opportunities
+
+# Create global instance
+persona_generator = PersonaGenerator()

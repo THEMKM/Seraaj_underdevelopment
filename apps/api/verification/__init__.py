@@ -1,0 +1,1 @@
+# Verification package for skill verification and badge management

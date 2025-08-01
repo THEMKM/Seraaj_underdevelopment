@@ -1,0 +1,1 @@
+# Collaboration package for team management and project coordination
