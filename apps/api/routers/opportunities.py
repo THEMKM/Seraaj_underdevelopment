@@ -380,7 +380,7 @@ async def get_opportunity_applications(
         )
 
     # Get applications
-    query = select(Application).where(Application.opp_id == opportunity_id)
+    query = select(Application).where(Application.opportunity_id == opportunity_id)
 
     if status_filter:
         query = query.where(Application.status == status_filter)

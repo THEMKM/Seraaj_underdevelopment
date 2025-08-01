@@ -150,13 +150,13 @@ class ApplicationBase(SQLModel):
     @classmethod
     def validate_business_rules(cls, values):
         """Validate business rules and constraints"""
-        vol_id = values.get("volunteer_id")
-        opp_id = values.get("opportunity_id")
+        volunteer_id = values.get("volunteer_id")
+        opportunity_id = values.get("opportunity_id")
 
         # Check for required fields
-        if not vol_id:
+        if not volunteer_id:
             raise ValueError("volunteer_id is required for applications")
-        if not opp_id:
+        if not opportunity_id:
             raise ValueError("opportunity_id is required for applications")
 
         # Note: Duplicate prevention is enforced at database level with unique constraint

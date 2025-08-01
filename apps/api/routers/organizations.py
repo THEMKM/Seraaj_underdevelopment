@@ -184,7 +184,7 @@ async def get_organization_applications(
         query = query.where(Application.status == status_filter)
 
     if opportunity_id:
-        query = query.where(Application.opp_id == opportunity_id)
+        query = query.where(Application.opportunity_id == opportunity_id)
 
     # Order by creation date (newest first) and apply pagination
     query = query.order_by(Application.created_at.desc()).offset(skip).limit(limit)
@@ -297,8 +297,8 @@ async def get_organization_dashboard_stats(
         "recent_applications": [
             {
                 "id": app.id,
-                "opportunity_id": app.opp_id,
-                "volunteer_id": app.vol_id,
+                "opportunity_id": app.opportunity_id,
+                "volunteer_id": app.volunteer_id,
                 "status": app.status,
                 "created_at": app.created_at.isoformat(),
                 "match_score": app.match_score,
