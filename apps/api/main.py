@@ -18,7 +18,7 @@ from config.settings import (
     get_cors_config,
     get_logging_config,
 )
-from datetime import datetime
+from datetime import datetime, timezone
 import logging
 
 # DIVINE ENCODING CONFIGURATION - Honor the gods of code!
@@ -215,7 +215,7 @@ async def legacy_api_deprecation(path: str):
             "error_code": "ENDPOINT_DEPRECATED",
             "message": f"The /api/{path} endpoint has been deprecated. Please use /v1/{path} instead.",
             "new_endpoint": f"/v1/{path}",
-            "timestamp": datetime.now(datetime.timezone.utc).isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "details": {
                 "migration_guide": "https://docs.seraaj.org/api/migration",
                 "support_ends": "2025-12-31",
@@ -245,7 +245,7 @@ async def legacy_auth_deprecation(path: str):
             "error_code": "ENDPOINT_DEPRECATED",
             "message": f"The /auth/{path} endpoint has been deprecated. Please use /v1/auth/{path} instead.",
             "new_endpoint": f"/v1/auth/{path}",
-            "timestamp": datetime.now(datetime.timezone.utc).isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "details": {
                 "migration_guide": "https://docs.seraaj.org/api/migration",
                 "support_ends": "2025-12-31",

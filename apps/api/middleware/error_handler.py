@@ -5,7 +5,7 @@ Provides comprehensive error handling, logging, and user-friendly responses
 
 import traceback
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Dict, Any
 from fastapi import Request, HTTPException
 from fastapi.responses import JSONResponse
@@ -178,7 +178,7 @@ class ErrorHandler:
             "error_id": error_id,
             "error_code": error.error_code,
             "message": error.message,
-            "timestamp": datetime.now(datetime.timezone.utc).isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "details": error.details,
         }
 
@@ -212,7 +212,7 @@ class ErrorHandler:
             "error_id": error_id,
             "error_code": "VALIDATION_ERROR",
             "message": "Request validation failed",
-            "timestamp": datetime.now(datetime.timezone.utc).isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "details": {
                 "validation_errors": validation_errors,
                 "error_count": len(validation_errors),
@@ -235,7 +235,7 @@ class ErrorHandler:
                 if error.detail
                 else self.error_mappings.get(error.status_code, "HTTP Error")
             ),
-            "timestamp": datetime.now(datetime.timezone.utc).isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "details": {},
         }
 
@@ -257,7 +257,7 @@ class ErrorHandler:
                 if hasattr(error, "detail")
                 else self.error_mappings.get(error.status_code, "HTTP Error")
             ),
-            "timestamp": datetime.now(datetime.timezone.utc).isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "details": {},
         }
 
@@ -297,7 +297,7 @@ class ErrorHandler:
             "error_id": error_id,
             "error_code": error_code,
             "message": message,
-            "timestamp": datetime.now(datetime.timezone.utc).isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "details": details,
         }
 
@@ -323,7 +323,7 @@ class ErrorHandler:
             "error_id": error_id,
             "error_code": "PYDANTIC_VALIDATION_ERROR",
             "message": "Data validation failed",
-            "timestamp": datetime.now(datetime.timezone.utc).isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "details": {
                 "validation_errors": validation_errors,
                 "error_count": len(validation_errors),
@@ -342,7 +342,7 @@ class ErrorHandler:
             "error_id": error_id,
             "error_code": "INTERNAL_SERVER_ERROR",
             "message": "An unexpected error occurred. Please try again later.",
-            "timestamp": datetime.now(datetime.timezone.utc).isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "details": {"error_type": type(error).__name__},
         }
 
@@ -372,7 +372,7 @@ class ErrorHandler:
             "user_agent": user_agent,
             "user_id": user_id,
             "user_role": user_role,
-            "timestamp": datetime.now(datetime.timezone.utc).isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
         }
 
         # Log based on error severity
