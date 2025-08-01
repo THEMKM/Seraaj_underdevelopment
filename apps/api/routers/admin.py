@@ -20,7 +20,7 @@ from models import (
     PerformanceMetric,
 )
 from routers.auth import get_current_user
-from utils.data_seeder import DataSeeder
+from services.unified_seeding_service import seed_database
 from utils.response_formatter import success_with_data
 
 router = APIRouter(prefix="/v1/admin", tags=["admin"])
@@ -411,12 +411,12 @@ async def get_moderation_reports(
     """Get content moderation reports"""
     # This would typically involve a reports model
     # For now, return flagged reviews as example
-    query = select(Review).where(Review.flagged == True)
+    query = select(Review).where(Review.flagged.is_(True))
 
     if status == "resolved":
-        query = query.where(Review.flag_resolved == True)
+        query = query.where(Review.flag_resolved.is_(True))
     elif status == "pending":
-        query = query.where(Review.flag_resolved == False)
+        query = query.where(Review.flag_resolved.is_(False))
 
     query = query.order_by(Review.created_at.desc()).offset(skip).limit(limit)
     reports = session.exec(query).all()
@@ -580,15 +580,12 @@ async def update_system_config(
 @router.post("/seed-data")
 async def seed_sample_data(
     admin_user: Annotated[User, Depends(require_admin)],
-    session: Annotated[Session, Depends(get_session)],
     force: bool = Query(False, description="Force seeding even if data exists"),
 ):
     """Seed database with sample data for development/testing"""
 
-    seeder = DataSeeder(session)
-
     try:
-        results = await seeder.seed_sample_data(force=force)
+        results = seed_database(clear_existing=force)
 
         return success_with_data(results, "Sample data seeded successfully")
 
@@ -646,3 +643,26 @@ async def clear_sample_data(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Error clearing data: {str(e)}",
         )
+
+
+# Database maintenance utilities
+@router.get("/database/health")
+async def database_health(admin_user: Annotated[User, Depends(require_admin)]):
+    """Return comprehensive database health report"""
+    try:
+        from database.optimization import get_database_health
+
+        return get_database_health()
+    except ImportError:
+        return {"error": "Database optimization module not available"}
+
+
+@router.post("/database/optimize")
+async def optimize_database(admin_user: Annotated[User, Depends(require_admin)]):
+    """Run database optimization tasks"""
+    try:
+        from database.optimization import optimize_database
+
+        return optimize_database()
+    except ImportError:
+        return {"error": "Database optimization module not available"}

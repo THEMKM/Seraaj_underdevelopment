@@ -11,6 +11,7 @@ import time
 import os
 import psutil
 import logging
+import asyncio
 
 from database import get_session
 from models import User, Opportunity, Application, Organisation, Volunteer
@@ -46,6 +47,24 @@ async def health_check():
         message=f"System is {health_data['overall_status']}",
         status_code=status_code,
     )
+
+
+@router.get("/health/readiness", include_in_schema=False)
+async def readiness_check():
+    """Kubernetes readiness probe"""
+    return {
+        "status": "ready",
+        "timestamp": datetime.now(datetime.timezone.utc).isoformat(),
+    }
+
+
+@router.get("/health/liveness", include_in_schema=False)
+async def liveness_check():
+    """Kubernetes liveness probe"""
+    return {
+        "status": "alive",
+        "timestamp": datetime.now(datetime.timezone.utc).isoformat(),
+    }
 
 
 @router.get("/health/detailed")
@@ -505,9 +524,6 @@ async def perform_backup(
     return backup_info
 
 
-import asyncio
-
-
 async def _clear_specific_cache(cache_name: str):
     """Clear a specific cache type"""
     try:
@@ -579,7 +595,7 @@ async def _perform_backup_step(step: str, backup_type: str):
             # Copy uploaded files to backup location
             from config.settings import settings
 
-            upload_path = settings.get_upload_path()
+            _upload_path = settings.get_upload_path()  # noqa: F841
             # In production, use rsync or similar
             await asyncio.sleep(2)
 

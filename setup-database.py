@@ -13,7 +13,7 @@ sys.path.insert(0, str(api_dir))
 
 try:
     from database import create_db_and_tables
-    from simple_seed import seed_demo_data
+    from services.unified_seeding_service import seed_database
     from config.settings import settings
     
     def main():
@@ -37,7 +37,7 @@ try:
         # Seed demo data
         print("\n2. Seeding demo data...")
         try:
-            seed_demo_data()
+            seed_database(clear_existing=True)
             print("   ✓ Demo data seeded successfully")
         except Exception as e:
             print(f"   ✗ Error seeding data: {e}")

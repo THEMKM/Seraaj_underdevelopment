@@ -36,8 +36,8 @@ class ApplicationPriority(str, Enum):
 
 class ApplicationBase(SQLModel):
     # Relationships
-    vol_id: int = Field(foreign_key="volunteers.id", index=True)
-    opp_id: int = Field(foreign_key="opportunities.id", index=True)
+    volunteer_id: int = Field(foreign_key="volunteers.id", index=True)
+    opportunity_id: int = Field(foreign_key="opportunities.id", index=True)
 
     # Application Status
     status: ApplicationStatus = Field(default=ApplicationStatus.DRAFT, index=True)
@@ -90,7 +90,7 @@ class ApplicationBase(SQLModel):
     contact_attempts: int = Field(default=0)
 
     # Additional application data (flexible for future features)
-    app_metadata: Optional[dict] = Field(default_factory=dict, sa_column=Column(JSON))
+    custom_metadata: Optional[dict] = Field(default_factory=dict, sa_column=Column(JSON))
 
     # Validation methods
     @validator("status")
@@ -150,13 +150,13 @@ class ApplicationBase(SQLModel):
     @classmethod
     def validate_business_rules(cls, values):
         """Validate business rules and constraints"""
-        vol_id = values.get("vol_id")
-        opp_id = values.get("opp_id")
+        volunteer_id = values.get("volunteer_id")
+        opportunity_id = values.get("opportunity_id")
 
         # Check for required fields
-        if not vol_id:
+        if not volunteer_id:
             raise ValueError("volunteer_id is required for applications")
-        if not opp_id:
+        if not opportunity_id:
             raise ValueError("opportunity_id is required for applications")
 
         # Note: Duplicate prevention is enforced at database level with unique constraint
@@ -165,11 +165,24 @@ class ApplicationBase(SQLModel):
 
         return values
 
+    @validator("custom_metadata", pre=True, always=True)
+    def validate_custom_metadata(cls, v):
+        """Ensure custom_metadata is a dictionary"""
+        if v is None:
+            return {}
+        if not isinstance(v, dict):
+            raise ValueError("custom_metadata must be a dictionary")
+        return v
+
 
 class Application(ApplicationBase, TimestampMixin, table=True):
     __tablename__ = "applications"
     __table_args__ = (
-        UniqueConstraint("vol_id", "opp_id", name="unique_volunteer_opportunity"),
+        UniqueConstraint(
+            "volunteer_id",
+            "opportunity_id",
+            name="unique_volunteer_opportunity",
+        ),
     )
 
     id: Optional[int] = id_field()

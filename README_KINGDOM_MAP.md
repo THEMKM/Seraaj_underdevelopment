@@ -113,12 +113,10 @@ This scroll describes the structure of the repository and the purpose of each ma
 │   │   ├── seraaj_dev.db-shm
 │   │   ├── seraaj_dev.db-wal
 │   │   ├── services
-│   │   │   ├── database_seeding.py
 │   │   │   ├── demo_scenario_service.py
 │   │   │   ├── guided_tour_service.py
 │   │   │   ├── push_notification_service.py
 │   │   │   └── unified_seeding_service.py
-│   │   ├── simple_seed.py
 │   │   ├── simple_server.py
 │   │   ├── start_server.py
 │   │   ├── startup_sequence.py
@@ -143,7 +141,6 @@ This scroll describes the structure of the repository and the purpose of each ma
 │   │   │   └── test_websocket.py
 │   │   ├── utils
 │   │   │   ├── __init__.py
-│   │   │   ├── data_seeder.py
 │   │   │   ├── encoding_config.py
 │   │   │   ├── response_formatter.py
 │   │   │   ├── template_renderer.py
@@ -322,7 +319,7 @@ This scroll describes the structure of the repository and the purpose of each ma
 - **Purpose**: Documentation for architecture, API, frontend, development workflow and more.
 
 ### Root scripts and configuration
-- **Purpose**: Shell/Bat scripts and Python utilities to start development servers (`start-servers.py`, `start-dev.sh`), manage the database (`setup-database.py`), and configure the monorepo (`package.json`, `pyproject.toml`, `pnpm-workspace.yaml`).
+- **Purpose**: Shell/Bat scripts and Python utilities to start development servers (`start-servers.py`, `start-dev.sh`), manage the database (`setup-database.py`), and configure the monorepo (`package.json`, `pyproject.toml`, `pnpm-workspace.yaml`). The `Makefile` includes helper targets (`seed`, `lint`, `test`, `makemigrations`, `migrate`).
 - **Dependencies**: Node.js 18+, Python 3.11+, PNPM, Docker for local PostgreSQL.
 
 ---

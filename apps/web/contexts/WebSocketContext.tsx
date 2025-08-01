@@ -60,7 +60,7 @@ interface WebSocketContextType {
   onlineUsers: string[];
   
   // Connection methods
-  connect: (userId: string) => void;
+  connect: (conversationId: string, token: string) => void;
   disconnect: () => void;
   
   // Conversation methods
@@ -118,7 +118,8 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
   // Auto-connect when user is authenticated
   useEffect(() => {
     if (isAuthenticated && user && !isConnected) {
-      connect(user.id.toString());
+      const token = localStorage.getItem('access_token') || '';
+      connect('1', token); // Demo connects to conversation 1
     }
   }, [isAuthenticated, user, isConnected]);
 
@@ -300,30 +301,46 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
     setOnlineUsers([currentUserIdStr, 'org-2']);
   };
 
-  const connect = (userId: string) => {
+  const connect = (conversationId: string, token: string) => {
     if (socketRef.current?.readyState === WebSocket.OPEN) {
       return;
     }
 
-    setCurrentUserId(userId);
+    setCurrentUserId(user?.id?.toString() || null);
 
-    // In a real implementation, this would connect to your WebSocket server
-    // For demo purposes, we'll simulate the connection
-    setIsConnected(true);
-    initializeMockData();
-    
-    // Simulate connection success after a delay
-    setTimeout(() => {
-      setReconnectAttempts(0);
-      
-      // Start ping interval to keep connection alive
-      pingIntervalRef.current = setInterval(() => {
-        // In real implementation: socketRef.current?.send(JSON.stringify({ type: 'ping' }));
-      }, 30000);
-      
-    }, 1000);
+    try {
+      const wsUrl = `${process.env.NEXT_PUBLIC_API_URL || ''}/ws/${conversationId}?token=${token}`;
+      const ws = new WebSocket(wsUrl);
+      socketRef.current = ws;
 
-    // Simulate incoming messages for demo
+      ws.onopen = () => {
+        setIsConnected(true);
+        setReconnectAttempts(0);
+        pingIntervalRef.current = setInterval(() => {
+          ws.send(JSON.stringify({ type: 'ping' }));
+        }, 30000);
+      };
+
+      ws.onmessage = (event) => {
+        const message = JSON.parse(event.data);
+        if (message.type === 'new_message') {
+          const msg = message.data as Message;
+          setMessages(prev => ({
+            ...prev,
+            [msg.conversationId]: [...(prev[msg.conversationId] || []), msg]
+          }));
+        }
+      };
+
+      ws.onclose = () => {
+        setIsConnected(false);
+      };
+    } catch (err) {
+      // Fallback to demo data on failure
+      setIsConnected(true);
+      initializeMockData();
+    }
+
     const simulateIncomingMessage = () => {
       setTimeout(() => {
         if (Math.random() > 0.7) { // 30% chance of receiving a message

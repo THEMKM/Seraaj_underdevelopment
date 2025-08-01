@@ -10,7 +10,7 @@ try:
     from pydantic_settings import BaseSettings
 except ImportError:
     from pydantic import BaseSettings
-from pydantic import validator
+from pydantic import validator, Field
 from enum import Enum
 
 
@@ -71,7 +71,8 @@ class SecurityConfig(BaseSettings):
     lockout_duration_minutes: int = 15
 
     # CORS settings
-    cors_origins: str = ""  # Comma-separated string from environment
+    # Allow overriding via CORS_ORIGINS for simplicity
+    cors_origins: str = os.getenv("CORS_ORIGINS", "")
     cors_allow_credentials: bool = True
     cors_allow_methods: List[str] = ["*"]
     cors_allow_headers: List[str] = ["*"]
@@ -239,9 +240,10 @@ class Settings(BaseSettings):
     """Main application settings"""
 
     # Environment
-    environment: Environment = Environment.DEVELOPMENT
+    environment: Environment = Field(Environment.DEVELOPMENT, alias="APP_ENV")
     debug: bool = False
     testing: bool = False
+    auto_seed_on_startup: bool = Field(False, alias="AUTO_SEED_ON_STARTUP")
 
     # Host and port
     host: str = "0.0.0.0"

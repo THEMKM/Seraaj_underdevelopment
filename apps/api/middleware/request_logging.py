@@ -6,7 +6,7 @@ Provides comprehensive logging of API requests and responses for debugging and m
 import time
 import json
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Dict, Any
 from fastapi import Request
 from starlette.types import ASGIApp, Receive, Scope, Send
@@ -115,7 +115,7 @@ class RequestLoggingMiddleware:
         log_data = {
             "type": "request",
             "request_id": request_id,
-            "timestamp": datetime.now(datetime.timezone.utc).isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "method": method,
             "path": path,
             "url": url,
@@ -159,7 +159,7 @@ class RequestLoggingMiddleware:
         log_data = {
             "type": "response",
             "request_id": request_id,
-            "timestamp": datetime.now(datetime.timezone.utc).isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "method": request.method,
             "path": request.url.path,
             "status_code": status_code,

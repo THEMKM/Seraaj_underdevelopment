@@ -1,6 +1,6 @@
 from typing import Optional, List, TYPE_CHECKING
 from enum import Enum
-from sqlmodel import SQLModel, Field, Column, JSON, Relationship
+from sqlmodel import SQLModel, Field, Column, JSON, Relationship, UniqueConstraint
 
 from .types import TimestampMixin, id_field, email_field
 
@@ -86,6 +86,9 @@ class OrganisationBase(SQLModel):
 
 class Organisation(OrganisationBase, TimestampMixin, table=True):
     __tablename__ = "organisations"
+    __table_args__ = (
+        UniqueConstraint("name", name="unique_org_name"),
+    )
 
     id: Optional[int] = id_field()
 

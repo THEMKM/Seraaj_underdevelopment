@@ -92,11 +92,11 @@ The API currently has these active routers:
 2. **Opportunities** (`/v1/opportunities/*`)
 3. **Applications** (`/v1/applications/*`)
 4. **Profiles** (`/v1/profiles/*`)
+5. **WebSocket** (`/ws/{conversation_id}`)
 
 ### Disabled Routers
 
 These routers exist but are currently disabled due to dependency issues:
-- WebSocket (`/ws/*`)
 - Admin (`/admin/*`)
 - Reviews (`/reviews/*`)
 - Files (`/files/*`)

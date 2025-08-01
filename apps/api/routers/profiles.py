@@ -426,13 +426,13 @@ async def get_organization_stats(
     # Get application stats for org's opportunities
     total_applications = session.exec(
         select(func.count(Application.id))
-        .join(Opportunity, Application.opp_id == Opportunity.id)
+        .join(Opportunity, Application.opportunity_id == Opportunity.id)
         .where(Opportunity.org_id == org_id)
     ).first()
 
     accepted_volunteers = session.exec(
         select(func.count(Application.id))
-        .join(Opportunity, Application.opp_id == Opportunity.id)
+        .join(Opportunity, Application.opportunity_id == Opportunity.id)
         .where(and_(Opportunity.org_id == org_id, Application.status == "accepted"))
     ).first()
 
