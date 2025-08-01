@@ -4,6 +4,8 @@ from datetime import datetime
 import logging
 
 from models import Volunteer, Organisation, Opportunity, Application, AnalyticsEvent
+from models.opportunity import OpportunityState, TimeCommitmentType
+from models.volunteer import AvailabilityType
 
 logger = logging.getLogger(__name__)
 
@@ -26,6 +28,61 @@ class MatchingEngine:
         # Learning parameters
         self.learning_rate = 0.01
         self.decay_factor = 0.95
+
+    def rule_based_opportunities(
+        self, session: Session, volunteer_id: int, limit: int = 10
+    ) -> List[Dict[str, float]]:
+        """Return top opportunity matches using a simple rule-based algorithm."""
+
+        volunteer = session.get(Volunteer, volunteer_id)
+        if not volunteer:
+            return []
+
+        opportunities = session.exec(
+            select(Opportunity).where(Opportunity.state == OpportunityState.ACTIVE)
+        ).all()
+
+        matches: List[Dict[str, float]] = []
+        for opp in opportunities:
+            score = self._rule_based_score(volunteer, opp)
+            matches.append({"id": opp.id, "title": opp.title, "score": round(score * 100, 2)})
+
+        matches.sort(key=lambda x: x["score"], reverse=True)
+        return matches[:limit]
+
+    def _rule_based_score(self, volunteer: Volunteer, opportunity: Opportunity) -> float:
+        """Calculate rule-based score between volunteer and opportunity."""
+
+        # Skill overlap
+        if opportunity.skills_required:
+            overlap = len(set(volunteer.skills or []).intersection(opportunity.skills_required))
+            skill_score = overlap / len(opportunity.skills_required)
+        else:
+            skill_score = 0.0
+
+        # Location match
+        if opportunity.remote_allowed:
+            location_score = 1.0
+        elif volunteer.country and opportunity.country and volunteer.country.lower() == opportunity.country.lower():
+            if volunteer.location and opportunity.location and volunteer.location.lower() == opportunity.location.lower():
+                location_score = 1.0
+            else:
+                location_score = 0.5
+        else:
+            location_score = 0.0
+
+        # Availability match
+        if volunteer.availability == opportunity.time_commitment_type:
+            availability_score = 1.0
+        elif (
+            volunteer.availability == AvailabilityType.FLEXIBLE
+            or opportunity.time_commitment_type == TimeCommitmentType.FLEXIBLE
+        ):
+            availability_score = 0.8
+        else:
+            availability_score = 0.5
+
+        return (skill_score + location_score + availability_score) / 3
 
     async def find_matches(
         self,

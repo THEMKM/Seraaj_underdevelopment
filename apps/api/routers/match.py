@@ -11,20 +11,12 @@ from ml.matching_engine import matching_engine
 
 
 # Response Models for consistent API responses
-class OpportunityMatch(BaseModel):
-    """Opportunity match for volunteers"""
+class OpportunityScore(BaseModel):
+    """Simplified opportunity match used by the frontend."""
 
-    opportunity_id: int
+    id: int
     title: str
-    description: str
-    organization_name: str
-    location: Optional[str] = None
-    remote_allowed: bool = False
-    match_score: float = Field(..., ge=0.0, le=100.0)
-    compatibility_factors: Dict[str, float] = Field(default_factory=dict)
-    skills_match: List[str] = Field(default_factory=list)
-    causes_match: List[str] = Field(default_factory=list)
-    created_at: str
+    score: float = Field(..., ge=0.0, le=100.0)
 
 
 class VolunteerMatch(BaseModel):
@@ -47,13 +39,13 @@ router = APIRouter(prefix="/v1/match", tags=["matching"])
 logger = logging.getLogger(__name__)
 
 
-@router.get("/opportunities", response_model=List[OpportunityMatch])
-async def get_volunteer_matches(
+@router.get("/opportunities", response_model=List[OpportunityScore])
+def get_volunteer_matches(
     current_user: Annotated[User, Depends(get_current_user)],
     session: Annotated[Session, Depends(get_session)],
     limit: int = Query(10, ge=1, le=50),
 ):
-    """Get ML-powered opportunity matches for a volunteer"""
+    """Return top opportunity matches using rule-based scoring."""
     if current_user.role != UserRole.VOLUNTEER:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -71,8 +63,7 @@ async def get_volunteer_matches(
         )
 
     try:
-        # Use ML matching engine
-        matches = await matching_engine.find_matches(
+        matches = matching_engine.rule_based_opportunities(
             session=session, volunteer_id=volunteer.id, limit=limit
         )
 
