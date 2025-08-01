@@ -52,7 +52,7 @@ async def create_review(
         # Check if there's a completed application between them
         completed_application = session.exec(
             select(Application)
-            .join(Opportunity, Application.opp_id == Opportunity.id)
+            .join(Opportunity, Application.opportunity_id == Opportunity.id)
             .where(
                 and_(
                     Application.volunteer_id == review_data.volunteer_id,
@@ -90,7 +90,7 @@ async def create_review(
         # Check if there's a completed application between them
         completed_application = session.exec(
             select(Application)
-            .join(Opportunity, Application.opp_id == Opportunity.id)
+            .join(Opportunity, Application.opportunity_id == Opportunity.id)
             .where(
                 and_(
                     Application.volunteer_id == volunteer.id,

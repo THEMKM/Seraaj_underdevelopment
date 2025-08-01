@@ -411,12 +411,12 @@ async def get_moderation_reports(
     """Get content moderation reports"""
     # This would typically involve a reports model
     # For now, return flagged reviews as example
-    query = select(Review).where(Review.flagged == True)
+    query = select(Review).where(Review.flagged.is_(True))
 
     if status == "resolved":
-        query = query.where(Review.flag_resolved == True)
+        query = query.where(Review.flag_resolved.is_(True))
     elif status == "pending":
-        query = query.where(Review.flag_resolved == False)
+        query = query.where(Review.flag_resolved.is_(False))
 
     query = query.order_by(Review.created_at.desc()).offset(skip).limit(limit)
     reports = session.exec(query).all()
@@ -643,3 +643,26 @@ async def clear_sample_data(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Error clearing data: {str(e)}",
         )
+
+
+# Database maintenance utilities
+@router.get("/database/health")
+async def database_health(admin_user: Annotated[User, Depends(require_admin)]):
+    """Return comprehensive database health report"""
+    try:
+        from database.optimization import get_database_health
+
+        return get_database_health()
+    except ImportError:
+        return {"error": "Database optimization module not available"}
+
+
+@router.post("/database/optimize")
+async def optimize_database(admin_user: Annotated[User, Depends(require_admin)]):
+    """Run database optimization tasks"""
+    try:
+        from database.optimization import optimize_database
+
+        return optimize_database()
+    except ImportError:
+        return {"error": "Database optimization module not available"}

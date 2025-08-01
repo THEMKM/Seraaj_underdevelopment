@@ -79,7 +79,7 @@ class MatchingEngine:
                 select(Application).where(
                     and_(
                         Application.volunteer_id == volunteer_id,
-                        Application.opp_id == opportunity.id,
+                        Application.opportunity_id == opportunity.id,
                     )
                 )
             ).first()
@@ -147,7 +147,7 @@ class MatchingEngine:
                 select(Application).where(
                     and_(
                         Application.volunteer_id == volunteer.id,
-                        Application.opp_id == opportunity_id,
+                        Application.opportunity_id == opportunity_id,
                     )
                 )
             ).first()
@@ -426,7 +426,7 @@ class MatchingEngine:
             # Get opportunities from successful applications
             successful_opportunities = []
             for app in successful_apps:
-                opp = session.get(Opportunity, app.opp_id)
+                opp = session.get(Opportunity, app.opportunity_id)
                 if opp:
                     successful_opportunities.append(opp)
 
@@ -447,7 +447,7 @@ class MatchingEngine:
         # Penalize if user has rejected similar opportunities
         rejected_apps = [app for app in applications if app.status == "rejected"]
         for app in rejected_apps:
-            past_opp = session.get(Opportunity, app.opp_id)
+            past_opp = session.get(Opportunity, app.opportunity_id)
             if past_opp and set(past_opp.causes).intersection(set(opportunity.causes)):
                 boost -= 0.02
 

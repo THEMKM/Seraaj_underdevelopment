@@ -1,20 +1,16 @@
 # -*- coding: utf-8 -*-
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, Request, Depends
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.exceptions import RequestValidationError
-from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
-from database import create_db_and_tables, get_session
+from database import create_db_and_tables
 from routers import auth
-from typing import Annotated
-from sqlmodel import Session, text
 from middleware.error_handler import error_handler, error_handling_middleware
 from middleware.loading_states import response_timing_middleware
 from middleware.request_logging import (
     RequestLoggingMiddleware,
     APIMetricsMiddleware,
-    get_api_metrics,
 )
 from config.settings import (
     settings,
@@ -25,6 +21,7 @@ from config.settings import (
 )
 from services.unified_seeding_service import seed_database
 from datetime import datetime
+
 import logging
 
 # DIVINE ENCODING CONFIGURATION - Honor the gods of code!
@@ -155,7 +152,7 @@ async def root():
 app.include_router(auth.router)
 
 # Import other routers after creating them
-from routers import (
+from routers import (  # noqa: E402
     opportunities,
     applications,
     profiles,
@@ -166,7 +163,7 @@ from routers import (
     websocket,
     organizations,
 )
-from routers import (
+from routers import (  # noqa: E402
     verification,
     collaboration,
     operations,
@@ -175,10 +172,10 @@ from routers import (
 )  # Re-enabled after fixing issues
 
 # Push notifications router - restored after comprehensive relationship recovery
-from routers import push_notifications
+from routers import push_notifications  # noqa: E402
 
 # from routers import pwa, demo_scenarios, calendar
-from routers import pwa, demo_scenarios, calendar
+from routers import pwa, demo_scenarios, calendar  # noqa: E402
 
 app.include_router(opportunities.router)
 app.include_router(applications.router)
@@ -217,6 +214,7 @@ async def health_check():
 @app.api_route(
     "/api/{path:path}",
     methods=["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD"],
+    include_in_schema=False,
 )
 async def legacy_api_deprecation(path: str):
     """Handle legacy /api/ prefixed endpoints with deprecation notice"""
@@ -229,7 +227,7 @@ async def legacy_api_deprecation(path: str):
             "error_code": "ENDPOINT_DEPRECATED",
             "message": f"The /api/{path} endpoint has been deprecated. Please use /v1/{path} instead.",
             "new_endpoint": f"/v1/{path}",
-            "timestamp": datetime.now(datetime.timezone.utc).isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "details": {
                 "migration_guide": "https://docs.seraaj.org/api/migration",
                 "support_ends": "2025-12-31",
@@ -246,6 +244,7 @@ async def legacy_api_deprecation(path: str):
 @app.api_route(
     "/auth/{path:path}",
     methods=["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD"],
+    include_in_schema=False,
 )
 async def legacy_auth_deprecation(path: str):
     """Handle legacy /auth/ endpoints without v1 prefix"""
@@ -258,7 +257,7 @@ async def legacy_auth_deprecation(path: str):
             "error_code": "ENDPOINT_DEPRECATED",
             "message": f"The /auth/{path} endpoint has been deprecated. Please use /v1/auth/{path} instead.",
             "new_endpoint": f"/v1/auth/{path}",
-            "timestamp": datetime.now(datetime.timezone.utc).isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "details": {
                 "migration_guide": "https://docs.seraaj.org/api/migration",
                 "support_ends": "2025-12-31",
@@ -272,83 +271,6 @@ async def legacy_auth_deprecation(path: str):
     )
 
 
-@app.get("/health/detailed")
-async def detailed_health_check(session: Annotated[Session, Depends(get_session)]):
-    """Detailed health check with database connectivity"""
-    health_status = {
-        "status": "healthy",
-        "timestamp": datetime.now(datetime.timezone.utc).isoformat(),
-        "version": settings.api.version,
-        "environment": settings.environment,
-        "services": {"api": "healthy", "database": "unknown"},
-    }
-
-    # Test database connectivity
-    try:
-        # Simple query to test database
-        result = session.execute(text("SELECT 1")).scalar()
-        if result == 1:
-            health_status["services"]["database"] = "healthy"
-        else:
-            health_status["services"]["database"] = "unhealthy"
-            health_status["status"] = "degraded"
-    except Exception as e:
-        health_status["services"]["database"] = "unhealthy"
-        health_status["status"] = "degraded"
-        health_status["database_error"] = str(e)
-
-    # Determine overall status
-    if any(service != "healthy" for service in health_status["services"].values()):
-        health_status["status"] = "degraded"
-
-    status_code = 200 if health_status["status"] in ["healthy", "degraded"] else 503
-    return JSONResponse(content=health_status, status_code=status_code)
-
-
-@app.get("/metrics")
-async def get_metrics():
-    """Get API performance metrics"""
-    return get_api_metrics()
-
-
-@app.get("/health/readiness")
-async def readiness_check():
-    """Kubernetes readiness probe"""
-    return {
-        "status": "ready",
-        "timestamp": datetime.now(datetime.timezone.utc).isoformat(),
-    }
-
-
-@app.get("/health/liveness")
-async def liveness_check():
-    """Kubernetes liveness probe"""
-    return {
-        "status": "alive",
-        "timestamp": datetime.now(datetime.timezone.utc).isoformat(),
-    }
-
-
-@app.get("/admin/database/health")
-async def database_health():
-    """Get comprehensive database health report"""
-    try:
-        from database.optimization import get_database_health
-
-        return get_database_health()
-    except ImportError:
-        return {"error": "Database optimization module not available"}
-
-
-@app.post("/admin/database/optimize")
-async def optimize_database_endpoint():
-    """Run database optimization (admin only)"""
-    try:
-        from database.optimization import optimize_database
-
-        return optimize_database()
-    except ImportError:
-        return {"error": "Database optimization module not available"}
 
 
 if __name__ == "__main__":
