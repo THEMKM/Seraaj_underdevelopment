@@ -305,7 +305,7 @@ class CalendarScheduler:
 
         # Get volunteer and opportunity details
         volunteer = session.get(Volunteer, application.volunteer_id)
-        opportunity = session.get(Opportunity, application.opp_id)
+        opportunity = session.get(Opportunity, application.opportunity_id)
 
         if not volunteer or not opportunity:
             raise ValueError("Invalid application data")

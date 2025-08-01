@@ -3,9 +3,8 @@ Base Model Definitions
 Provides core model functionality and common patterns for the entire application.
 """
 
-from .timestamps import TimestampedModel, IdentifierModel
-from .relationships import RelationshipModel
 from .enums import EnumBase
+from .timestamps import IdentifierModel, TimestampedModel
 
 
 class BaseModel(TimestampedModel, IdentifierModel):
@@ -23,6 +22,5 @@ __all__ = [
     "BaseModel",
     "TimestampedModel",
     "IdentifierModel",
-    "RelationshipModel",
     "EnumBase",
 ]

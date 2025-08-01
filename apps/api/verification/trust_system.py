@@ -584,7 +584,7 @@ class OrganizationTrustSystem:
         # Application response rate
         applications = session.exec(
             select(Application)
-            .join(Opportunity, Application.opp_id == Opportunity.id)
+            .join(Opportunity, Application.opportunity_id == Opportunity.id)
             .where(Opportunity.org_id == organization_id)
         ).all()
 

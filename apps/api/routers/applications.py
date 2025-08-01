@@ -64,7 +64,7 @@ async def create_application(
         )
 
     # Verify the opportunity exists and is active
-    opportunity = session.get(Opportunity, application_data.opp_id)
+    opportunity = session.get(Opportunity, application_data.opportunity_id)
     if not opportunity:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Opportunity not found"
@@ -80,7 +80,7 @@ async def create_application(
         select(Application).where(
             and_(
                 Application.volunteer_id == volunteer.id,
-                Application.opp_id == application_data.opp_id,
+                Application.opportunity_id == application_data.opportunity_id,
             )
         )
     ).first()
@@ -137,7 +137,7 @@ async def get_my_applications(
         query = query.where(Application.status == status_filter)
 
     if opportunity_id:
-        query = query.where(Application.opp_id == opportunity_id)
+        query = query.where(Application.opportunity_id == opportunity_id)
 
     query = query.order_by(Application.created_at.desc())
     query = query.offset(skip).limit(limit)
@@ -174,7 +174,7 @@ async def get_application(
             select(Organisation).where(Organisation.user_id == current_user.id)
         ).first()
         if organization:
-            opportunity = session.get(Opportunity, application.opp_id)
+            opportunity = session.get(Opportunity, application.opportunity_id)
             if opportunity and opportunity.org_id == organization.id:
                 can_view = True
 
@@ -221,7 +221,7 @@ async def update_application(
             select(Organisation).where(Organisation.user_id == current_user.id)
         ).first()
         if organization:
-            opportunity = session.get(Opportunity, application.opp_id)
+            opportunity = session.get(Opportunity, application.opportunity_id)
             if opportunity and opportunity.org_id == organization.id:
                 can_update = True
 
@@ -332,7 +332,7 @@ async def review_application(
                 detail="Organization profile not found",
             )
 
-        opportunity = session.get(Opportunity, application.opp_id)
+        opportunity = session.get(Opportunity, application.opportunity_id)
         if not opportunity or opportunity.org_id != organization.id:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
@@ -396,7 +396,7 @@ async def schedule_interview(
                 detail="Organization profile not found",
             )
 
-        opportunity = session.get(Opportunity, application.opp_id)
+        opportunity = session.get(Opportunity, application.opportunity_id)
         if not opportunity or opportunity.org_id != organization.id:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
@@ -584,7 +584,7 @@ async def get_application_documents(
             select(Organisation).where(Organisation.user_id == current_user.id)
         ).first()
         if organization:
-            opportunity = session.get(Opportunity, application.opp_id)
+            opportunity = session.get(Opportunity, application.opportunity_id)
             if opportunity and opportunity.org_id == organization.id:
                 can_view = True
 
@@ -806,7 +806,7 @@ async def get_application_steps(
             select(Organisation).where(Organisation.user_id == current_user.id)
         ).first()
         if organization:
-            opportunity = session.get(Opportunity, application.opp_id)
+            opportunity = session.get(Opportunity, application.opportunity_id)
             if opportunity and opportunity.org_id == organization.id:
                 can_view = True
 
@@ -959,14 +959,14 @@ async def get_applications_stats(
             # Get applications for organization's opportunities
             total = session.exec(
                 select(func.count(Application.id))
-                .join(Opportunity, Application.opp_id == Opportunity.id)
+                .join(Opportunity, Application.opportunity_id == Opportunity.id)
                 .where(Opportunity.org_id == organization.id)
             ).first()
 
             # Applications by status
             status_stats = session.exec(
                 select(Application.status, func.count(Application.id))
-                .join(Opportunity, Application.opp_id == Opportunity.id)
+                .join(Opportunity, Application.opportunity_id == Opportunity.id)
                 .where(Opportunity.org_id == organization.id)
                 .group_by(Application.status)
             ).all()
@@ -1027,7 +1027,7 @@ async def get_applications_for_opportunity(
         )
 
     # Get applications
-    query = select(Application).where(Application.opp_id == opportunity_id)
+    query = select(Application).where(Application.opportunity_id == opportunity_id)
 
     if status_filter:
         query = query.where(Application.status == status_filter)

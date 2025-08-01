@@ -76,12 +76,12 @@ class DatabaseOptimizer:
             {
                 "table": "applications",
                 "name": "idx_applications_volunteer_status",
-                "columns": ["vol_id", "status", "created_at"],
+                "columns": ["volunteer_id", "status", "created_at"],
             },
             {
                 "table": "applications",
                 "name": "idx_applications_opportunity_status",
-                "columns": ["opp_id", "status", "created_at"],
+                "columns": ["opportunity_id", "status", "created_at"],
             },
             {
                 "table": "applications",
@@ -241,14 +241,14 @@ class DatabaseOptimizer:
                 "name": "user_applications",
                 "description": "Get applications for a user",
                 "query": select(Application)
-                .where(Application.vol_id == 1)
+                .where(Application.volunteer_id == 1)
                 .order_by(Application.created_at.desc()),
             },
             {
                 "name": "opportunity_applications",
                 "description": "Get applications for an opportunity",
                 "query": select(Application)
-                .where(Application.opp_id == 1)
+                .where(Application.opportunity_id == 1)
                 .order_by(Application.created_at.desc()),
             },
             {

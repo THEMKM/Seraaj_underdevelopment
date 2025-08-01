@@ -335,7 +335,7 @@ class TestReviewAndRatingSystem:
             .filter(Volunteer.user_id == test_user_volunteer.id)
             .first()
             .id,
-            opp_id=test_opportunity.id,
+            opportunity_id=test_opportunity.id,
             cover_letter="Test application",
             status="approved",
         )

@@ -151,7 +151,7 @@ async def schedule_interview(
                 detail="Organization profile not found",
             )
 
-        opportunity = session.get(Opportunity, application.opp_id)
+        opportunity = session.get(Opportunity, application.opportunity_id)
         if not opportunity or opportunity.org_id != organization.id:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,

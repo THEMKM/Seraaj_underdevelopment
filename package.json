@@ -23,7 +23,7 @@
     "start:servers:web": "python start-servers.py --frontend-only",
     "start:servers:debug": "python start-servers.py --debug",
     "db:setup": "python setup-database.py",
-    "db:reset": "rm -f apps/api/seraaj_dev.db && python setup-database.py",
+    "db:reset": "rm -f apps/api/seraaj_dev.db && cd apps/api && alembic stamp head && alembic upgrade head && python migrations/seed.py && cd ../../",
     "check:health": "curl -f http://localhost:8000/health || echo 'API not running'",
     "check:endpoints": "curl -f http://localhost:8000/docs || echo 'API docs not accessible'"
   },
