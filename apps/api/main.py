@@ -185,6 +185,7 @@ app.include_router(files.router)
 app.include_router(admin.router)
 app.include_router(match.router)
 app.include_router(websocket.router)
+app.include_router(websocket.ws_router)
 app.include_router(organizations.router)
 # Re-enabled routers after fixing dependency issues:
 app.include_router(verification.router)

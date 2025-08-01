@@ -21,6 +21,9 @@ class ConnectionManager:
         # Conversation participants: {conversation_id: Set[user_id]}
         self.conversation_participants: Dict[int, Set[int]] = {}
 
+        # Track conversations joined per user: {user_id: Set[conversation_id]}
+        self.user_conversations: Dict[int, Set[int]] = {}
+
         # User typing status: {conversation_id: {user_id: datetime}}
         self.typing_status: Dict[int, Dict[int, datetime]] = {}
 
@@ -42,6 +45,10 @@ class ConnectionManager:
 
         # Update last seen
         self.user_presence[user_id] = datetime.now(datetime.timezone.utc)
+
+        # Remove user from all joined conversations
+        for conv_id in list(self.user_conversations.get(user_id, set())):
+            self.leave_conversation(user_id, conv_id)
 
         logger.info(f"User {user_id} disconnected from WebSocket")
 
@@ -102,6 +109,10 @@ class ConnectionManager:
 
         self.conversation_participants[conversation_id].add(user_id)
 
+        if user_id not in self.user_conversations:
+            self.user_conversations[user_id] = set()
+        self.user_conversations[user_id].add(conversation_id)
+
     def leave_conversation(self, user_id: int, conversation_id: int):
         """Remove user from conversation participants"""
         if conversation_id in self.conversation_participants:
@@ -110,6 +121,11 @@ class ConnectionManager:
             # Clean up empty conversations
             if not self.conversation_participants[conversation_id]:
                 del self.conversation_participants[conversation_id]
+
+        if user_id in self.user_conversations:
+            self.user_conversations[user_id].discard(conversation_id)
+            if not self.user_conversations[user_id]:
+                del self.user_conversations[user_id]
 
     async def handle_typing(self, user_id: int, conversation_id: int, is_typing: bool):
         """Handle typing indicators"""

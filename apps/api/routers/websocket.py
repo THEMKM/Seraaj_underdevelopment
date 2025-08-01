@@ -28,6 +28,7 @@ from routers.auth import get_current_user
 from websocket.connection_manager import connection_manager
 from websocket.message_handler import message_handler
 
+ws_router = APIRouter()
 router = APIRouter(prefix="/v1/messaging", tags=["messaging"])
 logger = logging.getLogger(__name__)
 
@@ -49,12 +50,13 @@ async def get_user_from_token(token: str, session: Session) -> Optional[User]:
         return None
 
 
-@router.websocket("/ws")
-async def websocket_endpoint(
+@ws_router.websocket("/ws/{conversation_id}")
+async def conversation_websocket(
     websocket: WebSocket,
+    conversation_id: int,
     token: str = Query(...),
 ):
-    """WebSocket endpoint for real-time messaging"""
+    """WebSocket endpoint for a specific conversation"""
     session = Session(engine)
 
     try:
@@ -64,14 +66,30 @@ async def websocket_endpoint(
             await websocket.close(code=4001, reason="Invalid token")
             return
 
+        # Verify participant in conversation
+        participant = session.exec(
+            select(ConversationParticipant).where(
+                ConversationParticipant.conversation_id == conversation_id,
+                ConversationParticipant.user_id == user.id,
+            )
+        ).first()
+        if not participant:
+            await websocket.close(code=4003, reason="Not a participant")
+            return
+
         # Connect user
         await connection_manager.connect(websocket, user.id)
+        connection_manager.join_conversation(user.id, conversation_id)
 
         try:
             while True:
                 # Receive message from client
                 data = await websocket.receive_text()
                 message_data = json.loads(data)
+
+                # Ensure conversation id is present
+                message_data.setdefault("data", {})
+                message_data["data"].setdefault("conversation_id", conversation_id)
 
                 # Handle message
                 response = await message_handler.handle_message(
@@ -102,6 +120,7 @@ async def websocket_endpoint(
     finally:
         # Always disconnect user
         if "user" in locals():
+            connection_manager.leave_conversation(user.id, conversation_id)
             connection_manager.disconnect(user.id)
         session.close()
 
@@ -380,3 +399,6 @@ async def get_messaging_stats(current_user: Annotated[User, Depends(get_current_
         )
 
     return connection_manager.get_stats()
+
+
+__all__ = ["router", "ws_router"]
