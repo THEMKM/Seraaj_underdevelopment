@@ -13,7 +13,7 @@ See models/types.py for:
 
 from typing import List
 from sqlmodel import SQLModel
-from models.types import UserTourProgressRef, TourStepRef
+from apps.api.models.types import UserTourProgressRef, TourStepRef
 
 
 # Placeholder for deprecated RelationshipModel
