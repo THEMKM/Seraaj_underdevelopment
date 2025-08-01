@@ -17,6 +17,7 @@ from database import get_session
 from models import User, FileUpload, FileAccessLog, FilePermission
 from routers.auth import get_current_user
 from middleware.error_handler import raise_bad_request
+from file_management import file_handler
 
 router = APIRouter(prefix="/v1/files", tags=["files"])
 logger = logging.getLogger(__name__)
@@ -43,10 +44,6 @@ async def upload_file(
             },
         )
 
-    # Create operation ID for progress tracking
-    import uuid
-
-    operation_id = f"upload_{current_user.id}_{uuid.uuid4().hex[:8]}"
 
     # Validate category
     valid_categories = [
@@ -130,12 +127,12 @@ async def list_my_files(
 
 
 @router.get("/{file_id}")
-async def get_file_info(
+async def get_file(
     file_id: int,
     current_user: Annotated[User, Depends(get_current_user)],
     session: Annotated[Session, Depends(get_session)],
 ):
-    """Get file information"""
+    """Download a file"""
 
     try:
         db_file = await file_handler.get_file(
@@ -147,21 +144,10 @@ async def get_file_info(
                 status_code=status.HTTP_404_NOT_FOUND, detail="File not found"
             )
 
-        return {
-            "id": db_file.id,
-            "filename": db_file.filename,
-            "file_size": db_file.file_size,
-            "mime_type": db_file.mime_type,
-            "upload_category": db_file.upload_category,
-            "description": db_file.description,
-            "is_public": db_file.is_public,
-            "uploaded_by": db_file.uploaded_by,
-            "created_at": db_file.created_at.isoformat(),
-            "updated_at": (
-                db_file.updated_at.isoformat() if db_file.updated_at else None
-            ),
-            "metadata": db_file.metadata,
-        }
+        file_path = file_handler.get_file_path(db_file)
+        if not file_path.exists():
+            raise HTTPException(status_code=404, detail="File not found on disk")
+        return FileResponse(path=str(file_path), filename=db_file.original_filename, media_type=db_file.mime_type)
 
     except HTTPException:
         raise

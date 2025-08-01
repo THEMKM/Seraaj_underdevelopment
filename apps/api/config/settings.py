@@ -107,6 +107,7 @@ class SecurityConfig(BaseSettings):
 class FileStorageConfig(BaseSettings):
     """File storage configuration"""
 
+    backend: str = "local"  # "local" or "s3"
     upload_dir: str = "uploads"
     max_file_size_mb: int = 10
     allowed_image_types: List[str] = ["jpg", "jpeg", "png", "gif", "webp"]
@@ -342,6 +343,11 @@ class Settings(BaseSettings):
     def feature_enabled(self, feature_name: str) -> bool:
         """Check if a feature is enabled"""
         return self.features.get(feature_name, False)
+
+    @property
+    def FILE_STORAGE(self) -> str:
+        """Shortcut for storage backend type."""
+        return self.file_storage.backend
 
     def get_upload_path(self, category: str = "") -> str:
         """Get upload path for files"""
