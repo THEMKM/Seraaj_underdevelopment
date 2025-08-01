@@ -71,7 +71,8 @@ class SecurityConfig(BaseSettings):
     lockout_duration_minutes: int = 15
 
     # CORS settings
-    cors_origins: str = ""  # Comma-separated string from environment
+    # Allow overriding via CORS_ORIGINS for simplicity
+    cors_origins: str = os.getenv("CORS_ORIGINS", "")
     cors_allow_credentials: bool = True
     cors_allow_methods: List[str] = ["*"]
     cors_allow_headers: List[str] = ["*"]
