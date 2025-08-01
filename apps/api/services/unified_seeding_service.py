@@ -28,7 +28,7 @@ from models import (
     Volunteer,
     Organisation,
     Opportunity,
-    OpportunityStatus,
+    OpportunityState,
     Application,
     ApplicationStatus,
     Conversation,
@@ -661,11 +661,11 @@ class UnifiedSeedingService:
                 end_date=end_date.date(),
                 max_volunteers=random.randint(1, 5),
                 is_remote=random.random() > 0.7,
-                status=random.choice([
-                    OpportunityStatus.OPEN,
-                    OpportunityStatus.OPEN,
-                    OpportunityStatus.OPEN,  # More likely to be open
-                    OpportunityStatus.FILLED,
+                state=random.choice([
+                    OpportunityState.ACTIVE,
+                    OpportunityState.ACTIVE,
+                    OpportunityState.ACTIVE,  # More likely to be active
+                    OpportunityState.FILLED,
                 ]),
                 urgency=random.choice(["low", "medium", "high"]),
                 created_at=datetime.now(datetime.timezone.utc) - timedelta(days=random.randint(1, 30)),
@@ -683,7 +683,7 @@ class UnifiedSeedingService:
 
         volunteers = self.session.exec(select(Volunteer)).all()
         opportunities = self.session.exec(
-            select(Opportunity).where(Opportunity.status == OpportunityStatus.OPEN)
+            select(Opportunity).where(Opportunity.state == OpportunityState.ACTIVE)
         ).all()
 
         applications_created = 0
@@ -861,6 +861,17 @@ class UnifiedSeedingService:
             # Clear existing data if requested
             if clear_existing:
                 self.clear_existing_data()
+            else:
+                existing_admin = self.session.exec(
+                    select(User).where(User.email == "admin@seraaj.org")
+                ).first()
+                if existing_admin:
+                    logger.info("Demo accounts already exist; skipping seeding")
+                    return {
+                        "status": "skipped",
+                        "total_volunteers": len(self.session.exec(select(Volunteer)).all()),
+                        "total_organizations": len(self.session.exec(select(Organisation)).all()),
+                    }
 
             # Create demo accounts (as documented)
             demo_accounts = self.create_demo_accounts()

@@ -17,8 +17,11 @@ from config.settings import (
     initialize_config,
     get_cors_config,
     get_logging_config,
+    Environment,
 )
-from datetime import datetime, timezone
+from services.unified_seeding_service import seed_database
+from datetime import datetime
+
 import logging
 
 # DIVINE ENCODING CONFIGURATION - Honor the gods of code!
@@ -53,6 +56,15 @@ async def lifespan(app: FastAPI):
 
         configure_mappers()  # Force relationship configuration
         logger.info("SQLAlchemy relationships configured successfully")
+
+        if settings.auto_seed_on_startup and settings.environment == Environment.DEVELOPMENT:
+            logger.info("Seeding database for development environment...")
+            try:
+                seed_database(clear_existing=True)
+            except Exception as seed_err:
+                logger.error(f"Database seeding failed: {seed_err}")
+            else:
+                logger.info("Database seeding completed")
 
     except Exception as e:
         logger.error(f"Database initialization failed: {e}")
