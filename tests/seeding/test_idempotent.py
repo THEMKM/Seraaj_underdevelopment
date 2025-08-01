@@ -1,8 +1,9 @@
 import pytest
-from sqlmodel import Session, SQLModel, create_engine
+from sqlmodel import Session, SQLModel, create_engine, select
 from sqlmodel.pool import StaticPool
 
 from apps.api.services.unified_seeding_service import UnifiedSeedingService
+from apps.api.models import User
 
 @pytest.fixture()
 def session():
@@ -13,11 +14,12 @@ def session():
 
 @pytest.mark.seeding
 @pytest.mark.slow
-def test_seed_all(session, monkeypatch):
-    # Patch get_session to use in-memory session
+def test_idempotent_seed(session, monkeypatch):
     monkeypatch.setattr("apps.api.services.unified_seeding_service.get_session", lambda: iter([session]))
     seeder = UnifiedSeedingService()
-    results = seeder.seed_all_data(clear_existing=True)
-    assert results["total_volunteers"] >= 15
-    assert results["total_organizations"] >= 3
-    assert results["opportunities"] >= 30
+    first = seeder.seed_all_data(clear_existing=True)
+    users_first = len(session.exec(select(User)).all())
+    second = seeder.seed_all_data(clear_existing=False)
+    users_second = len(session.exec(select(User)).all())
+    assert users_first == users_second
+    assert second["status"] == "skipped"

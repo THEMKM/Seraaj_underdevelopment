@@ -68,6 +68,9 @@
 ### Backend Environment (`.env`)
 
 ```bash
+# Environment
+APP_ENV=development
+AUTO_SEED_ON_STARTUP=false
 # Database
 DATABASE_URL=sqlite:///./seraaj_dev.db
 # For PostgreSQL: postgresql://user:password@localhost:5432/seraaj
@@ -152,22 +155,25 @@ For production or testing with PostgreSQL:
 
 To populate the database with test data:
 
+Run the unified seeder:
+
 ```bash
-cd apps/api
-
-# Basic test opportunities
-python create_test_opportunities.py
-
-# Comprehensive seed data
-python seed_database.py
-
-# Simple user accounts
-python simple_seed.py
+make seed
 ```
 
 ## Development Workflow
 
 ### Backend Development
+
+Use the following `make` targets during development:
+
+```bash
+make makemigrations  # create Alembic migrations
+make migrate         # apply migrations
+make lint            # run ruff and mypy
+make test            # run pytest
+make seed            # populate dev database
+```
 
 #### Project Structure
 ```
@@ -549,6 +555,14 @@ pnpm type-check
 - FastAPI automatic docs: http://localhost:8000/docs
 - Database browser for SQLite
 - API client tools (Postman, Insomnia)
+
+#### SQLite locking errors
+
+If you see `database is locked` errors when running tests or the dev server:
+
+1. Ensure no other process is using `seraaj_dev.db`.
+2. Delete the `seraaj_dev.db`* files (they will be recreated).
+3. If the problem persists, set `AUTO_SEED_ON_STARTUP=false` in your `.env` to reduce writes during startup.
 
 #### Frontend Debugging
 - React Developer Tools browser extension

@@ -60,7 +60,7 @@ async def lifespan(app: FastAPI):
         configure_mappers()  # Force relationship configuration
         logger.info("SQLAlchemy relationships configured successfully")
 
-        if settings.environment == Environment.DEVELOPMENT:
+        if settings.auto_seed_on_startup and settings.environment == Environment.DEVELOPMENT:
             logger.info("Seeding database for development environment...")
             try:
                 seed_database(clear_existing=True)

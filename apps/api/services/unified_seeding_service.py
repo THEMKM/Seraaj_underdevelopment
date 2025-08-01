@@ -861,6 +861,17 @@ class UnifiedSeedingService:
             # Clear existing data if requested
             if clear_existing:
                 self.clear_existing_data()
+            else:
+                existing_admin = self.session.exec(
+                    select(User).where(User.email == "admin@seraaj.org")
+                ).first()
+                if existing_admin:
+                    logger.info("Demo accounts already exist; skipping seeding")
+                    return {
+                        "status": "skipped",
+                        "total_volunteers": len(self.session.exec(select(Volunteer)).all()),
+                        "total_organizations": len(self.session.exec(select(Organisation)).all()),
+                    }
 
             # Create demo accounts (as documented)
             demo_accounts = self.create_demo_accounts()
