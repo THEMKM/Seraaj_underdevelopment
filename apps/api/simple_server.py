@@ -8,15 +8,16 @@ from fastapi.middleware.cors import CORSMiddleware
 from database import create_db_and_tables
 from routers import opportunities, auth
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Manage application lifespan events"""
     # Startup logic
     create_db_and_tables()
     print("Database initialized")
-    
+
     yield
-    
+
     # Shutdown logic (if needed)
     pass
 
@@ -42,6 +43,8 @@ app.include_router(opportunities.router)
 async def root():
     return {"message": "Simple Seraaj API Test Server"}
 
+
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app, host="127.0.0.1", port=8002)

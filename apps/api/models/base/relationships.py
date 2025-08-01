@@ -10,11 +10,11 @@ See models/types.py for:
 - Field Types
 - Model Mixins
 """
+
 from typing import List
 from sqlmodel import SQLModel
-from models.types import (
-    UserRef, UserTourProgressRef, TourStepRef
-)
+from models.types import UserTourProgressRef, TourStepRef
+
 
 # Placeholder for deprecated RelationshipModel
 class RelationshipModel(SQLModel):
@@ -22,7 +22,9 @@ class RelationshipModel(SQLModel):
     DEPRECATED: Placeholder for backwards compatibility.
     Relationships should now be handled through direct queries as documented in each model.
     """
+
     pass
+
 
 # Maintaining backwards compatibility
 UserProgressRef = UserTourProgressRef
@@ -31,8 +33,9 @@ TourStepList = List[TourStepRef]
 
 # Mark as deprecated
 import warnings
+
 warnings.warn(
     "relationships.py is deprecated. Use models/types.py instead.",
     DeprecationWarning,
-    stacklevel=2
+    stacklevel=2,
 )

@@ -32,8 +32,10 @@ import importlib.util
 import sys
 import os
 
-# Import from database.py module explicitly 
-database_py_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "database.py")
+# Import from database.py module explicitly
+database_py_path = os.path.join(
+    os.path.dirname(os.path.dirname(__file__)), "database.py"
+)
 spec = importlib.util.spec_from_file_location("database_core", database_py_path)
 database_core = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(database_core)
@@ -54,29 +56,25 @@ from .optimization import (
 
 __all__ = [
     # Core database functions
-    'create_db_and_tables',
-    'create_optimized_engine',
-    'get_session', 
-    'get_session_context',
-    'test_database_connection',
-    
+    "create_db_and_tables",
+    "create_optimized_engine",
+    "get_session",
+    "get_session_context",
+    "test_database_connection",
     # Core database variables
-    'engine',
-    
+    "engine",
     # Optimization functions
-    'optimize_database',
-    'get_database_health',
-    
+    "optimize_database",
+    "get_database_health",
     # Classes
-    'DatabaseOptimizer',
-    
+    "DatabaseOptimizer",
     # Types
-    'OptimizationResult',
-    'HealthReport',
-    
+    "OptimizationResult",
+    "HealthReport",
     # Version
-    '__version__',
+    "__version__",
 ]
+
 
 # Package level type hints for better IDE support
 def get_database_version() -> str:

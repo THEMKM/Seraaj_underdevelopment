@@ -1,6 +1,7 @@
 """
 Pre-built tour templates for different user types
 """
+
 from models.guided_tour import TourType, UserRole, StepType
 
 # Volunteer Onboarding Tour
@@ -25,7 +26,7 @@ VOLUNTEER_ONBOARDING = {
                 "target_url": "/",
                 "position": "center",
                 "primary_button_text": "Let's Start!",
-                "secondary_button_text": "Skip Tour"
+                "secondary_button_text": "Skip Tour",
             },
             {
                 "step_number": 2,
@@ -36,7 +37,7 @@ VOLUNTEER_ONBOARDING = {
                 "target_url": "/",
                 "position": "bottom",
                 "primary_button_text": "Next",
-                "secondary_button_text": "Skip"
+                "secondary_button_text": "Skip",
             },
             {
                 "step_number": 3,
@@ -47,7 +48,7 @@ VOLUNTEER_ONBOARDING = {
                 "target_url": "/dashboard",
                 "position": "bottom",
                 "primary_button_text": "Visit Dashboard",
-                "secondary_button_text": "Skip"
+                "secondary_button_text": "Skip",
             },
             {
                 "step_number": 4,
@@ -58,7 +59,7 @@ VOLUNTEER_ONBOARDING = {
                 "target_url": "/dashboard",
                 "position": "right",
                 "primary_button_text": "Next",
-                "secondary_button_text": "Skip"
+                "secondary_button_text": "Skip",
             },
             {
                 "step_number": 5,
@@ -69,7 +70,7 @@ VOLUNTEER_ONBOARDING = {
                 "target_url": "/dashboard",
                 "position": "left",
                 "primary_button_text": "Next",
-                "secondary_button_text": "Skip"
+                "secondary_button_text": "Skip",
             },
             {
                 "step_number": 6,
@@ -80,7 +81,7 @@ VOLUNTEER_ONBOARDING = {
                 "target_url": "/messages",
                 "position": "bottom",
                 "primary_button_text": "Check Messages",
-                "secondary_button_text": "Skip"
+                "secondary_button_text": "Skip",
             },
             {
                 "step_number": 7,
@@ -91,7 +92,7 @@ VOLUNTEER_ONBOARDING = {
                 "target_url": "/messages",
                 "position": "bottom",
                 "primary_button_text": "Next",
-                "secondary_button_text": "Skip"
+                "secondary_button_text": "Skip",
             },
             {
                 "step_number": 8,
@@ -102,17 +103,17 @@ VOLUNTEER_ONBOARDING = {
                 "target_url": "/messages",
                 "position": "center",
                 "primary_button_text": "Start Volunteering!",
-                "secondary_button_text": None
-            }
-        ]
-    }
+                "secondary_button_text": None,
+            },
+        ],
+    },
 }
 
 # Organization Onboarding Tour
 ORGANIZATION_ONBOARDING = {
     "name": "Organization Onboarding",
     "description": "Complete guide for organizations to post opportunities and manage volunteers",
-    "category": "onboarding", 
+    "category": "onboarding",
     "target_role": UserRole.ORGANIZATION,
     "template_data": {
         "title": "Welcome to Seraaj Organizations!",
@@ -130,7 +131,7 @@ ORGANIZATION_ONBOARDING = {
                 "target_url": "/",
                 "position": "center",
                 "primary_button_text": "Get Started",
-                "secondary_button_text": "Skip Tour"
+                "secondary_button_text": "Skip Tour",
             },
             {
                 "step_number": 2,
@@ -141,7 +142,7 @@ ORGANIZATION_ONBOARDING = {
                 "target_url": "/dashboard",
                 "position": "bottom",
                 "primary_button_text": "View Dashboard",
-                "secondary_button_text": "Skip"
+                "secondary_button_text": "Skip",
             },
             {
                 "step_number": 3,
@@ -152,7 +153,7 @@ ORGANIZATION_ONBOARDING = {
                 "target_url": "/dashboard",
                 "position": "bottom",
                 "primary_button_text": "Next",
-                "secondary_button_text": "Skip"
+                "secondary_button_text": "Skip",
             },
             {
                 "step_number": 4,
@@ -163,7 +164,7 @@ ORGANIZATION_ONBOARDING = {
                 "target_url": "/dashboard",
                 "position": "right",
                 "primary_button_text": "Next",
-                "secondary_button_text": "Skip"
+                "secondary_button_text": "Skip",
             },
             {
                 "step_number": 5,
@@ -174,7 +175,7 @@ ORGANIZATION_ONBOARDING = {
                 "target_url": "/dashboard",
                 "position": "left",
                 "primary_button_text": "Next",
-                "secondary_button_text": "Skip"
+                "secondary_button_text": "Skip",
             },
             {
                 "step_number": 6,
@@ -185,7 +186,7 @@ ORGANIZATION_ONBOARDING = {
                 "target_url": "/messages",
                 "position": "bottom",
                 "primary_button_text": "Open Messages",
-                "secondary_button_text": "Skip"
+                "secondary_button_text": "Skip",
             },
             {
                 "step_number": 7,
@@ -196,7 +197,7 @@ ORGANIZATION_ONBOARDING = {
                 "target_url": "/profile",
                 "position": "top",
                 "primary_button_text": "Next",
-                "secondary_button_text": "Skip"
+                "secondary_button_text": "Skip",
             },
             {
                 "step_number": 8,
@@ -207,7 +208,7 @@ ORGANIZATION_ONBOARDING = {
                 "target_url": "/analytics",
                 "position": "top",
                 "primary_button_text": "Next",
-                "secondary_button_text": "Skip"
+                "secondary_button_text": "Skip",
             },
             {
                 "step_number": 9,
@@ -218,7 +219,7 @@ ORGANIZATION_ONBOARDING = {
                 "target_url": "/analytics",
                 "position": "bottom",
                 "primary_button_text": "Next",
-                "secondary_button_text": "Skip"
+                "secondary_button_text": "Skip",
             },
             {
                 "step_number": 10,
@@ -229,10 +230,10 @@ ORGANIZATION_ONBOARDING = {
                 "target_url": "/analytics",
                 "position": "center",
                 "primary_button_text": "Post First Opportunity",
-                "secondary_button_text": None
-            }
-        ]
-    }
+                "secondary_button_text": None,
+            },
+        ],
+    },
 }
 
 # Feature Introduction Tours
@@ -257,7 +258,7 @@ APPLICATION_PROCESS_TOUR = {
                 "target_url": "/opportunities",
                 "position": "bottom",
                 "primary_button_text": "Next",
-                "secondary_button_text": "Skip"
+                "secondary_button_text": "Skip",
             },
             {
                 "step_number": 2,
@@ -268,7 +269,7 @@ APPLICATION_PROCESS_TOUR = {
                 "target_url": "/opportunities/1",
                 "position": "right",
                 "primary_button_text": "Next",
-                "secondary_button_text": "Skip"
+                "secondary_button_text": "Skip",
             },
             {
                 "step_number": 3,
@@ -279,7 +280,7 @@ APPLICATION_PROCESS_TOUR = {
                 "target_url": "/opportunities/1/apply",
                 "position": "top",
                 "primary_button_text": "Next",
-                "secondary_button_text": "Skip"
+                "secondary_button_text": "Skip",
             },
             {
                 "step_number": 4,
@@ -290,7 +291,7 @@ APPLICATION_PROCESS_TOUR = {
                 "target_url": "/opportunities/1/apply",
                 "position": "bottom",
                 "primary_button_text": "Next",
-                "secondary_button_text": "Skip"
+                "secondary_button_text": "Skip",
             },
             {
                 "step_number": 5,
@@ -301,10 +302,10 @@ APPLICATION_PROCESS_TOUR = {
                 "target_url": "/opportunities/1/apply",
                 "position": "center",
                 "primary_button_text": "View My Applications",
-                "secondary_button_text": None
-            }
-        ]
-    }
+                "secondary_button_text": None,
+            },
+        ],
+    },
 }
 
 # Advanced Features Tour
@@ -329,7 +330,7 @@ PWA_FEATURES_TOUR = {
                 "target_url": "/",
                 "position": "center",
                 "primary_button_text": "Learn How",
-                "secondary_button_text": "Skip"
+                "secondary_button_text": "Skip",
             },
             {
                 "step_number": 2,
@@ -340,7 +341,7 @@ PWA_FEATURES_TOUR = {
                 "target_url": "/settings",
                 "position": "bottom",
                 "primary_button_text": "Next",
-                "secondary_button_text": "Skip"
+                "secondary_button_text": "Skip",
             },
             {
                 "step_number": 3,
@@ -351,7 +352,7 @@ PWA_FEATURES_TOUR = {
                 "target_url": "/opportunities",
                 "position": "top",
                 "primary_button_text": "Next",
-                "secondary_button_text": "Skip"
+                "secondary_button_text": "Skip",
             },
             {
                 "step_number": 4,
@@ -362,10 +363,10 @@ PWA_FEATURES_TOUR = {
                 "target_url": "/opportunities",
                 "position": "center",
                 "primary_button_text": "Awesome!",
-                "secondary_button_text": None
-            }
-        ]
-    }
+                "secondary_button_text": None,
+            },
+        ],
+    },
 }
 
 # Troubleshooting Tours
@@ -390,7 +391,7 @@ COMMON_ISSUES_TOUR = {
                 "target_url": "/help",
                 "position": "bottom",
                 "primary_button_text": "Next",
-                "secondary_button_text": "Skip"
+                "secondary_button_text": "Skip",
             },
             {
                 "step_number": 2,
@@ -401,7 +402,7 @@ COMMON_ISSUES_TOUR = {
                 "target_url": "/help",
                 "position": "bottom",
                 "primary_button_text": "Next",
-                "secondary_button_text": "Skip"
+                "secondary_button_text": "Skip",
             },
             {
                 "step_number": 3,
@@ -412,10 +413,10 @@ COMMON_ISSUES_TOUR = {
                 "target_url": "/help",
                 "position": "center",
                 "primary_button_text": "Contact Support",
-                "secondary_button_text": "Close"
-            }
-        ]
-    }
+                "secondary_button_text": "Close",
+            },
+        ],
+    },
 }
 
 # All templates
@@ -424,5 +425,5 @@ ALL_TEMPLATES = [
     ORGANIZATION_ONBOARDING,
     APPLICATION_PROCESS_TOUR,
     PWA_FEATURES_TOUR,
-    COMMON_ISSUES_TOUR
+    COMMON_ISSUES_TOUR,
 ]

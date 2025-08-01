@@ -2,8 +2,10 @@
 Configuration Settings for Seraaj API
 Centralized configuration management with environment-based settings
 """
+
 import os
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List
+
 try:
     from pydantic_settings import BaseSettings
 except ImportError:
@@ -14,6 +16,7 @@ from enum import Enum
 
 class Environment(str, Enum):
     """Application environments"""
+
     DEVELOPMENT = "development"
     TESTING = "testing"
     STAGING = "staging"
@@ -22,6 +25,7 @@ class Environment(str, Enum):
 
 class LogLevel(str, Enum):
     """Logging levels"""
+
     DEBUG = "DEBUG"
     INFO = "INFO"
     WARNING = "WARNING"
@@ -31,30 +35,33 @@ class LogLevel(str, Enum):
 
 class DatabaseConfig(BaseSettings):
     """Database configuration"""
+
     url: str = "sqlite:///./seraaj_dev.db"
     echo: bool = False
     pool_size: int = 5
     max_overflow: int = 10
     pool_pre_ping: bool = True
     pool_recycle: int = 300
-    
+
     class Config:
         env_prefix = "DATABASE_"
 
 
 class RedisConfig(BaseSettings):
     """Redis configuration for caching and sessions"""
+
     url: str = "redis://localhost:6379/0"
     max_connections: int = 10
     retry_on_timeout: bool = True
     socket_timeout: int = 5
-    
+
     class Config:
         env_prefix = "REDIS_"
 
 
 class SecurityConfig(BaseSettings):
     """Security configuration"""
+
     secret_key: str = "your-secret-key-here-change-in-production"
     algorithm: str = "HS256"
     access_token_expire_minutes: int = 30
@@ -62,93 +69,102 @@ class SecurityConfig(BaseSettings):
     password_min_length: int = 8
     max_login_attempts: int = 5
     lockout_duration_minutes: int = 15
-    
+
     # CORS settings
     cors_origins: str = ""  # Comma-separated string from environment
     cors_allow_credentials: bool = True
     cors_allow_methods: List[str] = ["*"]
     cors_allow_headers: List[str] = ["*"]
-    
+
     # Rate limiting
     rate_limit_enabled: bool = True
     default_rate_limit: int = 100  # requests per minute
     burst_rate_limit: int = 200
-    
+
     class Config:
         env_prefix = "SECURITY_"
-    
-    @validator('secret_key')
+
+    @validator("secret_key")
     def validate_secret_key(cls, v):
         if len(v) < 32:
-            raise ValueError('Secret key must be at least 32 characters long')
+            raise ValueError("Secret key must be at least 32 characters long")
         return v
-    
+
     def get_cors_origins_list(self) -> List[str]:
         """Parse comma-separated CORS origins string into list"""
         if not self.cors_origins:
             # Default development CORS origins
-            return ["http://localhost:3030", "http://localhost:3000", "http://localhost:3031"]
-        return [origin.strip() for origin in self.cors_origins.split(",") if origin.strip()]
+            return [
+                "http://localhost:3030",
+                "http://localhost:3000",
+                "http://localhost:3031",
+            ]
+        return [
+            origin.strip() for origin in self.cors_origins.split(",") if origin.strip()
+        ]
 
 
 class FileStorageConfig(BaseSettings):
     """File storage configuration"""
+
     upload_dir: str = "uploads"
     max_file_size_mb: int = 10
     allowed_image_types: List[str] = ["jpg", "jpeg", "png", "gif", "webp"]
     allowed_document_types: List[str] = ["pdf", "doc", "docx", "txt"]
     allowed_video_types: List[str] = ["mp4", "avi", "mov", "wmv"]
-    
+
     # CDN settings
     cdn_enabled: bool = False
     cdn_base_url: str = ""
-    
+
     # S3/Cloud storage settings
     cloud_storage_enabled: bool = False
     aws_access_key_id: str = ""
     aws_secret_access_key: str = ""
     aws_bucket_name: str = ""
     aws_region: str = "us-east-1"
-    
+
     class Config:
         env_prefix = "FILE_STORAGE_"
 
 
 class EmailConfig(BaseSettings):
     """Email configuration"""
+
     smtp_host: str = "localhost"
     smtp_port: int = 587
     smtp_username: str = ""
     smtp_password: str = ""
     smtp_tls: bool = True
     smtp_ssl: bool = False
-    
+
     from_email: str = "noreply@seraaj.org"
     from_name: str = "Seraaj"
-    
+
     # Email templates
     templates_dir: str = "email_templates"
-    
+
     # Third-party email services
     sendgrid_api_key: str = ""
     mailgun_api_key: str = ""
     mailgun_domain: str = ""
-    
+
     class Config:
         env_prefix = "EMAIL_"
 
 
 class MLConfig(BaseSettings):
     """Machine Learning configuration"""
+
     matching_algorithm: str = "collaborative_filtering"
     model_update_frequency_hours: int = 24
     min_training_data: int = 100
     similarity_threshold: float = 0.7
-    
+
     # External ML services
     openai_api_key: str = ""
     huggingface_api_key: str = ""
-    
+
     class Config:
         env_prefix = "ML_"
 
@@ -158,75 +174,78 @@ class MLConfig(BaseSettings):
 
 class MonitoringConfig(BaseSettings):
     """Monitoring and observability configuration"""
+
     sentry_dsn: str = ""
     prometheus_enabled: bool = False
     prometheus_port: int = 8000
-    
+
     # Logging
     log_level: LogLevel = LogLevel.INFO
     log_format: str = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     log_file: str = "logs/seraaj.log"
     log_rotation: str = "midnight"
     log_retention_days: int = 30
-    
+
     # Performance monitoring
     slow_query_threshold_ms: int = 1000
     slow_request_threshold_ms: int = 2000
-    
+
     class Config:
         env_prefix = "MONITORING_"
 
 
 class WebSocketConfig(BaseSettings):
     """WebSocket configuration"""
+
     max_connections: int = 1000
     heartbeat_interval: int = 30
     connection_timeout: int = 60
     message_queue_size: int = 100
-    
+
     # Redis for WebSocket scaling
     redis_enabled: bool = False
     redis_channel_prefix: str = "seraaj:ws:"
-    
+
     class Config:
         env_prefix = "WEBSOCKET_"
 
 
 class APIConfig(BaseSettings):
     """API configuration"""
+
     title: str = "Seraaj API"
     description: str = "Two-sided volunteer marketplace for MENA nonprofits"
     version: str = "2.0.0"
-    
-    # API documentation  
+
+    # API documentation
     docs_url: str = "/docs"
     redoc_url: str = "/redoc"
     openapi_url: str = "/openapi.json"
-    
+
     # Request/Response settings
     max_request_size_mb: int = 50
     request_timeout_seconds: int = 30
-    
+
     # Pagination defaults
     default_page_size: int = 20
     max_page_size: int = 100
-    
+
     class Config:
         env_prefix = "API_"
 
 
 class Settings(BaseSettings):
     """Main application settings"""
-    
+
     # Environment
     environment: Environment = Environment.DEVELOPMENT
     debug: bool = False
     testing: bool = False
-    
+
     # Host and port
     host: str = "0.0.0.0"
     port: int = 8000
-    
+
     # Component configurations
     database: DatabaseConfig = DatabaseConfig()
     redis: RedisConfig = RedisConfig()
@@ -238,7 +257,7 @@ class Settings(BaseSettings):
     websocket: WebSocketConfig = WebSocketConfig()
     api: APIConfig = APIConfig()
     # payment: PaymentConfig removed - not part of MVP
-    
+
     # Feature flags
     features: Dict[str, bool] = {
         "user_registration": True,
@@ -261,40 +280,42 @@ class Settings(BaseSettings):
         "bulk_notifications": True,
         "notification_templates": True,
         "quiet_hours": True,
-        "notification_analytics": True
+        "notification_analytics": True,
     }
-    
+
     # Push notification settings
     vapid_private_key: str = "demo-vapid-private-key-placeholder"
-    vapid_public_key: str = "BEl62iUYgUivxIkv69yViEuiBIa40HI80NqIUHxHtjZHhr-RNZIwGKvlJ_SiuRzr3MZgJTBhOGXFu6_MmQhOhGE"
+    vapid_public_key: str = (
+        "BEl62iUYgUivxIkv69yViEuiBIa40HI80NqIUHxHtjZHhr-RNZIwGKvlJ_SiuRzr3MZgJTBhOGXFu6_MmQhOhGE"
+    )
     notification_retry_max: int = 3
     notification_cleanup_days: int = 30
-    
+
     model_config = {
         "env_file": ".env",
         "env_file_encoding": "utf-8",
         "case_sensitive": False,
-        "extra": "ignore"
+        "extra": "ignore",
     }
-    
+
     @property
     def is_development(self) -> bool:
         return self.environment == Environment.DEVELOPMENT
-    
+
     @property
     def is_production(self) -> bool:
         return self.environment == Environment.PRODUCTION
-    
+
     @property
     def is_testing(self) -> bool:
         return self.environment == Environment.TESTING
-    
+
     def get_database_url(self) -> str:
         """Get database URL based on environment"""
         if self.testing:
             return "sqlite:///:memory:"
         return self.database.url
-    
+
     def get_cors_origins(self) -> List[str]:
         """Get CORS origins based on environment"""
         if self.is_production:
@@ -305,11 +326,11 @@ class Settings(BaseSettings):
             # Fallback to default production origins
             return [
                 "https://seraaj.org",
-                "https://www.seraaj.org", 
-                "https://app.seraaj.org"
+                "https://www.seraaj.org",
+                "https://app.seraaj.org",
             ]
         return self.security.get_cors_origins_list()
-    
+
     def get_log_level(self) -> str:
         """Get log level based on environment"""
         if self.is_development:
@@ -317,19 +338,19 @@ class Settings(BaseSettings):
         elif self.is_production:
             return LogLevel.WARNING
         return self.monitoring.log_level
-    
+
     def feature_enabled(self, feature_name: str) -> bool:
         """Check if a feature is enabled"""
         return self.features.get(feature_name, False)
-    
+
     def get_upload_path(self, category: str = "") -> str:
         """Get upload path for files"""
         base_path = self.file_storage.upload_dir
         if category:
             return os.path.join(base_path, category)
         return base_path
-    
-    @validator('environment', pre=True)
+
+    @validator("environment", pre=True)
     def validate_environment(cls, v):
         if isinstance(v, str):
             return Environment(v.lower())
@@ -349,7 +370,7 @@ def get_database_config() -> Dict[str, Any]:
         "pool_size": settings.database.pool_size,
         "max_overflow": settings.database.max_overflow,
         "pool_pre_ping": settings.database.pool_pre_ping,
-        "pool_recycle": settings.database.pool_recycle
+        "pool_recycle": settings.database.pool_recycle,
     }
 
 
@@ -359,7 +380,7 @@ def get_cors_config() -> Dict[str, Any]:
         "allow_origins": settings.get_cors_origins(),
         "allow_credentials": settings.security.cors_allow_credentials,
         "allow_methods": settings.security.cors_allow_methods,
-        "allow_headers": settings.security.cors_allow_headers
+        "allow_headers": settings.security.cors_allow_headers,
     }
 
 
@@ -370,34 +391,36 @@ def get_logging_config() -> Dict[str, Any]:
         "format": settings.monitoring.log_format,
         "filename": settings.monitoring.log_file if settings.is_production else None,
         "rotation": settings.monitoring.log_rotation,
-        "retention": f"{settings.monitoring.log_retention_days} days"
+        "retention": f"{settings.monitoring.log_retention_days} days",
     }
 
 
 def validate_required_settings():
     """Validate that required settings are properly configured"""
     errors = []
-    
+
     # Check required production settings
     if settings.is_production:
         if settings.security.secret_key == "your-secret-key-here-change-in-production":
             errors.append("SECRET_KEY must be changed in production")
-        
+
         if not settings.database.url or "sqlite" in settings.database.url:
             errors.append("Production database must not be SQLite")
-        
+
         if not settings.email.smtp_host:
             errors.append("Email configuration is required in production")
-    
+
     # Check file storage settings
     if settings.file_storage.cloud_storage_enabled:
-        if not all([
-            settings.file_storage.aws_access_key_id,
-            settings.file_storage.aws_secret_access_key,
-            settings.file_storage.aws_bucket_name
-        ]):
+        if not all(
+            [
+                settings.file_storage.aws_access_key_id,
+                settings.file_storage.aws_secret_access_key,
+                settings.file_storage.aws_bucket_name,
+            ]
+        ):
             errors.append("AWS credentials required when cloud storage is enabled")
-    
+
     if errors:
         raise ValueError(f"Configuration errors: {'; '.join(errors)}")
 
@@ -417,21 +440,21 @@ DEVELOPMENT_OVERRIDES = {
     "debug": True,
     "database": {"echo": True},
     "monitoring": {"log_level": LogLevel.DEBUG},
-    "security": {"rate_limit_enabled": False}
+    "security": {"rate_limit_enabled": False},
 }
 
 PRODUCTION_OVERRIDES = {
     "debug": False,
     "database": {"echo": False},
     "monitoring": {"log_level": LogLevel.WARNING},
-    "security": {"rate_limit_enabled": True}
+    "security": {"rate_limit_enabled": True},
 }
 
 TESTING_OVERRIDES = {
     "testing": True,
     "database": {"url": "sqlite:///:memory:"},
     "security": {"rate_limit_enabled": False},
-    "email": {"smtp_host": "localhost"}
+    "email": {"smtp_host": "localhost"},
 }
 
 
@@ -445,7 +468,7 @@ def apply_environment_overrides():
         overrides = TESTING_OVERRIDES
     else:
         return
-    
+
     # Apply overrides (this is a simplified version)
     for key, value in overrides.items():
         if hasattr(settings, key):
@@ -465,7 +488,7 @@ def initialize_config():
     load_environment_config()
     apply_environment_overrides()
     validate_required_settings()
-    
+
     print(f"Configuration initialized for {settings.environment.value} environment")
     print(f"Debug mode: {'enabled' if settings.debug else 'disabled'}")
     print(f"Database: {settings.get_database_url()}")
@@ -474,11 +497,11 @@ def initialize_config():
 
 # Export commonly used configurations
 __all__ = [
-    'settings',
-    'Environment',
-    'LogLevel',
-    'get_database_config',
-    'get_cors_config',
-    'get_logging_config',
-    'initialize_config'
+    "settings",
+    "Environment",
+    "LogLevel",
+    "get_database_config",
+    "get_cors_config",
+    "get_logging_config",
+    "initialize_config",
 ]

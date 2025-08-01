@@ -2,6 +2,7 @@
 Service Worker Generator for PWA Offline Capabilities
 Generates customized service worker JavaScript for caching and offline functionality
 """
+
 from typing import Dict, Any, List, Optional
 from datetime import datetime
 import json
@@ -11,26 +12,26 @@ from config.settings import settings
 
 class ServiceWorkerGenerator:
     """Generate service worker JavaScript for PWA functionality"""
-    
+
     def __init__(self):
         self.cache_version = f"seraaj-v{settings.api.version}-{datetime.now(datetime.timezone.utc).strftime('%Y%m%d%H%M')}"
         self.static_cache_name = f"{self.cache_version}-static"
         self.dynamic_cache_name = f"{self.cache_version}-dynamic"
         self.api_cache_name = f"{self.cache_version}-api"
-        
+
     def generate_service_worker(
         self,
         caching_strategy: str = "network_first",
         offline_pages: Optional[List[str]] = None,
         api_endpoints_to_cache: Optional[List[str]] = None,
-        custom_options: Optional[Dict[str, Any]] = None
+        custom_options: Optional[Dict[str, Any]] = None,
     ) -> str:
         """Generate complete service worker JavaScript"""
-        
+
         options = custom_options or {}
         offline_pages = offline_pages or self._get_default_offline_pages()
         api_endpoints = api_endpoints_to_cache or self._get_default_api_endpoints()
-        
+
         sw_code = f"""
 // Seraaj PWA Service Worker
 // Generated: {datetime.now(datetime.timezone.utc).isoformat()}
@@ -53,10 +54,10 @@ class ServiceWorkerGenerator:
 {self._generate_custom_handlers(options)}
 """
         return sw_code.strip()
-    
+
     def _generate_constants(self) -> str:
         """Generate service worker constants"""
-        
+
         return f"""
 // Cache names
 const STATIC_CACHE = '{self.static_cache_name}';
@@ -78,21 +79,21 @@ const OFFLINE_PAGE = '/offline.html';
 const OFFLINE_IMAGE = '/static/images/offline-placeholder.svg';
 const OFFLINE_AVATAR = '/static/images/default-avatar.svg';
 """
-    
+
     def _generate_install_event(self, offline_pages: List[str]) -> str:
         """Generate install event handler"""
-        
+
         static_resources = [
-            '/',
-            '/static/css/app.css',
-            '/static/js/app.js',
-            '/static/icons/icon-192x192.png',
-            '/static/icons/icon-512x512.png',
-            '/static/images/logo.svg',
-            '/offline.html',
-            '/static/images/offline-placeholder.svg'
+            "/",
+            "/static/css/app.css",
+            "/static/js/app.js",
+            "/static/icons/icon-192x192.png",
+            "/static/icons/icon-512x512.png",
+            "/static/images/logo.svg",
+            "/offline.html",
+            "/static/images/offline-placeholder.svg",
         ] + offline_pages
-        
+
         return f"""
 // Install event - cache static resources
 self.addEventListener('install', event => {{
@@ -114,10 +115,10 @@ self.addEventListener('install', event => {{
     );
 }});
 """
-    
+
     def _generate_activate_event(self) -> str:
         """Generate activate event handler"""
-        
+
         return """
 // Activate event - clean up old caches
 self.addEventListener('activate', event => {
@@ -151,20 +152,20 @@ self.addEventListener('activate', event => {
     );
 });
 """
-    
+
     def _generate_fetch_event(self, strategy: str, api_endpoints: List[str]) -> str:
         """Generate fetch event handler with caching strategies"""
-        
+
         strategies = {
             "cache_first": self._cache_first_strategy(),
             "network_first": self._network_first_strategy(),
             "stale_while_revalidate": self._stale_while_revalidate_strategy(),
             "network_only": self._network_only_strategy(),
-            "cache_only": self._cache_only_strategy()
+            "cache_only": self._cache_only_strategy(),
         }
-        
+
         strategy_code = strategies.get(strategy, strategies["network_first"])
-        
+
         return f"""
 // Fetch event - handle network requests
 self.addEventListener('fetch', event => {{
@@ -213,10 +214,10 @@ function isPageRequest(request) {{
            request.headers.get('accept').includes('text/html');
 }}
 """
-    
+
     def _network_first_strategy(self) -> str:
         """Generate network-first caching strategy"""
-        
+
         return """
 // Network-first strategy handlers
 async function handleAPIRequest(request) {
@@ -329,10 +330,10 @@ async function handleGenericRequest(request) {
     }
 }
 """
-    
+
     def _cache_first_strategy(self) -> str:
         """Generate cache-first strategy for static resources"""
-        
+
         return """
 // Cache-first strategy (for static resources)
 async function handleStaticResource(request) {
@@ -348,10 +349,10 @@ async function handleStaticResource(request) {
     return networkResponse;
 }
 """
-    
+
     def _stale_while_revalidate_strategy(self) -> str:
         """Generate stale-while-revalidate strategy"""
-        
+
         return """
 // Stale-while-revalidate strategy
 async function handleStaleWhileRevalidate(request) {
@@ -368,30 +369,30 @@ async function handleStaleWhileRevalidate(request) {
     return cachedResponse || fetchPromise;
 }
 """
-    
+
     def _network_only_strategy(self) -> str:
         """Generate network-only strategy"""
-        
+
         return """
 // Network-only strategy (for sensitive data)
 async function handleNetworkOnly(request) {
     return fetch(request);
 }
 """
-    
+
     def _cache_only_strategy(self) -> str:
         """Generate cache-only strategy"""
-        
+
         return """
 // Cache-only strategy (for offline-first content)
 async function handleCacheOnly(request) {
     return caches.match(request);
 }
 """
-    
+
     def _generate_background_sync(self) -> str:
         """Generate background sync functionality"""
-        
+
         return """
 // Background Sync for offline actions
 self.addEventListener('sync', event => {
@@ -490,10 +491,10 @@ async function syncProfileUpdates() {
     }
 }
 """
-    
+
     def _generate_push_notification_handler(self) -> str:
         """Generate push notification handling"""
-        
+
         return """
 // Push notification handling
 self.addEventListener('push', event => {
@@ -606,10 +607,10 @@ self.addEventListener('notificationclose', event => {
     }
 });
 """
-    
+
     def _generate_utility_functions(self) -> str:
         """Generate utility functions for service worker"""
-        
+
         return """
 // Utility functions
 function createOfflineAPIResponse(request) {
@@ -685,12 +686,12 @@ setInterval(() => {
     trimCache(API_CACHE, CACHE_CONFIG.maxEntries);
 }, 5 * 60 * 1000); // Every 5 minutes
 """
-    
+
     def _generate_custom_handlers(self, options: Dict[str, Any]) -> str:
         """Generate custom handlers based on options"""
-        
+
         custom_code = ""
-        
+
         if options.get("enable_analytics", True):
             custom_code += """
 // Analytics tracking
@@ -701,7 +702,7 @@ self.addEventListener('fetch', event => {
     }
 });
 """
-        
+
         if options.get("enable_error_reporting", True):
             custom_code += """
 // Error reporting
@@ -726,36 +727,36 @@ self.addEventListener('error', event => {
     }
 });
 """
-        
+
         return custom_code
-    
+
     def _get_default_offline_pages(self) -> List[str]:
         """Get default pages to cache for offline access"""
-        
+
         return [
-            '/volunteer/dashboard',
-            '/organization/dashboard',
-            '/opportunities',
-            '/applications',
-            '/messages',
-            '/calendar',
-            '/profile'
+            "/volunteer/dashboard",
+            "/organization/dashboard",
+            "/opportunities",
+            "/applications",
+            "/messages",
+            "/calendar",
+            "/profile",
         ]
-    
+
     def _get_default_api_endpoints(self) -> List[str]:
         """Get default API endpoints to cache"""
-        
+
         return [
-            '/v1/opportunities',
-            '/v1/applications',
-            '/v1/profiles',
-            '/v1/messages',
-            '/v1/calendar'
+            "/v1/opportunities",
+            "/v1/applications",
+            "/v1/profiles",
+            "/v1/messages",
+            "/v1/calendar",
         ]
-    
+
     def generate_offline_page_html(self) -> str:
         """Generate HTML for offline fallback page"""
-        
+
         return """
 <!DOCTYPE html>
 <html lang="en">
@@ -916,36 +917,36 @@ def generate_service_worker(
     caching_strategy: str = "network_first",
     offline_pages: Optional[List[str]] = None,
     api_endpoints: Optional[List[str]] = None,
-    custom_options: Optional[Dict[str, Any]] = None
+    custom_options: Optional[Dict[str, Any]] = None,
 ) -> str:
     """Generate service worker JavaScript"""
-    
+
     generator = ServiceWorkerGenerator()
     return generator.generate_service_worker(
         caching_strategy=caching_strategy,
         offline_pages=offline_pages,
         api_endpoints_to_cache=api_endpoints,
-        custom_options=custom_options
+        custom_options=custom_options,
     )
 
 
 def save_service_worker_files():
     """Generate and save service worker files"""
-    
+
     from pathlib import Path
-    
+
     generator = ServiceWorkerGenerator()
     static_dir = Path("static")
     static_dir.mkdir(parents=True, exist_ok=True)
-    
+
     # Generate main service worker
     sw_code = generator.generate_service_worker()
     with open(static_dir / "sw.js", "w", encoding="utf-8") as f:
         f.write(sw_code)
-    
+
     # Generate offline page
     offline_html = generator.generate_offline_page_html()
     with open(static_dir / "offline.html", "w", encoding="utf-8") as f:
         f.write(offline_html)
-    
+
     print("Service worker files generated successfully!")

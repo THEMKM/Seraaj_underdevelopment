@@ -7,18 +7,27 @@ from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from database import create_db_and_tables, get_session
 from routers import auth
-from models import Opportunity
 from typing import Annotated
-from sqlmodel import Session, select, or_, text
+from sqlmodel import Session, text
 from middleware.error_handler import error_handler, error_handling_middleware
 from middleware.loading_states import response_timing_middleware
-from middleware.request_logging import RequestLoggingMiddleware, APIMetricsMiddleware, get_api_metrics
-from config.settings import settings, initialize_config, get_cors_config, get_logging_config
+from middleware.request_logging import (
+    RequestLoggingMiddleware,
+    APIMetricsMiddleware,
+    get_api_metrics,
+)
+from config.settings import (
+    settings,
+    initialize_config,
+    get_cors_config,
+    get_logging_config,
+)
 from datetime import datetime
 import logging
 
 # DIVINE ENCODING CONFIGURATION - Honor the gods of code!
-from utils.encoding_config import configure_divine_encoding, divine_print, test_emoji_support
+from utils.encoding_config import configure_divine_encoding
+
 configure_divine_encoding()
 
 # Initialize configuration
@@ -27,8 +36,7 @@ initialize_config()
 # Configure logging
 log_config = get_logging_config()
 logging.basicConfig(
-    level=getattr(logging, log_config["level"]),
-    format=log_config["format"]
+    level=getattr(logging, log_config["level"]), format=log_config["format"]
 )
 
 logger = logging.getLogger(__name__)
@@ -42,21 +50,21 @@ async def lifespan(app: FastAPI):
         logger.info("Starting database initialization...")
         create_db_and_tables()
         logger.info("Database initialized successfully")
-        
+
         # Force SQLAlchemy to configure all relationships
         logger.info("Configuring SQLAlchemy relationships...")
-        from sqlmodel import SQLModel
         from sqlalchemy.orm import configure_mappers
+
         configure_mappers()  # Force relationship configuration
         logger.info("SQLAlchemy relationships configured successfully")
-        
+
     except Exception as e:
         logger.error(f"Database initialization failed: {e}")
         # Continue anyway to keep server running
         logger.info("Server continuing without database initialization")
-    
+
     yield
-    
+
     # Shutdown logic
     logger.info("API server shutting down...")
 
@@ -66,10 +74,10 @@ app = FastAPI(
     description=settings.api.description,
     version=settings.api.version,
     docs_url="/docs",  # Force standard docs URL
-    redoc_url="/redoc", # Force standard redoc URL  
-    openapi_url="/openapi.json", # Force standard openapi URL
+    redoc_url="/redoc",  # Force standard redoc URL
+    openapi_url="/openapi.json",  # Force standard openapi URL
     debug=settings.debug,
-    lifespan=lifespan
+    lifespan=lifespan,
 )
 
 # Add CORS middleware FIRST (most important for API access)
@@ -93,7 +101,7 @@ app.add_middleware(
 log_level = "INFO" if settings.environment == "production" else "DEBUG"
 app.add_middleware(RequestLoggingMiddleware, log_level=log_level)
 
-# Add API metrics middleware  
+# Add API metrics middleware
 app.add_middleware(APIMetricsMiddleware)
 
 # Add response timing middleware
@@ -106,19 +114,23 @@ app.middleware("http")(error_handling_middleware)
 # from middleware.rate_limiter import rate_limiting_middleware
 # app.middleware("http")(rate_limiting_middleware)
 
+
 # Exception handlers for better error responses
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
     return await error_handler.handle_error(request, exc)
 
+
 @app.exception_handler(StarletteHTTPException)
 async def http_exception_handler(request: Request, exc: StarletteHTTPException):
     return await error_handler.handle_error(request, exc)
+
 
 # BASIC ROUTE DEFINITIONS FIRST (MOVED FROM BOTTOM)
 @app.get("/")
 async def root():
     return {"message": "Seraaj API v2.0.0"}
+
 
 # Remove duplicate health endpoint
 # @app.get("/health")
@@ -132,12 +144,31 @@ async def root():
 app.include_router(auth.router)
 
 # Import other routers after creating them
-from routers import opportunities, applications, profiles, reviews, files, admin, match, websocket, organizations
-from routers import verification, collaboration, operations, system, guided_tours  # Re-enabled after fixing issues
+from routers import (
+    opportunities,
+    applications,
+    profiles,
+    reviews,
+    files,
+    admin,
+    match,
+    websocket,
+    organizations,
+)
+from routers import (
+    verification,
+    collaboration,
+    operations,
+    system,
+    guided_tours,
+)  # Re-enabled after fixing issues
+
 # Push notifications router - restored after comprehensive relationship recovery
 from routers import push_notifications
+
 # from routers import pwa, demo_scenarios, calendar
 from routers import pwa, demo_scenarios, calendar
+
 app.include_router(opportunities.router)
 app.include_router(applications.router)
 app.include_router(profiles.router)
@@ -161,10 +192,74 @@ app.include_router(pwa.router)
 app.include_router(push_notifications.router)
 app.include_router(demo_scenarios.router)
 
+
 @app.get("/health")
 async def health_check():
     """Basic health check endpoint"""
     return {"status": "healthy", "message": "API is running"}
+
+
+# === Legacy API Deprecation Stubs ===
+# These endpoints provide graceful deprecation for old API clients
+
+
+@app.api_route(
+    "/api/{path:path}",
+    methods=["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD"],
+)
+async def legacy_api_deprecation(path: str):
+    """Handle legacy /api/ prefixed endpoints with deprecation notice"""
+    from fastapi.responses import JSONResponse
+
+    return JSONResponse(
+        status_code=410,  # Gone
+        content={
+            "error": True,
+            "error_code": "ENDPOINT_DEPRECATED",
+            "message": f"The /api/{path} endpoint has been deprecated. Please use /v1/{path} instead.",
+            "new_endpoint": f"/v1/{path}",
+            "timestamp": datetime.now(datetime.timezone.utc).isoformat(),
+            "details": {
+                "migration_guide": "https://docs.seraaj.org/api/migration",
+                "support_ends": "2025-12-31",
+            },
+        },
+        headers={
+            "X-Deprecated": "true",
+            "X-Migration-Guide": "https://docs.seraaj.org/api/migration",
+            "X-New-Endpoint": f"/v1/{path}",
+        },
+    )
+
+
+@app.api_route(
+    "/auth/{path:path}",
+    methods=["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD"],
+)
+async def legacy_auth_deprecation(path: str):
+    """Handle legacy /auth/ endpoints without v1 prefix"""
+    from fastapi.responses import JSONResponse
+
+    return JSONResponse(
+        status_code=410,  # Gone
+        content={
+            "error": True,
+            "error_code": "ENDPOINT_DEPRECATED",
+            "message": f"The /auth/{path} endpoint has been deprecated. Please use /v1/auth/{path} instead.",
+            "new_endpoint": f"/v1/auth/{path}",
+            "timestamp": datetime.now(datetime.timezone.utc).isoformat(),
+            "details": {
+                "migration_guide": "https://docs.seraaj.org/api/migration",
+                "support_ends": "2025-12-31",
+            },
+        },
+        headers={
+            "X-Deprecated": "true",
+            "X-Migration-Guide": "https://docs.seraaj.org/api/migration",
+            "X-New-Endpoint": f"/v1/auth/{path}",
+        },
+    )
+
 
 @app.get("/health/detailed")
 async def detailed_health_check(session: Annotated[Session, Depends(get_session)]):
@@ -174,12 +269,9 @@ async def detailed_health_check(session: Annotated[Session, Depends(get_session)
         "timestamp": datetime.now(datetime.timezone.utc).isoformat(),
         "version": settings.api.version,
         "environment": settings.environment,
-        "services": {
-            "api": "healthy",
-            "database": "unknown"
-        }
+        "services": {"api": "healthy", "database": "unknown"},
     }
-    
+
     # Test database connectivity
     try:
         # Simple query to test database
@@ -193,49 +285,62 @@ async def detailed_health_check(session: Annotated[Session, Depends(get_session)
         health_status["services"]["database"] = "unhealthy"
         health_status["status"] = "degraded"
         health_status["database_error"] = str(e)
-    
+
     # Determine overall status
     if any(service != "healthy" for service in health_status["services"].values()):
         health_status["status"] = "degraded"
-    
+
     status_code = 200 if health_status["status"] in ["healthy", "degraded"] else 503
     return JSONResponse(content=health_status, status_code=status_code)
+
 
 @app.get("/metrics")
 async def get_metrics():
     """Get API performance metrics"""
     return get_api_metrics()
 
+
 @app.get("/health/readiness")
 async def readiness_check():
     """Kubernetes readiness probe"""
-    return {"status": "ready", "timestamp": datetime.now(datetime.timezone.utc).isoformat()}
+    return {
+        "status": "ready",
+        "timestamp": datetime.now(datetime.timezone.utc).isoformat(),
+    }
+
 
 @app.get("/health/liveness")
 async def liveness_check():
     """Kubernetes liveness probe"""
-    return {"status": "alive", "timestamp": datetime.now(datetime.timezone.utc).isoformat()}
+    return {
+        "status": "alive",
+        "timestamp": datetime.now(datetime.timezone.utc).isoformat(),
+    }
+
 
 @app.get("/admin/database/health")
 async def database_health():
     """Get comprehensive database health report"""
     try:
         from database.optimization import get_database_health
+
         return get_database_health()
     except ImportError:
         return {"error": "Database optimization module not available"}
+
 
 @app.post("/admin/database/optimize")
 async def optimize_database_endpoint():
     """Run database optimization (admin only)"""
     try:
         from database.optimization import optimize_database
+
         return optimize_database()
     except ImportError:
         return {"error": "Database optimization module not available"}
 
 
-
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)

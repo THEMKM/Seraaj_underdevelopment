@@ -3,13 +3,13 @@
 Test script for opportunities endpoints
 """
 import requests
-import json
+
 
 def test_opportunities():
     base_url = "http://127.0.0.1:8000"
-    
+
     print("Testing opportunities endpoints...")
-    
+
     # Test list opportunities (GET /)
     print("\n1. Testing GET /v1/opportunities/")
     try:
@@ -24,7 +24,7 @@ def test_opportunities():
             print(f"Error: {response.text}")
     except Exception as e:
         print(f"Error: {e}")
-    
+
     # Test search opportunities (GET /search)
     print("\n2. Testing GET /v1/opportunities/search")
     try:
@@ -39,7 +39,7 @@ def test_opportunities():
             print(f"Error: {response.text}")
     except Exception as e:
         print(f"Error: {e}")
-    
+
     # Test search with filters
     print("\n3. Testing GET /v1/opportunities/search?limit=5")
     try:
@@ -52,6 +52,7 @@ def test_opportunities():
             print(f"Error: {response.text}")
     except Exception as e:
         print(f"Error: {e}")
+
 
 if __name__ == "__main__":
     test_opportunities()

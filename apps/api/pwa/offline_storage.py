@@ -2,24 +2,20 @@
 Offline Storage Management for PWA
 Handles client-side data synchronization and offline data management
 """
-from typing import Dict, Any, List, Optional, Union
+
+from typing import Dict, Any
 from datetime import datetime, timedelta
 from enum import Enum
 import json
 import uuid
 
-from models import (
-    User, Opportunity, Application, Message, 
-    OpportunityRead, ApplicationRead, MessageRead
-)
-from config.settings import settings
-
 
 class OfflineDataType(str, Enum):
     """Types of data that can be stored offline"""
+
     OPPORTUNITIES = "opportunities"
     APPLICATIONS = "applications"
-    MESSAGES = "messages" 
+    MESSAGES = "messages"
     PROFILE = "profile"
     CALENDAR_EVENTS = "calendar_events"
     CONVERSATIONS = "conversations"
@@ -30,15 +26,16 @@ class OfflineDataType(str, Enum):
 
 class SyncPriority(str, Enum):
     """Priority levels for data synchronization"""
-    HIGH = "high"      # Critical user actions
+
+    HIGH = "high"  # Critical user actions
     MEDIUM = "medium"  # Important updates
-    LOW = "low"        # Background data
-    DEFER = "defer"    # Can wait for good connection
+    LOW = "low"  # Background data
+    DEFER = "defer"  # Can wait for good connection
 
 
 class OfflineAction:
     """Represents an action to be synced when online"""
-    
+
     def __init__(
         self,
         action_type: str,
@@ -47,7 +44,7 @@ class OfflineAction:
         data: Dict[str, Any],
         priority: SyncPriority = SyncPriority.MEDIUM,
         retry_count: int = 0,
-        max_retries: int = 3
+        max_retries: int = 3,
     ):
         self.id = str(uuid.uuid4())
         self.action_type = action_type
@@ -60,7 +57,7 @@ class OfflineAction:
         self.created_at = datetime.now(datetime.timezone.utc)
         self.last_attempt = None
         self.error_message = None
-    
+
     def to_dict(self) -> Dict[str, Any]:
         return {
             "id": self.id,
@@ -72,20 +69,22 @@ class OfflineAction:
             "retry_count": self.retry_count,
             "max_retries": self.max_retries,
             "created_at": self.created_at.isoformat(),
-            "last_attempt": self.last_attempt.isoformat() if self.last_attempt else None,
-            "error_message": self.error_message
+            "last_attempt": (
+                self.last_attempt.isoformat() if self.last_attempt else None
+            ),
+            "error_message": self.error_message,
         }
-    
+
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> 'OfflineAction':
+    def from_dict(cls, data: Dict[str, Any]) -> "OfflineAction":
         action = cls(
             action_type=data["action_type"],
-            endpoint=data["endpoint"], 
+            endpoint=data["endpoint"],
             method=data["method"],
             data=data["data"],
             priority=SyncPriority(data["priority"]),
             retry_count=data["retry_count"],
-            max_retries=data["max_retries"]
+            max_retries=data["max_retries"],
         )
         action.id = data["id"]
         action.created_at = datetime.fromisoformat(data["created_at"])
@@ -97,19 +96,19 @@ class OfflineAction:
 
 class OfflineStorageManager:
     """Manages offline data storage and synchronization"""
-    
+
     def __init__(self):
         self.storage_limits = {
-            OfflineDataType.OPPORTUNITIES: 100,    # Max opportunities to cache
-            OfflineDataType.APPLICATIONS: 50,      # Max applications to cache
-            OfflineDataType.MESSAGES: 200,         # Max messages to cache
+            OfflineDataType.OPPORTUNITIES: 100,  # Max opportunities to cache
+            OfflineDataType.APPLICATIONS: 50,  # Max applications to cache
+            OfflineDataType.MESSAGES: 200,  # Max messages to cache
             OfflineDataType.CALENDAR_EVENTS: 100,
             OfflineDataType.CONVERSATIONS: 20,
             OfflineDataType.NOTIFICATIONS: 50,
             OfflineDataType.DRAFTS: 10,
-            OfflineDataType.MEDIA: 20              # Max media files
+            OfflineDataType.MEDIA: 20,  # Max media files
         }
-        
+
         self.cache_duration = {
             OfflineDataType.OPPORTUNITIES: timedelta(hours=6),
             OfflineDataType.APPLICATIONS: timedelta(hours=12),
@@ -119,12 +118,12 @@ class OfflineStorageManager:
             OfflineDataType.CONVERSATIONS: timedelta(days=7),
             OfflineDataType.NOTIFICATIONS: timedelta(days=3),
             OfflineDataType.DRAFTS: timedelta(days=30),
-            OfflineDataType.MEDIA: timedelta(days=7)
+            OfflineDataType.MEDIA: timedelta(days=7),
         }
-    
+
     def generate_storage_schema(self) -> Dict[str, Any]:
         """Generate IndexedDB schema for offline storage"""
-        
+
         return {
             "name": "SeraajOfflineDB",
             "version": 1,
@@ -136,18 +135,18 @@ class OfflineStorageManager:
                         {"name": "organization_id", "keyPath": "organization_id"},
                         {"name": "created_at", "keyPath": "created_at"},
                         {"name": "location", "keyPath": "location"},
-                        {"name": "cached_at", "keyPath": "_cached_at"}
-                    ]
+                        {"name": "cached_at", "keyPath": "_cached_at"},
+                    ],
                 },
                 "applications": {
-                    "keyPath": "id", 
+                    "keyPath": "id",
                     "autoIncrement": False,
                     "indices": [
                         {"name": "volunteer_id", "keyPath": "volunteer_id"},
                         {"name": "opportunity_id", "keyPath": "opportunity_id"},
                         {"name": "status", "keyPath": "status"},
-                        {"name": "cached_at", "keyPath": "_cached_at"}
-                    ]
+                        {"name": "cached_at", "keyPath": "_cached_at"},
+                    ],
                 },
                 "messages": {
                     "keyPath": "id",
@@ -156,24 +155,24 @@ class OfflineStorageManager:
                         {"name": "conversation_id", "keyPath": "conversation_id"},
                         {"name": "sender_id", "keyPath": "sender_id"},
                         {"name": "created_at", "keyPath": "created_at"},
-                        {"name": "cached_at", "keyPath": "_cached_at"}
-                    ]
+                        {"name": "cached_at", "keyPath": "_cached_at"},
+                    ],
                 },
                 "conversations": {
                     "keyPath": "id",
                     "autoIncrement": False,
                     "indices": [
                         {"name": "updated_at", "keyPath": "updated_at"},
-                        {"name": "cached_at", "keyPath": "_cached_at"}
-                    ]
+                        {"name": "cached_at", "keyPath": "_cached_at"},
+                    ],
                 },
                 "profiles": {
                     "keyPath": "user_id",
                     "autoIncrement": False,
                     "indices": [
                         {"name": "role", "keyPath": "role"},
-                        {"name": "cached_at", "keyPath": "_cached_at"}
-                    ]
+                        {"name": "cached_at", "keyPath": "_cached_at"},
+                    ],
                 },
                 "calendar_events": {
                     "keyPath": "id",
@@ -182,8 +181,8 @@ class OfflineStorageManager:
                         {"name": "user_id", "keyPath": "user_id"},
                         {"name": "start_datetime", "keyPath": "start_datetime"},
                         {"name": "event_type", "keyPath": "event_type"},
-                        {"name": "cached_at", "keyPath": "_cached_at"}
-                    ]
+                        {"name": "cached_at", "keyPath": "_cached_at"},
+                    ],
                 },
                 "notifications": {
                     "keyPath": "id",
@@ -192,8 +191,8 @@ class OfflineStorageManager:
                         {"name": "user_id", "keyPath": "user_id"},
                         {"name": "is_read", "keyPath": "is_read"},
                         {"name": "created_at", "keyPath": "created_at"},
-                        {"name": "cached_at", "keyPath": "_cached_at"}
-                    ]
+                        {"name": "cached_at", "keyPath": "_cached_at"},
+                    ],
                 },
                 "drafts": {
                     "keyPath": "id",
@@ -201,8 +200,8 @@ class OfflineStorageManager:
                     "indices": [
                         {"name": "type", "keyPath": "type"},
                         {"name": "created_at", "keyPath": "created_at"},
-                        {"name": "updated_at", "keyPath": "updated_at"}
-                    ]
+                        {"name": "updated_at", "keyPath": "updated_at"},
+                    ],
                 },
                 "sync_queue": {
                     "keyPath": "id",
@@ -210,8 +209,8 @@ class OfflineStorageManager:
                     "indices": [
                         {"name": "priority", "keyPath": "priority"},
                         {"name": "created_at", "keyPath": "created_at"},
-                        {"name": "retry_count", "keyPath": "retry_count"}
-                    ]
+                        {"name": "retry_count", "keyPath": "retry_count"},
+                    ],
                 },
                 "media_cache": {
                     "keyPath": "url",
@@ -219,24 +218,22 @@ class OfflineStorageManager:
                     "indices": [
                         {"name": "type", "keyPath": "type"},
                         {"name": "size", "keyPath": "size"},
-                        {"name": "cached_at", "keyPath": "cached_at"}
-                    ]
+                        {"name": "cached_at", "keyPath": "cached_at"},
+                    ],
                 },
                 "app_settings": {
                     "keyPath": "key",
                     "autoIncrement": False,
-                    "indices": [
-                        {"name": "updated_at", "keyPath": "updated_at"}
-                    ]
-                }
-            }
+                    "indices": [{"name": "updated_at", "keyPath": "updated_at"}],
+                },
+            },
         }
-    
+
     def generate_client_storage_js(self) -> str:
         """Generate JavaScript code for client-side storage management"""
-        
+
         schema = self.generate_storage_schema()
-        
+
         return f"""
 // Seraaj Offline Storage Manager
 // Generated: {datetime.now(datetime.timezone.utc).isoformat()}
@@ -618,10 +615,10 @@ if (typeof module !== 'undefined' && module.exports) {{
     module.exports = SeraajOfflineStorage;
 }}
 """
-    
+
     def _generate_store_creation_js(self, stores: Dict[str, Any]) -> str:
         """Generate JavaScript code for creating IndexedDB stores"""
-        
+
         js_code = ""
         for store_name, config in stores.items():
             js_code += f"""
@@ -634,18 +631,18 @@ if (typeof module !== 'undefined' && module.exports) {{
                     
                     // Create indices
 """
-            
+
             for index in config.get("indices", []):
                 js_code += f"""                    {store_name}Store.createIndex('{index["name"]}', '{index["keyPath"]}');
 """
-            
+
             js_code += "                }\n"
-        
+
         return js_code
-    
+
     def generate_offline_api_handlers(self) -> str:
         """Generate JavaScript for handling API requests when offline"""
-        
+
         return """
 // Offline API Request Handlers
 class OfflineAPIHandler {
@@ -879,10 +876,10 @@ class OfflineAPIHandler {
 // Create global instance
 const offlineAPIHandler = new OfflineAPIHandler(seraajStorage);
 """
-    
+
     def generate_sync_manager_js(self) -> str:
         """Generate JavaScript for managing data synchronization"""
-        
+
         return """
 // Data Synchronization Manager
 class SyncManager {
@@ -1117,26 +1114,26 @@ const syncManager = new SyncManager(seraajStorage);
 
 def generate_offline_storage_files():
     """Generate all offline storage related files"""
-    
+
     from pathlib import Path
-    
+
     manager = OfflineStorageManager()
     static_dir = Path("static/js")
     static_dir.mkdir(parents=True, exist_ok=True)
-    
+
     # Generate main storage script
     storage_js = manager.generate_client_storage_js()
     with open(static_dir / "offline-storage.js", "w", encoding="utf-8") as f:
         f.write(storage_js)
-    
+
     # Generate API handlers
     api_handlers_js = manager.generate_offline_api_handlers()
     with open(static_dir / "offline-api.js", "w", encoding="utf-8") as f:
         f.write(api_handlers_js)
-    
+
     # Generate sync manager
     sync_manager_js = manager.generate_sync_manager_js()
     with open(static_dir / "sync-manager.js", "w", encoding="utf-8") as f:
         f.write(sync_manager_js)
-    
+
     print("Offline storage files generated successfully!")

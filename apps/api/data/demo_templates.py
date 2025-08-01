@@ -1,6 +1,7 @@
 """
 Pre-built demo scenario templates for different use cases
 """
+
 from models.demo_scenario import ScenarioType, DemoUserType, ActionType
 
 # Volunteer Onboarding Demo
@@ -21,7 +22,7 @@ VOLUNTEER_ONBOARDING = {
             "target_url": "/",
             "duration_seconds": 4,
             "annotation_text": "Welcome to Seraaj! This is where volunteers and organizations connect for meaningful impact.",
-            "demo_user_type": DemoUserType.VISITOR
+            "demo_user_type": DemoUserType.VISITOR,
         },
         {
             "step_number": 2,
@@ -36,8 +37,8 @@ VOLUNTEER_ONBOARDING = {
                 "name": "Sarah Chen",
                 "email": "sarah.chen@example.com",
                 "location": "San Francisco, CA",
-                "skills": ["Teaching", "Event Planning", "Social Media"]
-            }
+                "skills": ["Teaching", "Event Planning", "Social Media"],
+            },
         },
         {
             "step_number": 3,
@@ -47,7 +48,7 @@ VOLUNTEER_ONBOARDING = {
             "target_element": "#login-form",
             "duration_seconds": 2,
             "annotation_text": "Secure login with email verification",
-            "demo_user_type": DemoUserType.VOLUNTEER
+            "demo_user_type": DemoUserType.VOLUNTEER,
         },
         {
             "step_number": 4,
@@ -57,7 +58,7 @@ VOLUNTEER_ONBOARDING = {
             "target_url": "/profile/complete",
             "duration_seconds": 3,
             "annotation_text": "Complete your profile to get better matches",
-            "demo_user_type": DemoUserType.VOLUNTEER
+            "demo_user_type": DemoUserType.VOLUNTEER,
         },
         {
             "step_number": 5,
@@ -71,10 +72,10 @@ VOLUNTEER_ONBOARDING = {
                 "skills": ["Education", "Mentoring", "Curriculum Development"],
                 "interests": ["Education", "Youth Development", "Community Building"],
                 "availability": "Weekends, Evenings",
-                "location": "San Francisco Bay Area"
+                "location": "San Francisco Bay Area",
             },
             "annotation_text": "Rich profile helps organizations find the perfect match",
-            "demo_user_type": DemoUserType.VOLUNTEER
+            "demo_user_type": DemoUserType.VOLUNTEER,
         },
         {
             "step_number": 6,
@@ -84,7 +85,7 @@ VOLUNTEER_ONBOARDING = {
             "target_element": "#photo-upload",
             "duration_seconds": 2,
             "annotation_text": "A photo helps build trust with organizations",
-            "demo_user_type": DemoUserType.VOLUNTEER
+            "demo_user_type": DemoUserType.VOLUNTEER,
         },
         {
             "step_number": 7,
@@ -94,7 +95,7 @@ VOLUNTEER_ONBOARDING = {
             "target_url": "/opportunities",
             "duration_seconds": 4,
             "annotation_text": "AI-powered matching shows the most relevant opportunities first",
-            "demo_user_type": DemoUserType.VOLUNTEER
+            "demo_user_type": DemoUserType.VOLUNTEER,
         },
         {
             "step_number": 8,
@@ -104,7 +105,7 @@ VOLUNTEER_ONBOARDING = {
             "target_element": ".opportunity-card:first-child",
             "duration_seconds": 3,
             "annotation_text": "Detailed opportunity information with organization verification",
-            "demo_user_type": DemoUserType.VOLUNTEER
+            "demo_user_type": DemoUserType.VOLUNTEER,
         },
         {
             "step_number": 9,
@@ -116,10 +117,10 @@ VOLUNTEER_ONBOARDING = {
             "form_data": {
                 "motivation": "I'm excited to contribute my teaching skills to help students succeed",
                 "experience": "5 years teaching experience, curriculum development background",
-                "availability": "Saturdays 9am-2pm, Weekday evenings"
+                "availability": "Saturdays 9am-2pm, Weekday evenings",
             },
             "annotation_text": "One-click application with pre-filled profile data",
-            "demo_user_type": DemoUserType.VOLUNTEER
+            "demo_user_type": DemoUserType.VOLUNTEER,
         },
         {
             "step_number": 10,
@@ -128,9 +129,9 @@ VOLUNTEER_ONBOARDING = {
             "description": "Receive push notification confirming application",
             "duration_seconds": 2,
             "annotation_text": "Instant confirmation and next steps notification",
-            "demo_user_type": DemoUserType.VOLUNTEER
-        }
-    ]
+            "demo_user_type": DemoUserType.VOLUNTEER,
+        },
+    ],
 }
 
 # Organization Onboarding Demo
@@ -151,7 +152,7 @@ ORGANIZATION_ONBOARDING = {
             "target_url": "/organizations/register",
             "duration_seconds": 3,
             "annotation_text": "Dedicated portal for nonprofit organizations",
-            "demo_user_type": DemoUserType.ORGANIZATION
+            "demo_user_type": DemoUserType.ORGANIZATION,
         },
         {
             "step_number": 2,
@@ -168,8 +169,8 @@ ORGANIZATION_ONBOARDING = {
                 "type": "Education",
                 "size": "50-100 employees",
                 "ein": "12-3456789",
-                "website": "https://sfeducation.org"
-            }
+                "website": "https://sfeducation.org",
+            },
         },
         {
             "step_number": 3,
@@ -179,7 +180,7 @@ ORGANIZATION_ONBOARDING = {
             "target_element": "#verification-upload",
             "duration_seconds": 3,
             "annotation_text": "Document verification ensures legitimate organizations",
-            "demo_user_type": DemoUserType.ORGANIZATION
+            "demo_user_type": DemoUserType.ORGANIZATION,
         },
         {
             "step_number": 4,
@@ -189,7 +190,7 @@ ORGANIZATION_ONBOARDING = {
             "target_element": "#org-login",
             "duration_seconds": 2,
             "annotation_text": "Comprehensive dashboard for managing volunteers",
-            "demo_user_type": DemoUserType.ORGANIZATION
+            "demo_user_type": DemoUserType.ORGANIZATION,
         },
         {
             "step_number": 5,
@@ -206,10 +207,10 @@ ORGANIZATION_ONBOARDING = {
                 "time_commitment": "2-3 hours per week",
                 "location": "Mission District Community Center",
                 "start_date": "2024-02-01",
-                "volunteers_needed": 8
+                "volunteers_needed": 8,
             },
             "annotation_text": "Rich opportunity creation with skills matching",
-            "demo_user_type": DemoUserType.ORGANIZATION
+            "demo_user_type": DemoUserType.ORGANIZATION,
         },
         {
             "step_number": 6,
@@ -219,7 +220,7 @@ ORGANIZATION_ONBOARDING = {
             "target_url": "/organizations/applications",
             "duration_seconds": 4,
             "annotation_text": "AI pre-screens and ranks applications by fit",
-            "demo_user_type": DemoUserType.ORGANIZATION
+            "demo_user_type": DemoUserType.ORGANIZATION,
         },
         {
             "step_number": 7,
@@ -229,7 +230,7 @@ ORGANIZATION_ONBOARDING = {
             "target_element": ".application-card:first-child",
             "duration_seconds": 4,
             "annotation_text": "Detailed volunteer profiles with verification badges",
-            "demo_user_type": DemoUserType.ORGANIZATION
+            "demo_user_type": DemoUserType.ORGANIZATION,
         },
         {
             "step_number": 8,
@@ -239,7 +240,7 @@ ORGANIZATION_ONBOARDING = {
             "target_element": "#accept-application-btn",
             "duration_seconds": 2,
             "annotation_text": "One-click acceptance with automatic notifications",
-            "demo_user_type": DemoUserType.ORGANIZATION
+            "demo_user_type": DemoUserType.ORGANIZATION,
         },
         {
             "step_number": 9,
@@ -252,7 +253,7 @@ ORGANIZATION_ONBOARDING = {
                 "message": "Welcome to SF Education Foundation! We're excited to have you join our tutoring program. Your first session is this Saturday at 10am."
             },
             "annotation_text": "Built-in messaging for seamless communication",
-            "demo_user_type": DemoUserType.ORGANIZATION
+            "demo_user_type": DemoUserType.ORGANIZATION,
         },
         {
             "step_number": 10,
@@ -262,7 +263,7 @@ ORGANIZATION_ONBOARDING = {
             "target_url": "/organizations/calendar",
             "duration_seconds": 3,
             "annotation_text": "Calendar integration simplifies volunteer coordination",
-            "demo_user_type": DemoUserType.ORGANIZATION
+            "demo_user_type": DemoUserType.ORGANIZATION,
         },
         {
             "step_number": 11,
@@ -272,9 +273,9 @@ ORGANIZATION_ONBOARDING = {
             "target_element": "#generate-report-btn",
             "duration_seconds": 3,
             "annotation_text": "Comprehensive analytics track volunteer impact",
-            "demo_user_type": DemoUserType.ORGANIZATION
-        }
-    ]
+            "demo_user_type": DemoUserType.ORGANIZATION,
+        },
+    ],
 }
 
 # PWA Features Showcase
@@ -295,7 +296,7 @@ PWA_FEATURES_DEMO = {
             "target_url": "/",
             "duration_seconds": 3,
             "annotation_text": "One-click installation as native app",
-            "demo_user_type": DemoUserType.VOLUNTEER
+            "demo_user_type": DemoUserType.VOLUNTEER,
         },
         {
             "step_number": 2,
@@ -304,7 +305,7 @@ PWA_FEATURES_DEMO = {
             "description": "Demonstrate push notifications",
             "duration_seconds": 2,
             "annotation_text": "Native push notifications work even when app is closed",
-            "demo_user_type": DemoUserType.VOLUNTEER
+            "demo_user_type": DemoUserType.VOLUNTEER,
         },
         {
             "step_number": 3,
@@ -313,7 +314,7 @@ PWA_FEATURES_DEMO = {
             "description": "Demonstrate offline functionality",
             "duration_seconds": 4,
             "annotation_text": "App works seamlessly offline with data sync when online",
-            "demo_user_type": DemoUserType.VOLUNTEER
+            "demo_user_type": DemoUserType.VOLUNTEER,
         },
         {
             "step_number": 4,
@@ -323,7 +324,7 @@ PWA_FEATURES_DEMO = {
             "target_url": "/opportunities",
             "duration_seconds": 3,
             "annotation_text": "Previously viewed content available offline",
-            "demo_user_type": DemoUserType.VOLUNTEER
+            "demo_user_type": DemoUserType.VOLUNTEER,
         },
         {
             "step_number": 5,
@@ -333,9 +334,9 @@ PWA_FEATURES_DEMO = {
             "target_element": "#sync-btn",
             "duration_seconds": 3,
             "annotation_text": "Automatic sync when connection restored",
-            "demo_user_type": DemoUserType.VOLUNTEER
-        }
-    ]
+            "demo_user_type": DemoUserType.VOLUNTEER,
+        },
+    ],
 }
 
 # Payment Integration Demo
@@ -356,7 +357,7 @@ PAYMENT_INTEGRATION_DEMO = {
             "target_url": "/organizations/sf-education-foundation",
             "duration_seconds": 3,
             "annotation_text": "Verified organizations can receive donations",
-            "demo_user_type": DemoUserType.VOLUNTEER
+            "demo_user_type": DemoUserType.VOLUNTEER,
         },
         {
             "step_number": 2,
@@ -366,7 +367,7 @@ PAYMENT_INTEGRATION_DEMO = {
             "target_element": "#donate-btn",
             "duration_seconds": 2,
             "annotation_text": "Secure donation processing with multiple payment options",
-            "demo_user_type": DemoUserType.VOLUNTEER
+            "demo_user_type": DemoUserType.VOLUNTEER,
         },
         {
             "step_number": 3,
@@ -378,10 +379,10 @@ PAYMENT_INTEGRATION_DEMO = {
             "form_data": {
                 "amount": 50,
                 "frequency": "monthly",
-                "designation": "After-School Program"
+                "designation": "After-School Program",
             },
             "annotation_text": "Flexible donation options including recurring payments",
-            "demo_user_type": DemoUserType.VOLUNTEER
+            "demo_user_type": DemoUserType.VOLUNTEER,
         },
         {
             "step_number": 4,
@@ -391,7 +392,7 @@ PAYMENT_INTEGRATION_DEMO = {
             "target_element": "#payment-form",
             "duration_seconds": 4,
             "annotation_text": "Stripe integration ensures secure, PCI-compliant payments",
-            "demo_user_type": DemoUserType.VOLUNTEER
+            "demo_user_type": DemoUserType.VOLUNTEER,
         },
         {
             "step_number": 5,
@@ -400,9 +401,9 @@ PAYMENT_INTEGRATION_DEMO = {
             "description": "Generate tax-deductible receipt",
             "duration_seconds": 2,
             "annotation_text": "Automatic tax receipts for all donations",
-            "demo_user_type": DemoUserType.VOLUNTEER
-        }
-    ]
+            "demo_user_type": DemoUserType.VOLUNTEER,
+        },
+    ],
 }
 
 # Admin Dashboard Demo
@@ -423,7 +424,7 @@ ADMIN_DASHBOARD_DEMO = {
             "target_element": "#admin-login",
             "duration_seconds": 2,
             "annotation_text": "Secure admin access with multi-factor authentication",
-            "demo_user_type": DemoUserType.ADMIN
+            "demo_user_type": DemoUserType.ADMIN,
         },
         {
             "step_number": 2,
@@ -433,7 +434,7 @@ ADMIN_DASHBOARD_DEMO = {
             "target_url": "/admin/dashboard",
             "duration_seconds": 4,
             "annotation_text": "Real-time platform metrics and KPIs",
-            "demo_user_type": DemoUserType.ADMIN
+            "demo_user_type": DemoUserType.ADMIN,
         },
         {
             "step_number": 3,
@@ -443,7 +444,7 @@ ADMIN_DASHBOARD_DEMO = {
             "target_url": "/admin/users",
             "duration_seconds": 3,
             "annotation_text": "Comprehensive user management with verification tools",
-            "demo_user_type": DemoUserType.ADMIN
+            "demo_user_type": DemoUserType.ADMIN,
         },
         {
             "step_number": 4,
@@ -453,7 +454,7 @@ ADMIN_DASHBOARD_DEMO = {
             "target_element": ".pending-verification:first-child",
             "duration_seconds": 3,
             "annotation_text": "Streamlined verification process with document review",
-            "demo_user_type": DemoUserType.ADMIN
+            "demo_user_type": DemoUserType.ADMIN,
         },
         {
             "step_number": 5,
@@ -463,7 +464,7 @@ ADMIN_DASHBOARD_DEMO = {
             "target_url": "/admin/moderation",
             "duration_seconds": 3,
             "annotation_text": "AI-assisted content moderation with human review",
-            "demo_user_type": DemoUserType.ADMIN
+            "demo_user_type": DemoUserType.ADMIN,
         },
         {
             "step_number": 6,
@@ -473,9 +474,9 @@ ADMIN_DASHBOARD_DEMO = {
             "target_element": "#generate-analytics-btn",
             "duration_seconds": 4,
             "annotation_text": "Detailed analytics for growth and engagement tracking",
-            "demo_user_type": DemoUserType.ADMIN
-        }
-    ]
+            "demo_user_type": DemoUserType.ADMIN,
+        },
+    ],
 }
 
 # ML Matching Algorithm Demo
@@ -496,7 +497,7 @@ ML_MATCHING_DEMO = {
             "target_url": "/volunteers/sarah-chen",
             "duration_seconds": 3,
             "annotation_text": "Comprehensive skill and interest profiling",
-            "demo_user_type": DemoUserType.VOLUNTEER
+            "demo_user_type": DemoUserType.VOLUNTEER,
         },
         {
             "step_number": 2,
@@ -506,7 +507,7 @@ ML_MATCHING_DEMO = {
             "target_url": "/opportunities/recommended",
             "duration_seconds": 4,
             "annotation_text": "ML algorithm considers skills, interests, location, and availability",
-            "demo_user_type": DemoUserType.VOLUNTEER
+            "demo_user_type": DemoUserType.VOLUNTEER,
         },
         {
             "step_number": 3,
@@ -516,7 +517,7 @@ ML_MATCHING_DEMO = {
             "target_element": ".match-score:first-child",
             "duration_seconds": 3,
             "annotation_text": "Transparent scoring shows why opportunities match",
-            "demo_user_type": DemoUserType.VOLUNTEER
+            "demo_user_type": DemoUserType.VOLUNTEER,
         },
         {
             "step_number": 4,
@@ -526,7 +527,7 @@ ML_MATCHING_DEMO = {
             "target_url": "/profile/preferences",
             "duration_seconds": 3,
             "annotation_text": "Algorithm improves recommendations based on user feedback",
-            "demo_user_type": DemoUserType.VOLUNTEER
+            "demo_user_type": DemoUserType.VOLUNTEER,
         },
         {
             "step_number": 5,
@@ -536,9 +537,9 @@ ML_MATCHING_DEMO = {
             "target_element": "#preference-feedback",
             "duration_seconds": 2,
             "annotation_text": "Continuous learning from user preferences",
-            "demo_user_type": DemoUserType.VOLUNTEER
-        }
-    ]
+            "demo_user_type": DemoUserType.VOLUNTEER,
+        },
+    ],
 }
 
 # All available templates
@@ -548,7 +549,7 @@ DEMO_TEMPLATES = {
     "pwa_features": PWA_FEATURES_DEMO,
     "payment_integration": PAYMENT_INTEGRATION_DEMO,
     "admin_dashboard": ADMIN_DASHBOARD_DEMO,
-    "ml_matching": ML_MATCHING_DEMO
+    "ml_matching": ML_MATCHING_DEMO,
 }
 
 # Categories for filtering
@@ -556,7 +557,7 @@ TEMPLATE_CATEGORIES = {
     "onboarding": ["volunteer_onboarding", "organization_onboarding"],
     "features": ["pwa_features", "payment_integration", "ml_matching"],
     "admin": ["admin_dashboard"],
-    "technical": ["pwa_features", "ml_matching"]
+    "technical": ["pwa_features", "ml_matching"],
 }
 
 # Template metadata for easier management
@@ -569,17 +570,17 @@ TEMPLATE_METADATA = [
         "target_audience": "investors",
         "duration": 12,
         "step_count": 10,
-        "featured": True
+        "featured": True,
     },
     {
-        "id": "organization_onboarding", 
+        "id": "organization_onboarding",
         "name": "Organization Onboarding Journey",
         "description": "Full organization experience from signup to volunteer management",
         "category": "onboarding",
         "target_audience": "investors",
         "duration": 15,
         "step_count": 11,
-        "featured": True
+        "featured": True,
     },
     {
         "id": "pwa_features",
@@ -589,17 +590,17 @@ TEMPLATE_METADATA = [
         "target_audience": "technical",
         "duration": 8,
         "step_count": 5,
-        "featured": False
+        "featured": False,
     },
     {
         "id": "payment_integration",
         "name": "Donation & Payment Features",
         "description": "Secure payment processing and donation management",
-        "category": "features", 
+        "category": "features",
         "target_audience": "investors",
         "duration": 6,
         "step_count": 5,
-        "featured": True
+        "featured": True,
     },
     {
         "id": "admin_dashboard",
@@ -609,16 +610,16 @@ TEMPLATE_METADATA = [
         "target_audience": "team",
         "duration": 10,
         "step_count": 6,
-        "featured": False
+        "featured": False,
     },
     {
         "id": "ml_matching",
         "name": "AI-Powered Volunteer Matching",
         "description": "Machine learning matching algorithm demonstration",
         "category": "features",
-        "target_audience": "technical", 
+        "target_audience": "technical",
         "duration": 7,
         "step_count": 5,
-        "featured": True
-    }
+        "featured": True,
+    },
 ]

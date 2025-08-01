@@ -2,11 +2,7 @@ from typing import Optional, List, TYPE_CHECKING
 from enum import Enum
 from sqlmodel import SQLModel, Field, Column, JSON
 
-from .types import (
-    TimestampMixin, id_field,
-    user_relation, application_relation,
-    UserRef, ApplicationRef
-)
+from .types import TimestampMixin, id_field
 from sqlmodel import Relationship
 
 if TYPE_CHECKING:
@@ -30,55 +26,55 @@ class ExperienceLevel(str, Enum):
 
 class VolunteerBase(SQLModel):
     user_id: int = Field(foreign_key="users.id", unique=True, index=True)
-    
+
     # Personal Information
     full_name: str = Field(index=True)
     full_name_ar: Optional[str] = None
     bio: Optional[str] = None
     bio_ar: Optional[str] = None
     avatar_url: Optional[str] = None
-    
+
     # Location
     location: Optional[str] = Field(index=True)
     location_ar: Optional[str] = None
     country: Optional[str] = Field(index=True)
     country_ar: Optional[str] = None
-    
+
     # Skills and Interests
     skills: List[str] = Field(default_factory=list, sa_column=Column(JSON))
     interests: List[str] = Field(default_factory=list, sa_column=Column(JSON))
     languages: List[str] = Field(default_factory=list, sa_column=Column(JSON))
-    
+
     # Availability and Experience
     availability: AvailabilityType = Field(default=AvailabilityType.FLEXIBLE)
     experience_level: ExperienceLevel = Field(default=ExperienceLevel.BEGINNER)
     time_commitment_hours: Optional[int] = None  # hours per week
-    
+
     # Verification and Ratings
     verified: bool = Field(default=False)
     rating: float = Field(default=0.0, ge=0.0, le=5.0)
     total_reviews: int = Field(default=0)
-    
+
     # Activity Stats
     completed_opportunities: int = Field(default=0)
     active_applications: int = Field(default=0)
     total_volunteer_hours: int = Field(default=0)
-    
+
     # Preferences
     notification_preferences: dict = Field(default_factory=dict, sa_column=Column(JSON))
     privacy_settings: dict = Field(default_factory=dict, sa_column=Column(JSON))
-    
+
     # Additional profile data (flexible for future features)
     profile_data: dict = Field(default_factory=dict, sa_column=Column(JSON))
-    
-    
+
+
 class Volunteer(VolunteerBase, TimestampMixin, table=True):
     __tablename__ = "volunteers"
-    
+
     id: Optional[int] = id_field()
-    
-    # Relationships
-    user: "User" = Relationship(back_populates="volunteer")
+
+    # Relationships - temporarily disabled until User model relationships are restored
+    # user: "User" = Relationship(back_populates="volunteer")  # Disabled due to missing relationship on User model
     applications: List["Application"] = Relationship(back_populates="volunteer")
     reviews: List["Review"] = Relationship(back_populates="reviewed_volunteer")
 

@@ -3,11 +3,11 @@
 Debug script to test the opportunity search endpoint
 """
 import requests
-import json
+
 
 def test_endpoint():
     base_url = "http://127.0.0.1:8000"
-    
+
     # Test root endpoint
     print("Testing root endpoint...")
     try:
@@ -15,15 +15,15 @@ def test_endpoint():
         print(f"Root: {response.status_code} - {response.text}")
     except Exception as e:
         print(f"Root error: {e}")
-    
-    # Test docs endpoint  
+
+    # Test docs endpoint
     print("\nTesting docs endpoint...")
     try:
         response = requests.get(f"{base_url}/docs")
         print(f"Docs: {response.status_code} - Available")
     except Exception as e:
         print(f"Docs error: {e}")
-    
+
     # Test openapi endpoint
     print("\nTesting OpenAPI spec...")
     try:
@@ -38,7 +38,7 @@ def test_endpoint():
             print(f"OpenAPI: {response.status_code} - {response.text}")
     except Exception as e:
         print(f"OpenAPI error: {e}")
-    
+
     # Test the problematic endpoint
     print("\nTesting /opportunity/search endpoint...")
     try:
@@ -56,6 +56,7 @@ def test_endpoint():
         print(f"Auth me: {response.status_code} - {response.text}")
     except Exception as e:
         print(f"Auth me error: {e}")
+
 
 if __name__ == "__main__":
     test_endpoint()

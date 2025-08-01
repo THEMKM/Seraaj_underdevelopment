@@ -9,33 +9,33 @@ ARCHITECTURE NOTES:
 
 DISABLED FEATURES (ready to enable):
 - Push notification system (models/push_notification.py)
-- Payment processing (models/payment.py) 
+- Payment processing (models/payment.py)
 - Advanced user analytics and tracking fields
 
 To enable a feature: Remove init=False from the relationship and ensure the target table exists.
 """
+
 from datetime import datetime
-from typing import Optional, List, TYPE_CHECKING
+from typing import Optional, TYPE_CHECKING
 from enum import Enum
-from sqlmodel import SQLModel, Field, Column, JSON, Relationship
+from sqlmodel import SQLModel, Field, Column, JSON
 from pydantic import EmailStr
 
 from .types import (
-    TimestampMixin, SoftDeleteMixin,
-    id_field, email_field, json_field,
+    TimestampMixin,
+    id_field,
+    email_field,
     get_password_validator,
-    user_relation, organisation_relation, opportunity_relation,
-    application_relation, tour_relation,
-    VolunteerRef, OrganisationRef,
-    PushSubscriptionRef, PushNotificationRef, NotificationSettingsRef
+    # Temporarily disabled push notification imports due to relationship configuration issues
+    # PushSubscriptionRef, PushNotificationRef, NotificationSettingsRef
 )
 
 if TYPE_CHECKING:
-    from .volunteer import Volunteer
-    from .organisation import Organisation
-    from .push_notification import (
-        PushSubscription, PushNotification, NotificationSettings
-    )
+    pass
+    # Temporarily disabled push notification imports due to relationship configuration issues
+    # from .push_notification import (
+    #     PushSubscription, PushNotification, NotificationSettings
+    # )
 
 
 class UserRole(str, Enum):
@@ -57,51 +57,55 @@ class UserBase(SQLModel):
     # Authentication
     email: str = email_field()
     hashed_password: str = get_password_validator()
-    
+
     # Basic Profile
     first_name: str
     last_name: str
     display_name: Optional[str] = None
-    
+
     # Account Status
     role: UserRole = Field(index=True)
     status: UserStatus = Field(default=UserStatus.ACTIVE, index=True)
     is_verified: bool = Field(default=False)
     email_verified: bool = Field(default=False)
-    
+
     # Authentication Tokens
     refresh_token: Optional[str] = None
     reset_token: Optional[str] = None
     verification_token: Optional[str] = None
-    
+
     # Login Activity
     last_login: Optional[datetime] = None
     last_activity: Optional[datetime] = None
     login_count: int = Field(default=0)
-    
+
     # Privacy and Preferences
-    privacy_settings: Optional[dict] = Field(default_factory=dict, sa_column=Column(JSON))
-    notification_preferences: Optional[dict] = Field(default_factory=dict, sa_column=Column(JSON))
+    privacy_settings: Optional[dict] = Field(
+        default_factory=dict, sa_column=Column(JSON)
+    )
+    notification_preferences: Optional[dict] = Field(
+        default_factory=dict, sa_column=Column(JSON)
+    )
     language_preference: str = Field(default="en")
     theme_preference: str = Field(default="light")
-    
+
     # Security
     failed_login_attempts: int = Field(default=0)
     locked_until: Optional[datetime] = None
-    
+
     # Profile Completion
     profile_completion: float = Field(default=0.0, ge=0.0, le=100.0)
     onboarding_completed: bool = Field(default=False)
-    
+
     # Additional user data
     user_metadata: Optional[dict] = Field(default_factory=dict, sa_column=Column(JSON))
 
 
 class User(UserBase, TimestampMixin, table=True):
     __tablename__ = "users"
-    
+
     id: Optional[int] = id_field()
-    
+
     # Relationships will be added back once the models are stable and imports are fixed
     # For now, access related data through direct queries
 
