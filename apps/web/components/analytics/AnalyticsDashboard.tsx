@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { PxCard, PxButton, PxBadge, PxProgress } from '../ui';
 
@@ -51,9 +51,19 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
   const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState<'overview' | 'growth' | 'engagement' | 'performance'>('overview');
   const [selectedTimeRange, setSelectedTimeRange] = useState(timeRange);
+  const [data, setData] = useState<AnalyticsData | null>(null);
+
+  useEffect(() => {
+    if (userType === 'admin') {
+      fetch('http://localhost:8000/v1/admin/analytics')
+        .then(res => res.ok ? res.json() : Promise.reject())
+        .then(setData)
+        .catch(() => setData(null));
+    }
+  }, [userType]);
 
   // Mock analytics data
-  const mockData: AnalyticsData = {
+  const metrics: AnalyticsData = {
     totalVolunteers: 2847,
     totalOrganizations: 156,
     totalOpportunities: 423,
@@ -101,6 +111,8 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
     ]
   };
 
+  const metrics = data || metrics;
+
   const timeRangeOptions = [
     { key: '7d', label: t('analytics.timeRange.7d') },
     { key: '30d', label: t('analytics.timeRange.30d') },
@@ -146,28 +158,28 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <MetricCard
           title={t('analytics.metrics.totalVolunteers')}
-          value={mockData.totalVolunteers}
+          value={metrics.totalVolunteers}
           change={12}
           icon="👥"
           color="bg-blue-500 dark:bg-blue-600"
         />
         <MetricCard
           title={t('analytics.metrics.totalOrganizations')}
-          value={mockData.totalOrganizations}
+          value={metrics.totalOrganizations}
           change={8}
           icon="🏢"
           color="bg-green-500 dark:bg-green-600"
         />
         <MetricCard
           title={t('analytics.metrics.totalOpportunities')}
-          value={mockData.totalOpportunities}
+          value={metrics.totalOpportunities}
           change={15}
           icon="🎯"
           color="bg-purple-500 dark:bg-purple-600"
         />
         <MetricCard
           title={t('analytics.metrics.totalMatches')}
-          value={mockData.totalMatches}
+          value={metrics.totalMatches}
           change={23}
           icon="✨"
           color="bg-orange-500 dark:bg-orange-600"
@@ -181,7 +193,7 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
             {t('analytics.charts.topCities')}
           </h3>
           <div className="space-y-3">
-            {mockData.topCities.map((city, index) => (
+            {metrics.topCities.map((city, index) => (
               <div key={city.name} className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 bg-primary dark:bg-neon-cyan rounded flex items-center justify-center">
@@ -211,7 +223,7 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
             {t('analytics.charts.popularCauses')}
           </h3>
           <div className="space-y-3">
-            {mockData.topCauses.map((cause, index) => (
+            {metrics.topCauses.map((cause, index) => (
               <div key={cause.name} className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 bg-electric-teal dark:bg-neon-pink rounded flex items-center justify-center">
@@ -244,14 +256,14 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <MetricCard
           title={t('analytics.metrics.newVolunteersMonth')}
-          value={mockData.newVolunteersThisMonth}
+          value={metrics.newVolunteersThisMonth}
           change={18}
           icon="📈"
           color="bg-green-500 dark:bg-green-600"
         />
         <MetricCard
           title={t('analytics.metrics.newOpportunitiesMonth')}
-          value={mockData.newOpportunitiesThisMonth}
+          value={metrics.newOpportunitiesThisMonth}
           change={12}
           icon="🚀"
           color="bg-blue-500 dark:bg-blue-600"
@@ -271,7 +283,7 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
           {t('analytics.charts.growthTrend')}
         </h3>
         <div className="grid grid-cols-4 gap-4">
-          {mockData.growthByMonth.map((month, index) => (
+          {metrics.growthByMonth.map((month, index) => (
             <div key={month.month} className="text-center">
               <div className="mb-2">
                 <div className="relative h-32 bg-gray-100 dark:bg-dark-border rounded-lg overflow-hidden">
@@ -314,28 +326,28 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <MetricCard
           title={t('analytics.metrics.messagesSent')}
-          value={mockData.messagesSent}
+          value={metrics.messagesSent}
           change={25}
           icon="💬"
           color="bg-blue-500 dark:bg-blue-600"
         />
         <MetricCard
           title={t('analytics.metrics.profileViews')}
-          value={mockData.profileViews}
+          value={metrics.profileViews}
           change={15}
           icon="👁️"
           color="bg-orange-500 dark:bg-orange-600"
         />
         <MetricCard
           title={t('analytics.metrics.searchesPerformed')}
-          value={mockData.searchesPerformed}
+          value={metrics.searchesPerformed}
           change={8}
           icon="🔍"
           color="bg-purple-500 dark:bg-purple-600"
         />
         <MetricCard
           title={t('analytics.metrics.applicationsSubmitted')}
-          value={mockData.opportunitiesApplied}
+          value={metrics.opportunitiesApplied}
           change={32}
           icon="📋"
           color="bg-green-500 dark:bg-green-600"
@@ -348,7 +360,7 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
           {t('analytics.charts.activityByHour')}
         </h3>
         <div className="grid grid-cols-12 gap-1">
-          {mockData.activityByHour.map((hour) => (
+          {metrics.activityByHour.map((hour) => (
             <div key={hour.hour} className="text-center">
               <div 
                 className="w-full mb-1 bg-primary dark:bg-neon-cyan rounded transition-all duration-300 hover:shadow-px-glow"
@@ -375,28 +387,28 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <MetricCard
           title={t('analytics.metrics.applicationSuccessRate')}
-          value={`${mockData.applicationSuccessRate}%`}
+          value={`${metrics.applicationSuccessRate}%`}
           change={5}
           icon="✅"
           color="bg-green-500 dark:bg-green-600"
         />
         <MetricCard
           title={t('analytics.metrics.averageMatchScore')}
-          value={`${mockData.averageMatchScore}%`}
+          value={`${metrics.averageMatchScore}%`}
           change={2}
           icon="🎯"
           color="bg-purple-500 dark:bg-purple-600"
         />
         <MetricCard
           title={t('analytics.metrics.responseTime')}
-          value={`${mockData.responseTime}s`}
+          value={`${metrics.responseTime}s`}
           change={-8}
           icon="⚡"
           color="bg-orange-500 dark:bg-orange-600"
         />
         <MetricCard
           title={t('analytics.metrics.retentionRate')}
-          value={`${mockData.retentionRate}%`}
+          value={`${metrics.retentionRate}%`}
           change={4}
           icon="🔄"
           color="bg-blue-500 dark:bg-blue-600"
@@ -411,13 +423,13 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
           </h3>
           <div className="text-center">
             <div className="text-4xl font-pixel text-primary dark:text-neon-cyan mb-2">
-              {mockData.satisfactionScore}/5.0
+              {metrics.satisfactionScore}/5.0
             </div>
             <div className="flex justify-center gap-1 mb-4">
               {[1, 2, 3, 4, 5].map((star) => (
                 <span 
                   key={star}
-                  className={`text-2xl ${star <= Math.floor(mockData.satisfactionScore) ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600'}`}
+                  className={`text-2xl ${star <= Math.floor(metrics.satisfactionScore) ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600'}`}
                 >
                   ⭐
                 </span>
@@ -450,7 +462,7 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
               <div className="flex items-center gap-2">
                 <PxProgress value={85} className="w-20 h-2" />
                 <span className="text-sm font-pixel text-ink dark:text-white">
-                  {mockData.responseTime}s
+                  {metrics.responseTime}s
                 </span>
               </div>
             </div>

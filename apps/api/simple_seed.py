@@ -36,6 +36,13 @@ def create_mock_accounts():
                 "role": UserRole.ADMIN,
             },
             {
+                "email": "moderator@seraaj.com",
+                "password": "mod123",
+                "first_name": "Content",
+                "last_name": "Moderator",
+                "role": UserRole.MODERATOR,
+            },
+            {
                 "email": "volunteer1@demo.com",
                 "password": "vol123",
                 "first_name": "Fatima",

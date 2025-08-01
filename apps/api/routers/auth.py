@@ -22,9 +22,12 @@ from auth.jwt import (
 )
 from middleware.error_handler import raise_bad_request
 from datetime import datetime
+from services.analytics_service import AnalyticsService
+from models import AnalyticsEventCreate, EventType
 
 router = APIRouter(prefix="/v1/auth", tags=["auth"])
 security = HTTPBearer()
+analytics_service = AnalyticsService()
 
 
 @router.post("/register", response_model=UserRead)
@@ -95,6 +98,12 @@ async def login(
     session.add(user)
     session.commit()
 
+    # Record login analytics
+    analytics_service.record_event(
+        session,
+        AnalyticsEventCreate(event_type=EventType.USER_LOGIN, event_name="login", user_id=user.id),
+    )
+
     # Create tokens
     access_token = create_access_token(data={"sub": str(user.id)})
     refresh_token = create_refresh_token(data={"sub": str(user.id)})
@@ -158,6 +167,20 @@ async def get_current_user(
     session.add(user)
     session.commit()
 
+    return user
+
+
+async def get_current_admin_user(
+    credentials: Annotated[HTTPAuthorizationCredentials, Depends(security)],
+    session: Annotated[Session, Depends(get_session)],
+) -> User:
+    """Get the current user and ensure they have admin role."""
+    user = await get_current_user(credentials, session)
+    if user.role != UserRole.ADMIN:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Admin access required",
+        )
     return user
 
 

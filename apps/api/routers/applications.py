@@ -27,6 +27,8 @@ from models import (
 )
 from routers.auth import get_current_user
 from pydantic import BaseModel
+from services.analytics_service import AnalyticsService
+from models import AnalyticsEventCreate, EventType
 
 
 # Response Models for consistent API responses
@@ -37,6 +39,7 @@ class MessageResponse(BaseModel):
 
 
 router = APIRouter(prefix="/v1/applications", tags=["applications"])
+analytics_service = AnalyticsService()
 
 
 @router.post("/", response_model=ApplicationRead)
@@ -296,6 +299,15 @@ async def submit_application(
 
     session.add(application)
     session.commit()
+
+    analytics_service.record_event(
+        session,
+        AnalyticsEventCreate(
+            event_type=EventType.APPLICATION_SUBMITTED,
+            event_name="application_submit",
+            user_id=current_user.id,
+        ),
+    )
 
     return MessageResponse(message="Application submitted successfully")
 

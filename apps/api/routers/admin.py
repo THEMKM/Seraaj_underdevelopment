@@ -19,26 +19,19 @@ from models import (
     AnalyticsEvent,
     PerformanceMetric,
 )
-from routers.auth import get_current_user
+from routers.auth import get_current_admin_user
 from utils.data_seeder import DataSeeder
 from utils.response_formatter import success_with_data
+from services.analytics_service import AnalyticsService
 
 router = APIRouter(prefix="/v1/admin", tags=["admin"])
-
-
-def require_admin(current_user: Annotated[User, Depends(get_current_user)]):
-    """Dependency to ensure user has admin role"""
-    if current_user.role != UserRole.ADMIN:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail="Admin access required"
-        )
-    return current_user
+analytics_service = AnalyticsService()
 
 
 # User Management
 @router.get("/users", response_model=List[UserRead])
 async def get_all_users(
-    admin_user: Annotated[User, Depends(require_admin)],
+    admin_user: Annotated[User, Depends(get_current_admin_user)],
     session: Annotated[Session, Depends(get_session)],
     skip: Annotated[int, Query(ge=0)] = 0,
     limit: Annotated[int, Query(ge=1, le=100)] = 50,
@@ -88,7 +81,7 @@ async def get_all_users(
 @router.get("/users/{user_id}", response_model=UserRead)
 async def get_user_details(
     user_id: int,
-    admin_user: Annotated[User, Depends(require_admin)],
+    admin_user: Annotated[User, Depends(get_current_admin_user)],
     session: Annotated[Session, Depends(get_session)],
 ):
     """Get detailed information about a specific user"""
@@ -105,7 +98,7 @@ async def get_user_details(
 async def update_user(
     user_id: int,
     user_update: UserUpdate,
-    admin_user: Annotated[User, Depends(require_admin)],
+    admin_user: Annotated[User, Depends(get_current_admin_user)],
     session: Annotated[Session, Depends(get_session)],
 ):
     """Update a user's information"""
@@ -132,7 +125,7 @@ async def update_user(
 async def suspend_user(
     user_id: int,
     reason: str,
-    admin_user: Annotated[User, Depends(require_admin)],
+    admin_user: Annotated[User, Depends(get_current_admin_user)],
     session: Annotated[Session, Depends(get_session)],
 ):
     """Suspend a user account"""
@@ -162,7 +155,7 @@ async def suspend_user(
 @router.post("/users/{user_id}/activate")
 async def activate_user(
     user_id: int,
-    admin_user: Annotated[User, Depends(require_admin)],
+    admin_user: Annotated[User, Depends(get_current_admin_user)],
     session: Annotated[Session, Depends(get_session)],
 ):
     """Activate a suspended user account"""
@@ -187,7 +180,7 @@ async def activate_user(
 @router.delete("/users/{user_id}")
 async def delete_user(
     user_id: int,
-    admin_user: Annotated[User, Depends(require_admin)],
+    admin_user: Annotated[User, Depends(get_current_admin_user)],
     session: Annotated[Session, Depends(get_session)],
 ):
     """Delete a user account (soft delete)"""
@@ -212,10 +205,20 @@ async def delete_user(
     return {"message": "User deleted successfully"}
 
 
+# Basic aggregated analytics for dashboard
+@router.get("/analytics")
+async def get_platform_analytics(
+    admin_user: Annotated[User, Depends(get_current_admin_user)],
+    session: Annotated[Session, Depends(get_session)],
+):
+    """Return simple aggregate counts for the admin dashboard."""
+    return analytics_service.get_platform_counts(session)
+
+
 # Platform Statistics
 @router.get("/stats/overview")
 async def get_platform_overview(
-    admin_user: Annotated[User, Depends(require_admin)],
+    admin_user: Annotated[User, Depends(get_current_admin_user)],
     session: Annotated[Session, Depends(get_session)],
 ):
     """Get comprehensive platform statistics"""
@@ -295,7 +298,7 @@ async def get_platform_overview(
 
 @router.get("/stats/users")
 async def get_user_statistics(
-    admin_user: Annotated[User, Depends(require_admin)],
+    admin_user: Annotated[User, Depends(get_current_admin_user)],
     session: Annotated[Session, Depends(get_session)],
     days: int = Query(30, ge=1, le=365),
 ):
@@ -348,7 +351,7 @@ async def get_user_statistics(
 
 @router.get("/stats/opportunities")
 async def get_opportunity_statistics(
-    admin_user: Annotated[User, Depends(require_admin)],
+    admin_user: Annotated[User, Depends(get_current_admin_user)],
     session: Annotated[Session, Depends(get_session)],
     days: int = Query(30, ge=1, le=365),
 ):
@@ -402,7 +405,7 @@ async def get_opportunity_statistics(
 # Content Moderation
 @router.get("/moderation/reports")
 async def get_moderation_reports(
-    admin_user: Annotated[User, Depends(require_admin)],
+    admin_user: Annotated[User, Depends(get_current_admin_user)],
     session: Annotated[Session, Depends(get_session)],
     skip: Annotated[int, Query(ge=0)] = 0,
     limit: Annotated[int, Query(ge=1, le=100)] = 50,
@@ -441,7 +444,7 @@ async def get_moderation_reports(
 async def resolve_moderation_report(
     report_id: int,
     action: str,
-    admin_user: Annotated[User, Depends(require_admin)],
+    admin_user: Annotated[User, Depends(get_current_admin_user)],
     session: Annotated[Session, Depends(get_session)],
 ):
     """Resolve a moderation report"""
@@ -466,7 +469,7 @@ async def resolve_moderation_report(
 # System Health and Performance
 @router.get("/system/health")
 async def get_system_health(
-    admin_user: Annotated[User, Depends(require_admin)],
+    admin_user: Annotated[User, Depends(get_current_admin_user)],
     session: Annotated[Session, Depends(get_session)],
 ):
     """Get system health metrics"""
@@ -499,7 +502,7 @@ async def get_system_health(
 
 @router.get("/system/performance")
 async def get_performance_metrics(
-    admin_user: Annotated[User, Depends(require_admin)],
+    admin_user: Annotated[User, Depends(get_current_admin_user)],
     session: Annotated[Session, Depends(get_session)],
     hours: int = Query(24, ge=1, le=168),
 ):
@@ -543,7 +546,7 @@ async def get_performance_metrics(
 
 # Configuration Management
 @router.get("/config")
-async def get_system_config(admin_user: Annotated[User, Depends(require_admin)]):
+async def get_system_config(admin_user: Annotated[User, Depends(get_current_admin_user)]):
     """Get system configuration"""
     # This would typically come from a config model or environment
     return {
@@ -564,7 +567,7 @@ async def get_system_config(admin_user: Annotated[User, Depends(require_admin)])
 
 @router.put("/config")
 async def update_system_config(
-    config_update: Dict[str, Any], admin_user: Annotated[User, Depends(require_admin)]
+    config_update: Dict[str, Any], admin_user: Annotated[User, Depends(get_current_admin_user)]
 ):
     """Update system configuration"""
     # This would typically update a config model or environment
@@ -579,7 +582,7 @@ async def update_system_config(
 
 @router.post("/seed-data")
 async def seed_sample_data(
-    admin_user: Annotated[User, Depends(require_admin)],
+    admin_user: Annotated[User, Depends(get_current_admin_user)],
     session: Annotated[Session, Depends(get_session)],
     force: bool = Query(False, description="Force seeding even if data exists"),
 ):
@@ -601,7 +604,7 @@ async def seed_sample_data(
 
 @router.delete("/clear-data")
 async def clear_sample_data(
-    admin_user: Annotated[User, Depends(require_admin)],
+    admin_user: Annotated[User, Depends(get_current_admin_user)],
     session: Annotated[Session, Depends(get_session)],
     confirm: bool = Query(False, description="Confirm data deletion"),
 ):
