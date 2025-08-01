@@ -3,15 +3,22 @@ from typing import Optional, Dict, Any
 from datetime import datetime
 from pathlib import Path
 import mimetypes
-import hashlib
 import logging
 
 from fastapi import UploadFile, HTTPException, status
 from sqlmodel import Session
 from PIL import Image
-import aiofiles
 
-from models import FileUpload, FileAccessLog, FilePermission, User
+from models import (
+    FileUpload,
+    FileAccessLog,
+    FilePermission,
+    User,
+    FileType,
+    UploadCategory,
+)
+from config.settings import settings
+from .storage import LocalStorage, S3Storage
 
 logger = logging.getLogger(__name__)
 
@@ -19,27 +26,22 @@ logger = logging.getLogger(__name__)
 class FileUploadHandler:
     """Handle file uploads with security, validation, and storage management"""
 
-    def __init__(self):
-        # Configuration
-        self.base_upload_dir = Path("uploads")
-        self.max_file_size = 10 * 1024 * 1024  # 10MB
-        self.allowed_image_types = {
-            "image/jpeg",
-            "image/png",
-            "image/gif",
-            "image/webp",
-        }
-        self.allowed_document_types = {
+    def __init__(self) -> None:
+        self.base_upload_dir = Path(settings.file_storage.upload_dir)
+        self.max_file_size = settings.file_storage.max_file_size_mb * 1024 * 1024
+        # Only allow basic document and image types
+        self.allowed_types = {
             "application/pdf",
-            "application/msword",
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            "text/plain",
-            "text/csv",
+            "image/png",
+            "image/jpeg",
         }
-        self.allowed_types = self.allowed_image_types | self.allowed_document_types
 
-        # Create upload directories
-        self._create_directories()
+        backend = getattr(settings, "FILE_STORAGE", "local")
+        if backend == "s3":
+            self.storage = S3Storage(settings)
+        else:
+            self.storage = LocalStorage(self.base_upload_dir)
+            self._create_directories()
 
     def _create_directories(self):
         """Create necessary upload directories"""
@@ -65,48 +67,50 @@ class FileUploadHandler:
         is_public: bool = False,
     ) -> FileUpload:
         """Upload and process a file"""
-
-        # Validate file
+        # Validate and read file
         self._validate_file(file)
+        content = await file.read()
+        file_size = len(content)
+        if file_size > self.max_file_size:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="File size exceeds limit",
+            )
 
-        # Generate unique filename
-        file_extension = Path(file.filename).suffix.lower()
-        unique_filename = f"{uuid.uuid4()}{file_extension}"
+        sanitized = Path(file.filename).name
+        file_extension = Path(sanitized).suffix.lower()
+        unique_filename = f"{uuid.uuid4().hex}{file_extension}"
 
-        # Determine storage path
-        category_dir = self.base_upload_dir / upload_category
-        file_path = category_dir / unique_filename
+        # Save using storage adapter
+        stored_path = await self.storage.save(unique_filename, content)
+
+        mime_type, _ = mimetypes.guess_type(sanitized)
+        processed_info = {}
+        if mime_type and mime_type.startswith("image/"):
+            processed_info = await self._process_image(Path(stored_path), content)
+
+        db_file = FileUpload(
+            filename=unique_filename,
+            original_filename=sanitized,
+            file_path=stored_path,
+            file_type=FileType.IMAGE
+            if mime_type and mime_type.startswith("image/")
+            else FileType.DOCUMENT,
+            mime_type=mime_type or "application/octet-stream",
+            file_size=file_size,
+            upload_category=UploadCategory(upload_category),
+            uploaded_by=user_id,
+            metadata=processed_info,
+            description=file_description,
+            is_public=is_public,
+        )
 
         try:
-            # Save file to disk
-            async with aiofiles.open(file_path, "wb") as f:
-                content = await file.read()
-                await f.write(content)
+            session.add(db_file)
+            session.commit()
+            session.refresh(db_file)
 
-            # Get file info
-            file_size = len(content)
-            file_hash = hashlib.sha256(content).hexdigest()
-            mime_type, _ = mimetypes.guess_type(file.filename)
-
-            # Process image files
-            processed_info = {}
-            if mime_type in self.allowed_image_types:
-                processed_info = await self._process_image(file_path, content)
-
-            # Create database record
-            db_file = FileUpload(
-                filename=file.filename,
-                stored_filename=unique_filename,
-                file_path=str(file_path),
-                file_size=file_size,
-                mime_type=mime_type or "application/octet-stream",
-                file_hash=file_hash,
-                upload_category=upload_category,
-                uploaded_by=user_id,
-                description=file_description,
-                is_public=is_public,
-                metadata=processed_info,
-            )
+            await self._log_access(session, db_file.id, user_id, "upload")
 
             session.add(db_file)
             session.commit()
@@ -122,8 +126,9 @@ class FileUploadHandler:
 
         except Exception as e:
             # Clean up file if database operation fails
-            if file_path.exists():
-                file_path.unlink()
+            p = Path(stored_path)
+            if p.exists():
+                p.unlink()
 
             logger.error(f"Error uploading file {file.filename}: {e}")
             raise HTTPException(
@@ -138,8 +143,9 @@ class FileUploadHandler:
                 status_code=status.HTTP_400_BAD_REQUEST, detail="No filename provided"
             )
 
-        # Check file extension
-        file_extension = Path(file.filename).suffix.lower()
+        # Sanitize filename to avoid path traversal
+        sanitized = Path(file.filename).name
+        file_extension = Path(sanitized).suffix.lower()
         if not file_extension:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,

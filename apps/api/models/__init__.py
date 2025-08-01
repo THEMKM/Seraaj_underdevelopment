@@ -76,6 +76,8 @@ from .file_upload import (
     FileUploadUpdate,
     FileAccessLog,
     FilePermission,
+    FileType,
+    UploadCategory,
 )
 
 # Payment models removed - not part of MVP
@@ -187,6 +189,8 @@ __all__ = [
     "FileUploadUpdate",
     "FileAccessLog",
     "FilePermission",
+    "FileType",
+    "UploadCategory",
     # Payment models removed - not part of MVP
     # Push notification models - restored as part of comprehensive relationship recovery
     "PushSubscription",
