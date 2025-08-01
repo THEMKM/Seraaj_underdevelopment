@@ -7,11 +7,16 @@ from typing import Dict, Any
 from fastapi.testclient import TestClient
 from sqlmodel import SQLModel, Session, create_engine
 from sqlmodel.pool import StaticPool
+from pathlib import Path
+import sys
+
+# Ensure apps/api is on the import path
+sys.path.append(str(Path(__file__).resolve().parents[1]))
 
 # Import the main app and database setup
-from main import app
-from database import get_session
-from models import User, Volunteer, Organisation, Opportunity
+from main import app  # noqa: E402
+from database import get_session  # noqa: E402
+from models import User, Volunteer, Organisation, Opportunity  # noqa: E402
 
 
 @pytest.fixture(name="session")
@@ -173,7 +178,7 @@ def auth_headers_volunteer(
     client: TestClient, test_user_volunteer: User
 ) -> Dict[str, str]:
     """Get authorization headers for volunteer user"""
-    response = client.post(
+    _response = client.post(
         "/v1/auth/login",
         data={"username": test_user_volunteer.email, "password": "testpassword"},
     )
@@ -186,7 +191,7 @@ def auth_headers_organization(
     client: TestClient, test_user_organization: User
 ) -> Dict[str, str]:
     """Get authorization headers for organization user"""
-    response = client.post(
+    _response = client.post(
         "/v1/auth/login",
         data={"username": test_user_organization.email, "password": "testpassword"},
     )
@@ -196,7 +201,7 @@ def auth_headers_organization(
 @pytest.fixture
 def auth_headers_admin(client: TestClient, test_admin_user: User) -> Dict[str, str]:
     """Get authorization headers for admin user"""
-    response = client.post(
+    _response = client.post(
         "/v1/auth/login",
         data={"username": test_admin_user.email, "password": "testpassword"},
     )
