@@ -1,0 +1,87 @@
+{
+  "symbol": "operations_get_operation_status_GET",
+  "commit": "a602ba5",
+  "status": "I",
+  "hops": [
+    {
+      "layer": "Router Registration",
+      "file": "apps/api/main.py",
+      "line": 193,
+      "message": "Operations router included in FastAPI app"
+    },
+    {
+      "layer": "Route Definition", 
+      "file": "apps/api/routers/operations.py",
+      "line": 20,
+      "message": "GET endpoint defined with FastAPI decorator for /{operation_id}/status"
+    },
+    {
+      "layer": "Authentication",
+      "file": "apps/api/routers/operations.py", 
+      "line": 23,
+      "message": "Uses get_current_user dependency for authentication"
+    },
+    {
+      "layer": "Database",
+      "file": "apps/api/routers/operations.py",
+      "line": 24, 
+      "message": "Uses get_session dependency for database access"
+    },
+    {
+      "layer": "Business Logic",
+      "file": "apps/api/routers/operations.py",
+      "line": 28,
+      "message": "Retrieves loading state from loading_manager"
+    },
+    {
+      "layer": "Permission Check",
+      "file": "apps/api/routers/operations.py",
+      "line": 39,
+      "message": "Validates user permission to access operation"
+    },
+    {
+      "layer": "Response Formatter",
+      "file": "apps/api/routers/operations.py", 
+      "line": 54,
+      "message": "Returns formatted operation status with metadata and endpoints"
+    },
+    {
+      "layer": "Loading State Manager",
+      "file": "apps/api/middleware/loading_states.py",
+      "line": 147,
+      "message": "Core dependency for operation state tracking"
+    },
+    {
+      "layer": "Error Handling",
+      "file": "apps/api/middleware/error_handler.py",
+      "line": 31,
+      "message": "Custom error responses via raise_not_found and raise_forbidden"
+    }
+  ],
+  "defects": [
+    {
+      "severity": "high",
+      "file": "apps/api/routers/operations.py",
+      "line": 412,
+      "msg": "Import statement 'import time' placed after function definitions, should be at top of file"
+    },
+    {
+      "severity": "medium", 
+      "file": "apps/api/tests/",
+      "line": 0,
+      "msg": "No dedicated unit tests found for operations_get_operation_status_GET endpoint"
+    },
+    {
+      "severity": "low",
+      "file": "apps/api/routers/operations.py",
+      "line": 396,
+      "msg": "Function _calculate_step_duration returns 0 for first step instead of calculating actual duration from operation start"
+    },
+    {
+      "severity": "low",
+      "file": "apps/api/routers/operations.py", 
+      "line": 174,
+      "msg": "Line 174 references undefined 'time.time()' but time import is at end of file"
+    }
+  ]
+}

@@ -1,0 +1,87 @@
+{
+  "symbol": "websocket_get_conversation_messages_GET",
+  "commit": "a602ba5",
+  "status": "I",
+  "hops": [
+    {
+      "layer": "Frontend API Interface",
+      "file": "apps/web/contexts/WebSocketContext.tsx",
+      "line": 312,
+      "message": "Frontend establishes WebSocket connection but lacks REST API integration for message loading"
+    },
+    {
+      "layer": "Frontend Message Display",
+      "file": "apps/web/components/messaging/MessageInterface.tsx",
+      "line": 127,
+      "message": "Component displays messages from context state but has no REST API calls for historical messages"
+    },
+    {
+      "layer": "Backend REST Endpoint",
+      "file": "apps/api/routers/websocket.py",
+      "line": 220,
+      "message": "REST endpoint /v1/messaging/conversations/{conversation_id}/messages exists and is properly implemented"
+    },
+    {
+      "layer": "Backend Models",
+      "file": "apps/api/models/message.py",
+      "line": 93,
+      "message": "MessageRead model provides proper response schema"
+    },
+    {
+      "layer": "Backend WebSocket Handler",
+      "file": "apps/api/websocket/message_handler.py",
+      "line": 54,
+      "message": "WebSocket handler supports real-time message sending but not historical retrieval"
+    },
+    {
+      "layer": "Backend Router Registration",
+      "file": "apps/api/main.py",
+      "line": 187,
+      "message": "WebSocket router is properly registered in main application"
+    },
+    {
+      "layer": "Backend Tests",
+      "file": "apps/api/tests/test_websocket.py",
+      "line": 46,
+      "message": "Tests focus on WebSocket functionality but lack coverage for REST endpoints"
+    }
+  ],
+  "defects": [
+    {
+      "severity": "high",
+      "file": "apps/web/contexts/WebSocketContext.tsx",
+      "line": 127,
+      "message": "Frontend uses only mock data - no REST API integration for loading historical conversation messages"
+    },
+    {
+      "severity": "high",
+      "file": "apps/web/components/messaging/MessageInterface.tsx",
+      "line": 287,
+      "message": "Message interface has no functionality to load historical messages when conversation is opened"
+    },
+    {
+      "severity": "medium",
+      "file": "apps/api/routers/websocket.py",
+      "line": 254,
+      "message": "Message ordering logic reverses results but should use proper ORDER BY created_at ASC"
+    },
+    {
+      "severity": "medium",
+      "file": "apps/api/tests/test_websocket.py",
+      "line": 1,
+      "message": "No specific tests for get_conversation_messages REST endpoint functionality"
+    },
+    {
+      "severity": "low",
+      "file": "apps/api/routers/websocket.py",
+      "line": 230,
+      "message": "Inconsistent error message format compared to other endpoints in the same file"
+    },
+    {
+      "severity": "medium",
+      "file": "Frontend Integration",
+      "line": 0,
+      "message": "Frontend WebSocket connection URL hardcoded instead of using conversation messages endpoint"
+    }
+  ]
+}

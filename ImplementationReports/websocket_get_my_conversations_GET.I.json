@@ -1,0 +1,81 @@
+{
+  "symbol": "websocket_get_my_conversations_GET",
+  "commit": "a602ba5",
+  "status": "I",
+  "hops": [
+    {
+      "layer": "Backend API Route",
+      "file": "apps/api/routers/websocket.py",
+      "line": 167,
+      "message": "REST endpoint /v1/messaging/conversations GET method implemented as get_my_conversations"
+    },
+    {
+      "layer": "Database Model",
+      "file": "apps/api/models/conversation.py",
+      "line": 60,
+      "message": "Conversation model with proper relationships to User and Message"
+    },
+    {
+      "layer": "Database Model",
+      "file": "apps/api/models/conversation.py",
+      "line": 94,
+      "message": "ConversationParticipant model for tracking user participation"
+    },
+    {
+      "layer": "Frontend Context",
+      "file": "apps/web/contexts/WebSocketContext.tsx",
+      "line": 102,
+      "message": "Frontend uses mock conversations data, no API integration"
+    },
+    {
+      "layer": "Frontend Component",
+      "file": "apps/web/components/messaging/MessageInterface.tsx",
+      "line": 17,
+      "message": "Component consumes conversations from WebSocket context only"
+    },
+    {
+      "layer": "Main Application",
+      "file": "apps/api/main.py", 
+      "line": 187,
+      "message": "Websocket router properly registered in FastAPI app"
+    },
+    {
+      "layer": "Tests",
+      "file": "apps/api/tests/test_websocket.py",
+      "line": 1,
+      "message": "Tests exist but focus on WebSocket connections, not REST API conversations endpoint"
+    }
+  ],
+  "defects": [
+    {
+      "severity": "high",
+      "file": "apps/web/contexts/WebSocketContext.tsx",
+      "line": 127,
+      "msg": "Frontend uses hardcoded mock data instead of calling backend API endpoint /v1/messaging/conversations"
+    },
+    {
+      "severity": "high", 
+      "file": "targets.json",
+      "line": 1062,
+      "msg": "Symbol naming 'websocket_get_my_conversations_GET' is misleading - this is a REST API endpoint, not a WebSocket operation"
+    },
+    {
+      "severity": "medium",
+      "file": "apps/web/contexts/WebSocketContext.tsx",
+      "line": 312,
+      "msg": "Frontend attempts WebSocket connection to undefined API URL in initializeMockData fallback"
+    },
+    {
+      "severity": "medium",
+      "file": "apps/api/routers/websocket.py",
+      "line": 175,
+      "msg": "SQL query lacks pagination optimizations and may be slow with large datasets"
+    },
+    {
+      "severity": "low",
+      "file": "apps/api/tests/test_websocket.py",
+      "line": 1,
+      "msg": "No specific tests for get_my_conversations REST endpoint functionality"
+    }
+  ]
+}

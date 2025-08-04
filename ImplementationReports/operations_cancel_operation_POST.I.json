@@ -1,0 +1,87 @@
+{
+  "symbol": "operations_cancel_operation_POST",
+  "commit": "a602ba5",
+  "status": "I",
+  "hops": [
+    {
+      "layer": "Backend Router",
+      "file": "apps/api/routers/operations.py",
+      "line": 89,
+      "message": "POST endpoint /v1/operations/{operation_id}/cancel defined as cancel_operation function"
+    },
+    {
+      "layer": "Router Registration",
+      "file": "apps/api/main.py",
+      "line": 193,
+      "message": "Operations router included in FastAPI app with prefix /v1/operations"
+    },
+    {
+      "layer": "Authentication Layer",
+      "file": "apps/api/routers/auth.py",
+      "line": 0,
+      "message": "Function depends on get_current_user for authentication via JWT token"
+    },
+    {
+      "layer": "Loading State Manager",
+      "file": "apps/api/middleware/loading_states.py",
+      "line": 175,
+      "message": "Uses loading_manager.fail_loading_state to mark operation as cancelled"
+    },
+    {
+      "layer": "Database Session",
+      "file": "apps/api/database.py",
+      "line": 0,
+      "message": "Function receives database session via dependency injection"
+    },
+    {
+      "layer": "Frontend API",
+      "file": "apps/web/lib/api.ts",
+      "line": 0,
+      "message": "No frontend implementation found for operations API calls"
+    },
+    {
+      "layer": "Tests",
+      "file": "apps/api/tests/test_api_routers_basic.py",
+      "line": 85,
+      "message": "Basic router activation test exists but no specific cancel operation tests"
+    }
+  ],
+  "defects": [
+    {
+      "severity": "high",
+      "file": "apps/web/lib/api.ts",
+      "line": 0,
+      "msg": "No frontend API client implementation for operations endpoints - operations functionality is not accessible from frontend"
+    },
+    {
+      "severity": "medium",
+      "file": "apps/api/routers/operations.py",
+      "line": 123,
+      "msg": "Timezone import missing - uses datetime.timezone.utc without importing timezone from datetime"
+    },
+    {
+      "severity": "medium",
+      "file": "apps/api/routers/operations.py",
+      "line": 174,
+      "msg": "Uses time.time() without explicit import statement at function level - import is at bottom of file"
+    },
+    {
+      "severity": "medium",
+      "file": "apps/api/middleware/loading_states.py",
+      "line": 125,
+      "msg": "LoadingState objects stored in memory only - no database persistence for operation state recovery after server restart"
+    },
+    {
+      "severity": "low",
+      "file": "apps/api/tests/",
+      "line": 0,
+      "msg": "No dedicated tests for cancel_operation endpoint functionality - only basic router activation test exists"
+    },
+    {
+      "severity": "low",
+      "file": "apps/api/routers/operations.py",
+      "line": 356,
+      "msg": "Missing metadata attribute handling in _user_can_access_operation - checks loading_state.metadata without ensuring it exists"
+    }
+  ]
+}

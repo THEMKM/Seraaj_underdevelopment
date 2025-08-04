@@ -1,0 +1,57 @@
+{
+  "symbol": "admin_database_health_GET",
+  "commit": "a602ba5",
+  "status": "C",
+  "hops": [
+    {
+      "layer": "Router Registration",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\api\\main.py",
+      "line": 185,
+      "message": "Admin router included in FastAPI app with proper import"
+    },
+    {
+      "layer": "Route Definition",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\api\\routers\\admin.py",
+      "line": 649,
+      "message": "GET /database/health endpoint defined with admin authentication"
+    },
+    {
+      "layer": "Authentication",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\api\\routers\\admin.py",
+      "line": 29,
+      "message": "Admin role validation through require_admin dependency"
+    },
+    {
+      "layer": "Business Logic",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\api\\database\\optimization.py",
+      "line": 442,
+      "message": "Database health check implementation with comprehensive metrics"
+    },
+    {
+      "layer": "Database Access",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\api\\database\\optimization.py",
+      "line": 447,
+      "message": "Session management with proper database connection handling"
+    },
+    {
+      "layer": "Testing",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\api\\tests\\test_api_routers_basic.py",
+      "line": 200,
+      "message": "Endpoint included in test suite route validation"
+    }
+  ],
+  "defects": [
+    {
+      "severity": "medium",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\web\\components\\admin\\AdminConsole.tsx",
+      "line": 475,
+      "message": "Frontend shows hardcoded database status instead of calling the actual API endpoint"
+    },
+    {
+      "severity": "low",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\api\\routers\\admin.py",
+      "line": 656,
+      "message": "Generic exception handling for ImportError - could be more specific"
+    }
+  ]
+}

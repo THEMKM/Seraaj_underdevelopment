@@ -1,0 +1,69 @@
+{
+  "symbol": "operations_delete_operation_DELETE",
+  "commit": "a602ba5",
+  "status": "C",
+  "hops": [
+    {
+      "layer": "router",
+      "file": "apps/api/routers/operations.py",
+      "line": 239,
+      "message": "DELETE endpoint implementation found at delete_operation function"
+    },
+    {
+      "layer": "middleware",
+      "file": "apps/api/middleware/loading_states.py",
+      "line": 185,
+      "message": "LoadingStateManager.remove_loading_state method called for operation deletion"
+    },
+    {
+      "layer": "main",
+      "file": "apps/api/main.py",
+      "line": 193,
+      "message": "Operations router included in main application at line 193"
+    },
+    {
+      "layer": "authentication",
+      "file": "apps/api/routers/auth.py",
+      "line": null,
+      "message": "Authentication required via get_current_user dependency"
+    },
+    {
+      "layer": "database",
+      "file": "database.py",
+      "line": null,
+      "message": "Database session provided via get_session dependency"
+    },
+    {
+      "layer": "error_handling",
+      "file": "apps/api/middleware/error_handler.py",
+      "line": null,
+      "message": "Error handling through raise_not_found and raise_forbidden utilities"
+    },
+    {
+      "layer": "tests",
+      "file": "apps/api/tests/test_api_routers_basic.py",
+      "line": 85,
+      "message": "Basic router activation test exists but no specific delete operation tests"
+    }
+  ],
+  "defects": [
+    {
+      "severity": "medium",
+      "file": "apps/api/routers/operations.py",
+      "line": 412,
+      "msg": "Missing import statement for 'time' module at file level - imported at line 412 but used throughout file"
+    },
+    {
+      "severity": "low",
+      "file": "apps/api/routers/operations.py",
+      "line": 239,
+      "msg": "Function name 'delete_operation' does not match naming convention pattern used by other endpoints in the file"
+    },
+    {
+      "severity": "low",
+      "file": "apps/api/tests/test_api_routers_basic.py",
+      "line": 85,
+      "msg": "No specific test for DELETE operation functionality - only basic router activation test"
+    }
+  ]
+}

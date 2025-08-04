@@ -1,0 +1,63 @@
+{
+  "symbol": "admin_clear_sample_data_DELETE",
+  "commit": "a602ba5",
+  "status": "I",
+  "hops": [
+    {
+      "layer": "Backend Route Definition",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\api\\routers\\admin.py",
+      "line": 599,
+      "message": "FastAPI DELETE route defined as clear_sample_data() with /clear-data path"
+    },
+    {
+      "layer": "Router Registration",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\api\\main.py",
+      "line": 185,
+      "message": "Admin router included with app.include_router(admin.router)"
+    },
+    {
+      "layer": "Route Mapping",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\api\\routers\\admin.py",
+      "line": 26,
+      "message": "Router configured with prefix='/v1/admin' resulting in /v1/admin/clear-data endpoint"
+    },
+    {
+      "layer": "Frontend Client",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\web\\components\\demo\\SeedDataLoader.tsx",
+      "line": 347,
+      "message": "Frontend only implements clearSeedData() for localStorage, no API call"
+    }
+  ],
+  "defects": [
+    {
+      "severity": "high",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\web\\components\\demo\\SeedDataLoader.tsx",
+      "line": 347,
+      "msg": "Frontend clearSeedData() only clears localStorage but does not call backend API endpoint to clear database"
+    },
+    {
+      "severity": "medium",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\api\\routers\\admin.py",
+      "line": 632,
+      "msg": "Database clearing logic is incomplete - only implements user table clearing, other tables commented out"
+    },
+    {
+      "severity": "medium",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\api\\routers\\admin.py",
+      "line": 599,
+      "msg": "Route name 'clear_sample_data' does not match function name suffix convention used in targets.json"
+    },
+    {
+      "severity": "low",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\scripts\\targets.json",
+      "line": 9,
+      "msg": "Symbol listed in targets.json but lacks corresponding unit tests"
+    },
+    {
+      "severity": "low",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\api\\routers\\admin.py",
+      "line": 603,
+      "msg": "Missing detailed error logging for database clearing operations"
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "symbol": "admin_activate_user_POST",
+  "commit": "a602ba5",
+  "status": "C",
+  "hops": [
+    {
+      "layer": "Backend/Router",
+      "file": "apps/api/routers/admin.py",
+      "line": 162,
+      "message": "POST endpoint defined at /v1/admin/users/{user_id}/activate with proper FastAPI decorator and async handler"
+    },
+    {
+      "layer": "Backend/Authentication",
+      "file": "apps/api/routers/admin.py",
+      "line": 165,
+      "message": "Admin authentication enforced via require_admin dependency injection"
+    },
+    {
+      "layer": "Backend/Database",
+      "file": "apps/api/routers/admin.py",
+      "line": 169,
+      "message": "User lookup by ID with proper 404 error handling if user not found"
+    },
+    {
+      "layer": "Backend/BusinessLogic",
+      "file": "apps/api/routers/admin.py",
+      "line": 175,
+      "message": "User status changed to ACTIVE, suspension fields cleared, updated_at timestamp set"
+    },
+    {
+      "layer": "Backend/DatabaseCommit",
+      "file": "apps/api/routers/admin.py",
+      "line": 181,
+      "message": "Database session commit with proper session management"
+    },
+    {
+      "layer": "Backend/Response",
+      "file": "apps/api/routers/admin.py",
+      "line": 184,
+      "message": "Returns JSON success message confirming user activation"
+    },
+    {
+      "layer": "Backend/Router Registration",
+      "file": "apps/api/main.py",
+      "line": 185,
+      "message": "Admin router properly included in main FastAPI application"
+    },
+    {
+      "layer": "Database/Schema",
+      "file": "apps/api/migrations/versions/bf3c972be625_initial_schema.py",
+      "line": 606,
+      "message": "Users table has status column with SUSPENDED/ACTIVE enum values and suspension tracking fields"
+    },
+    {
+      "layer": "Backend/Model",
+      "file": "apps/api/models/user.py",
+      "line": 49,
+      "message": "UserStatus enum defines ACTIVE and SUSPENDED states used by the endpoint"
+    },
+    {
+      "layer": "Testing/RouterVerification",
+      "file": "apps/api/tests/test_api_routers_basic.py",
+      "line": 67,
+      "message": "Basic admin router connectivity verified with 401 response indicating proper authentication requirement"
+    }
+  ],
+  "defects": [
+    {
+      "severity": "medium",
+      "file": "apps/web/lib/api.ts",
+      "line": null,
+      "msg": "Frontend API client lacks admin user activation method - no frontend integration exists"
+    },
+    {
+      "severity": "medium", 
+      "file": "apps/web/components/admin/AdminConsole.tsx",
+      "line": 166,
+      "msg": "Admin console has activate action handler but uses mock notifications instead of real API calls"
+    },
+    {
+      "severity": "low",
+      "file": "apps/api/tests/",
+      "line": null,
+      "msg": "No dedicated test coverage for admin user activation endpoint - only basic router connectivity test exists"
+    },
+    {
+      "severity": "low",
+      "file": "apps/api/routers/admin.py",
+      "line": 162,
+      "msg": "Missing suspension_reason, suspended_at, suspended_by field definitions in user model validation - fields exist in database but not in User model"
+    }
+  ]
+}

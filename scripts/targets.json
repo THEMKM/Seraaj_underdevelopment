@@ -1,0 +1,1086 @@
+[
+  {
+    "symbol": "admin_activate_user_POST",
+    "type": "route",
+    "file": "apps/api/routers/admin.py",
+    "report": "C"
+  },
+  {
+    "symbol": "admin_clear_sample_data_DELETE",
+    "type": "route",
+    "file": "apps/api/routers/admin.py",
+    "report": "I"
+  },
+  {
+    "symbol": "admin_database_health_GET",
+    "type": "route",
+    "file": "apps/api/routers/admin.py",
+    "report": "C"
+  },
+  {
+    "symbol": "admin_delete_user_DELETE",
+    "type": "route",
+    "file": "apps/api/routers/admin.py",
+    "report": "I"
+  },
+  {
+    "symbol": "admin_get_all_users_GET",
+    "type": "route",
+    "file": "apps/api/routers/admin.py"
+  },
+  {
+    "symbol": "admin_get_moderation_reports_GET",
+    "type": "route",
+    "file": "apps/api/routers/admin.py"
+  },
+  {
+    "symbol": "admin_get_opportunity_statistics_GET",
+    "type": "route",
+    "file": "apps/api/routers/admin.py"
+  },
+  {
+    "symbol": "admin_get_performance_metrics_GET",
+    "type": "route",
+    "file": "apps/api/routers/admin.py"
+  },
+  {
+    "symbol": "admin_get_platform_overview_GET",
+    "type": "route",
+    "file": "apps/api/routers/admin.py"
+  },
+  {
+    "symbol": "admin_get_system_config_GET",
+    "type": "route",
+    "file": "apps/api/routers/admin.py"
+  },
+  {
+    "symbol": "admin_get_system_health_GET",
+    "type": "route",
+    "file": "apps/api/routers/admin.py"
+  },
+  {
+    "symbol": "admin_get_user_details_GET",
+    "type": "route",
+    "file": "apps/api/routers/admin.py"
+  },
+  {
+    "symbol": "admin_get_user_statistics_GET",
+    "type": "route",
+    "file": "apps/api/routers/admin.py"
+  },
+  {
+    "symbol": "admin_optimize_database_POST",
+    "type": "route",
+    "file": "apps/api/routers/admin.py"
+  },
+  {
+    "symbol": "admin_resolve_moderation_report_POST",
+    "type": "route",
+    "file": "apps/api/routers/admin.py"
+  },
+  {
+    "symbol": "admin_seed_sample_data_POST",
+    "type": "route",
+    "file": "apps/api/routers/admin.py"
+  },
+  {
+    "symbol": "admin_suspend_user_POST",
+    "type": "route",
+    "file": "apps/api/routers/admin.py"
+  },
+  {
+    "symbol": "admin_update_system_config_PUT",
+    "type": "route",
+    "file": "apps/api/routers/admin.py"
+  },
+  {
+    "symbol": "admin_update_user_PUT",
+    "type": "route",
+    "file": "apps/api/routers/admin.py"
+  },
+  {
+    "symbol": "applications_complete_application_step_POST",
+    "type": "route",
+    "file": "apps/api/routers/applications.py"
+  },
+  {
+    "symbol": "applications_create_application_POST",
+    "type": "route",
+    "file": "apps/api/routers/applications.py"
+  },
+  {
+    "symbol": "applications_delete_application_document_DELETE",
+    "type": "route",
+    "file": "apps/api/routers/applications.py"
+  },
+  {
+    "symbol": "applications_get_application_GET",
+    "type": "route",
+    "file": "apps/api/routers/applications.py"
+  },
+  {
+    "symbol": "applications_get_application_documents_GET",
+    "type": "route",
+    "file": "apps/api/routers/applications.py"
+  },
+  {
+    "symbol": "applications_get_application_steps_GET",
+    "type": "route",
+    "file": "apps/api/routers/applications.py"
+  },
+  {
+    "symbol": "applications_get_applications_for_opportunity_GET",
+    "type": "route",
+    "file": "apps/api/routers/applications.py"
+  },
+  {
+    "symbol": "applications_get_applications_stats_GET",
+    "type": "route",
+    "file": "apps/api/routers/applications.py"
+  },
+  {
+    "symbol": "applications_get_my_applications_GET",
+    "type": "route",
+    "file": "apps/api/routers/applications.py"
+  },
+  {
+    "symbol": "applications_review_application_POST",
+    "type": "route",
+    "file": "apps/api/routers/applications.py"
+  },
+  {
+    "symbol": "applications_schedule_interview_POST",
+    "type": "route",
+    "file": "apps/api/routers/applications.py"
+  },
+  {
+    "symbol": "applications_submit_application_POST",
+    "type": "route",
+    "file": "apps/api/routers/applications.py"
+  },
+  {
+    "symbol": "applications_update_application_PUT",
+    "type": "route",
+    "file": "apps/api/routers/applications.py"
+  },
+  {
+    "symbol": "applications_upload_application_document_POST",
+    "type": "route",
+    "file": "apps/api/routers/applications.py"
+  },
+  {
+    "symbol": "applications_withdraw_application_DELETE",
+    "type": "route",
+    "file": "apps/api/routers/applications.py"
+  },
+  {
+    "symbol": "auth_get_current_user_info_GET",
+    "type": "route",
+    "file": "apps/api/routers/auth.py"
+  },
+  {
+    "symbol": "auth_login_POST",
+    "type": "route",
+    "file": "apps/api/routers/auth.py"
+  },
+  {
+    "symbol": "auth_logout_POST",
+    "type": "route",
+    "file": "apps/api/routers/auth.py"
+  },
+  {
+    "symbol": "auth_refresh_token_POST",
+    "type": "route",
+    "file": "apps/api/routers/auth.py"
+  },
+  {
+    "symbol": "auth_register_POST",
+    "type": "route",
+    "file": "apps/api/routers/auth.py"
+  },
+  {
+    "symbol": "auth_update_current_user_PUT",
+    "type": "route",
+    "file": "apps/api/routers/auth.py"
+  },
+  {
+    "symbol": "calendar_cancel_event_DELETE",
+    "type": "route",
+    "file": "apps/api/routers/calendar.py"
+  },
+  {
+    "symbol": "calendar_create_calendar_event_POST",
+    "type": "route",
+    "file": "apps/api/routers/calendar.py"
+  },
+  {
+    "symbol": "calendar_get_availability_slots_GET",
+    "type": "route",
+    "file": "apps/api/routers/calendar.py"
+  },
+  {
+    "symbol": "calendar_get_my_calendar_GET",
+    "type": "route",
+    "file": "apps/api/routers/calendar.py"
+  },
+  {
+    "symbol": "calendar_get_upcoming_events_GET",
+    "type": "route",
+    "file": "apps/api/routers/calendar.py"
+  },
+  {
+    "symbol": "calendar_reschedule_event_PUT",
+    "type": "route",
+    "file": "apps/api/routers/calendar.py"
+  },
+  {
+    "symbol": "calendar_router_get_calendar_GET",
+    "type": "route",
+    "file": "apps/api/calendar_module/calendar_router.py"
+  },
+  {
+    "symbol": "calendar_schedule_interview_POST",
+    "type": "route",
+    "file": "apps/api/routers/calendar.py"
+  },
+  {
+    "symbol": "calendar_schedule_orientation_POST",
+    "type": "route",
+    "file": "apps/api/routers/calendar.py"
+  },
+  {
+    "symbol": "calendar_schedule_recurring_sessions_POST",
+    "type": "route",
+    "file": "apps/api/routers/calendar.py"
+  },
+  {
+    "symbol": "collaboration_assign_mentor_POST",
+    "type": "route",
+    "file": "apps/api/routers/collaboration.py"
+  },
+  {
+    "symbol": "collaboration_create_project_POST",
+    "type": "route",
+    "file": "apps/api/routers/collaboration.py"
+  },
+  {
+    "symbol": "collaboration_create_task_POST",
+    "type": "route",
+    "file": "apps/api/routers/collaboration.py"
+  },
+  {
+    "symbol": "collaboration_create_team_channel_POST",
+    "type": "route",
+    "file": "apps/api/routers/collaboration.py"
+  },
+  {
+    "symbol": "collaboration_create_team_workspace_POST",
+    "type": "route",
+    "file": "apps/api/routers/collaboration.py"
+  },
+  {
+    "symbol": "collaboration_generate_team_report_POST",
+    "type": "route",
+    "file": "apps/api/routers/collaboration.py"
+  },
+  {
+    "symbol": "collaboration_get_collaboration_analytics_GET",
+    "type": "route",
+    "file": "apps/api/routers/collaboration.py"
+  },
+  {
+    "symbol": "collaboration_get_project_templates_GET",
+    "type": "route",
+    "file": "apps/api/routers/collaboration.py"
+  },
+  {
+    "symbol": "collaboration_get_team_dashboard_GET",
+    "type": "route",
+    "file": "apps/api/routers/collaboration.py"
+  },
+  {
+    "symbol": "collaboration_get_team_roles_GET",
+    "type": "route",
+    "file": "apps/api/routers/collaboration.py"
+  },
+  {
+    "symbol": "collaboration_schedule_team_meeting_POST",
+    "type": "route",
+    "file": "apps/api/routers/collaboration.py"
+  },
+  {
+    "symbol": "collaboration_track_volunteer_progress_POST",
+    "type": "route",
+    "file": "apps/api/routers/collaboration.py"
+  },
+  {
+    "symbol": "demo_scenarios_abort_demo_run_POST",
+    "type": "route",
+    "file": "apps/api/routers/demo_scenarios.py"
+  },
+  {
+    "symbol": "demo_scenarios_create_demo_scenario_POST",
+    "type": "route",
+    "file": "apps/api/routers/demo_scenarios.py"
+  },
+  {
+    "symbol": "demo_scenarios_create_scenario_from_template_POST",
+    "type": "route",
+    "file": "apps/api/routers/demo_scenarios.py"
+  },
+  {
+    "symbol": "demo_scenarios_delete_demo_scenario_DELETE",
+    "type": "route",
+    "file": "apps/api/routers/demo_scenarios.py"
+  },
+  {
+    "symbol": "demo_scenarios_execute_demo_step_POST",
+    "type": "route",
+    "file": "apps/api/routers/demo_scenarios.py"
+  },
+  {
+    "symbol": "demo_scenarios_get_available_scenarios_GET",
+    "type": "route",
+    "file": "apps/api/routers/demo_scenarios.py"
+  },
+  {
+    "symbol": "demo_scenarios_get_demo_analytics_overview_GET",
+    "type": "route",
+    "file": "apps/api/routers/demo_scenarios.py"
+  },
+  {
+    "symbol": "demo_scenarios_get_demo_run_status_GET",
+    "type": "route",
+    "file": "apps/api/routers/demo_scenarios.py"
+  },
+  {
+    "symbol": "demo_scenarios_get_demo_templates_GET",
+    "type": "route",
+    "file": "apps/api/routers/demo_scenarios.py"
+  },
+  {
+    "symbol": "demo_scenarios_get_scenario_analytics_GET",
+    "type": "route",
+    "file": "apps/api/routers/demo_scenarios.py"
+  },
+  {
+    "symbol": "demo_scenarios_start_demo_scenario_POST",
+    "type": "route",
+    "file": "apps/api/routers/demo_scenarios.py"
+  },
+  {
+    "symbol": "demo_scenarios_submit_demo_feedback_POST",
+    "type": "route",
+    "file": "apps/api/routers/demo_scenarios.py"
+  },
+  {
+    "symbol": "files_cleanup_orphaned_files_POST",
+    "type": "route",
+    "file": "apps/api/routers/files.py"
+  },
+  {
+    "symbol": "files_delete_file_DELETE",
+    "type": "route",
+    "file": "apps/api/routers/files.py"
+  },
+  {
+    "symbol": "files_download_file_GET",
+    "type": "route",
+    "file": "apps/api/routers/files.py"
+  },
+  {
+    "symbol": "files_get_file_GET",
+    "type": "route",
+    "file": "apps/api/routers/files.py"
+  },
+  {
+    "symbol": "files_get_file_access_log_GET",
+    "type": "route",
+    "file": "apps/api/routers/files.py"
+  },
+  {
+    "symbol": "files_get_file_permissions_GET",
+    "type": "route",
+    "file": "apps/api/routers/files.py"
+  },
+  {
+    "symbol": "files_get_file_storage_stats_GET",
+    "type": "route",
+    "file": "apps/api/routers/files.py"
+  },
+  {
+    "symbol": "files_get_file_thumbnail_GET",
+    "type": "route",
+    "file": "apps/api/routers/files.py"
+  },
+  {
+    "symbol": "files_grant_file_permission_POST",
+    "type": "route",
+    "file": "apps/api/routers/files.py"
+  },
+  {
+    "symbol": "files_list_my_files_GET",
+    "type": "route",
+    "file": "apps/api/routers/files.py"
+  },
+  {
+    "symbol": "files_upload_file_POST",
+    "type": "route",
+    "file": "apps/api/routers/files.py"
+  },
+  {
+    "symbol": "guided_tours_advance_tour_step_POST",
+    "type": "route",
+    "file": "apps/api/routers/guided_tours.py"
+  },
+  {
+    "symbol": "guided_tours_create_tour_POST",
+    "type": "route",
+    "file": "apps/api/routers/guided_tours.py"
+  },
+  {
+    "symbol": "guided_tours_get_available_tours_GET",
+    "type": "route",
+    "file": "apps/api/routers/guided_tours.py"
+  },
+  {
+    "symbol": "guided_tours_get_my_tour_progress_GET",
+    "type": "route",
+    "file": "apps/api/routers/guided_tours.py"
+  },
+  {
+    "symbol": "guided_tours_get_tour_analytics_GET",
+    "type": "route",
+    "file": "apps/api/routers/guided_tours.py"
+  },
+  {
+    "symbol": "guided_tours_get_tour_progress_GET",
+    "type": "route",
+    "file": "apps/api/routers/guided_tours.py"
+  },
+  {
+    "symbol": "guided_tours_get_tour_step_GET",
+    "type": "route",
+    "file": "apps/api/routers/guided_tours.py"
+  },
+  {
+    "symbol": "guided_tours_get_tour_templates_GET",
+    "type": "route",
+    "file": "apps/api/routers/guided_tours.py"
+  },
+  {
+    "symbol": "guided_tours_get_tours_overview_GET",
+    "type": "route",
+    "file": "apps/api/routers/guided_tours.py"
+  },
+  {
+    "symbol": "guided_tours_reset_tour_progress_POST",
+    "type": "route",
+    "file": "apps/api/routers/guided_tours.py"
+  },
+  {
+    "symbol": "guided_tours_skip_tour_POST",
+    "type": "route",
+    "file": "apps/api/routers/guided_tours.py"
+  },
+  {
+    "symbol": "guided_tours_start_tour_POST",
+    "type": "route",
+    "file": "apps/api/routers/guided_tours.py"
+  },
+  {
+    "symbol": "guided_tours_submit_tour_feedback_POST",
+    "type": "route",
+    "file": "apps/api/routers/guided_tours.py"
+  },
+  {
+    "symbol": "main_health_check_GET",
+    "type": "route",
+    "file": "apps/api/main.py"
+  },
+  {
+    "symbol": "main_root_GET",
+    "type": "route",
+    "file": "apps/api/main.py"
+  },
+  {
+    "symbol": "match_get_algorithm_weights_GET",
+    "type": "route",
+    "file": "apps/api/routers/match.py"
+  },
+  {
+    "symbol": "match_get_matching_statistics_GET",
+    "type": "route",
+    "file": "apps/api/routers/match.py"
+  },
+  {
+    "symbol": "match_get_opportunity_matches_GET",
+    "type": "route",
+    "file": "apps/api/routers/match.py"
+  },
+  {
+    "symbol": "match_get_volunteer_matches_GET",
+    "type": "route",
+    "file": "apps/api/routers/match.py"
+  },
+  {
+    "symbol": "match_record_matching_feedback_POST",
+    "type": "route",
+    "file": "apps/api/routers/match.py"
+  },
+  {
+    "symbol": "match_update_algorithm_weights_PUT",
+    "type": "route",
+    "file": "apps/api/routers/match.py"
+  },
+  {
+    "symbol": "operations_cancel_operation_POST",
+    "type": "route",
+    "file": "apps/api/routers/operations.py",
+    "report": "I"
+  },
+  {
+    "symbol": "operations_delete_operation_DELETE",
+    "type": "route",
+    "file": "apps/api/routers/operations.py",
+    "report": "C"
+  },
+  {
+    "symbol": "operations_get_my_operations_GET",
+    "type": "route",
+    "file": "apps/api/routers/operations.py",
+    "report": "C"
+  },
+  {
+    "symbol": "operations_get_operation_logs_GET",
+    "type": "route",
+    "file": "apps/api/routers/operations.py",
+    "report": "I"
+  },
+  {
+    "symbol": "operations_get_operation_status_GET",
+    "type": "route",
+    "file": "apps/api/routers/operations.py",
+    "report": "I"
+  },
+  {
+    "symbol": "operations_get_operations_statistics_GET",
+    "type": "route",
+    "file": "apps/api/routers/operations.py"
+  },
+  {
+    "symbol": "operations_stream_operation_progress_GET",
+    "type": "route",
+    "file": "apps/api/routers/operations.py"
+  },
+  {
+    "symbol": "opportunities_create_opportunity_POST",
+    "type": "route",
+    "file": "apps/api/routers/opportunities.py"
+  },
+  {
+    "symbol": "opportunities_delete_opportunity_DELETE",
+    "type": "route",
+    "file": "apps/api/routers/opportunities.py"
+  },
+  {
+    "symbol": "opportunities_get_featured_opportunities_GET",
+    "type": "route",
+    "file": "apps/api/routers/opportunities.py"
+  },
+  {
+    "symbol": "opportunities_get_opportunities_GET",
+    "type": "route",
+    "file": "apps/api/routers/opportunities.py"
+  },
+  {
+    "symbol": "opportunities_get_opportunities_stats_GET",
+    "type": "route",
+    "file": "apps/api/routers/opportunities.py"
+  },
+  {
+    "symbol": "opportunities_get_opportunity_GET",
+    "type": "route",
+    "file": "apps/api/routers/opportunities.py"
+  },
+  {
+    "symbol": "opportunities_get_opportunity_applications_GET",
+    "type": "route",
+    "file": "apps/api/routers/opportunities.py"
+  },
+  {
+    "symbol": "opportunities_search_opportunities_GET",
+    "type": "route",
+    "file": "apps/api/routers/opportunities.py"
+  },
+  {
+    "symbol": "opportunities_update_opportunity_PUT",
+    "type": "route",
+    "file": "apps/api/routers/opportunities.py"
+  },
+  {
+    "symbol": "organizations_get_my_organization_GET",
+    "type": "route",
+    "file": "apps/api/routers/organizations.py"
+  },
+  {
+    "symbol": "organizations_get_organization_applications_GET",
+    "type": "route",
+    "file": "apps/api/routers/organizations.py"
+  },
+  {
+    "symbol": "organizations_get_organization_dashboard_stats_GET",
+    "type": "route",
+    "file": "apps/api/routers/organizations.py"
+  },
+  {
+    "symbol": "organizations_get_organization_opportunities_GET",
+    "type": "route",
+    "file": "apps/api/routers/organizations.py"
+  },
+  {
+    "symbol": "organizations_get_organization_reviews_GET",
+    "type": "route",
+    "file": "apps/api/routers/organizations.py"
+  },
+  {
+    "symbol": "organizations_update_my_organization_PUT",
+    "type": "route",
+    "file": "apps/api/routers/organizations.py"
+  },
+  {
+    "symbol": "profiles_complete_organization_profile_POST",
+    "type": "route",
+    "file": "apps/api/routers/profiles.py"
+  },
+  {
+    "symbol": "profiles_complete_volunteer_profile_POST",
+    "type": "route",
+    "file": "apps/api/routers/profiles.py"
+  },
+  {
+    "symbol": "profiles_create_organization_profile_POST",
+    "type": "route",
+    "file": "apps/api/routers/profiles.py"
+  },
+  {
+    "symbol": "profiles_create_volunteer_profile_POST",
+    "type": "route",
+    "file": "apps/api/routers/profiles.py"
+  },
+  {
+    "symbol": "profiles_get_my_organization_profile_GET",
+    "type": "route",
+    "file": "apps/api/routers/profiles.py"
+  },
+  {
+    "symbol": "profiles_get_my_volunteer_profile_GET",
+    "type": "route",
+    "file": "apps/api/routers/profiles.py"
+  },
+  {
+    "symbol": "profiles_get_organization_profile_GET",
+    "type": "route",
+    "file": "apps/api/routers/profiles.py"
+  },
+  {
+    "symbol": "profiles_get_organization_stats_GET",
+    "type": "route",
+    "file": "apps/api/routers/profiles.py"
+  },
+  {
+    "symbol": "profiles_get_volunteer_profile_GET",
+    "type": "route",
+    "file": "apps/api/routers/profiles.py"
+  },
+  {
+    "symbol": "profiles_get_volunteer_stats_GET",
+    "type": "route",
+    "file": "apps/api/routers/profiles.py"
+  },
+  {
+    "symbol": "profiles_search_organizations_GET",
+    "type": "route",
+    "file": "apps/api/routers/profiles.py"
+  },
+  {
+    "symbol": "profiles_search_volunteers_GET",
+    "type": "route",
+    "file": "apps/api/routers/profiles.py"
+  },
+  {
+    "symbol": "profiles_update_my_organization_profile_PUT",
+    "type": "route",
+    "file": "apps/api/routers/profiles.py"
+  },
+  {
+    "symbol": "profiles_update_my_volunteer_profile_PUT",
+    "type": "route",
+    "file": "apps/api/routers/profiles.py"
+  },
+  {
+    "symbol": "push_notifications_get_notification_history_GET",
+    "type": "route",
+    "file": "apps/api/routers/push_notifications.py"
+  },
+  {
+    "symbol": "push_notifications_get_notification_settings_GET",
+    "type": "route",
+    "file": "apps/api/routers/push_notifications.py"
+  },
+  {
+    "symbol": "push_notifications_get_notification_statistics_GET",
+    "type": "route",
+    "file": "apps/api/routers/push_notifications.py"
+  },
+  {
+    "symbol": "push_notifications_get_notification_templates_GET",
+    "type": "route",
+    "file": "apps/api/routers/push_notifications.py"
+  },
+  {
+    "symbol": "push_notifications_get_user_subscriptions_GET",
+    "type": "route",
+    "file": "apps/api/routers/push_notifications.py"
+  },
+  {
+    "symbol": "push_notifications_get_vapid_public_key_GET",
+    "type": "route",
+    "file": "apps/api/routers/push_notifications.py"
+  },
+  {
+    "symbol": "push_notifications_send_bulk_notification_POST",
+    "type": "route",
+    "file": "apps/api/routers/push_notifications.py"
+  },
+  {
+    "symbol": "push_notifications_send_notification_POST",
+    "type": "route",
+    "file": "apps/api/routers/push_notifications.py"
+  },
+  {
+    "symbol": "push_notifications_send_templated_notification_POST",
+    "type": "route",
+    "file": "apps/api/routers/push_notifications.py"
+  },
+  {
+    "symbol": "push_notifications_send_test_notification_POST",
+    "type": "route",
+    "file": "apps/api/routers/push_notifications.py"
+  },
+  {
+    "symbol": "push_notifications_subscribe_to_notifications_POST",
+    "type": "route",
+    "file": "apps/api/routers/push_notifications.py"
+  },
+  {
+    "symbol": "push_notifications_track_notification_click_POST",
+    "type": "route",
+    "file": "apps/api/routers/push_notifications.py"
+  },
+  {
+    "symbol": "push_notifications_unsubscribe_from_notifications_DELETE",
+    "type": "route",
+    "file": "apps/api/routers/push_notifications.py"
+  },
+  {
+    "symbol": "push_notifications_update_notification_settings_PUT",
+    "type": "route",
+    "file": "apps/api/routers/push_notifications.py"
+  },
+  {
+    "symbol": "pwa_clear_client_cache_POST",
+    "type": "route",
+    "file": "apps/api/routers/pwa.py"
+  },
+  {
+    "symbol": "pwa_generate_pwa_files_POST",
+    "type": "route",
+    "file": "apps/api/routers/pwa.py"
+  },
+  {
+    "symbol": "pwa_get_cache_info_GET",
+    "type": "route",
+    "file": "apps/api/routers/pwa.py"
+  },
+  {
+    "symbol": "pwa_get_install_prompt_data_GET",
+    "type": "route",
+    "file": "apps/api/routers/pwa.py"
+  },
+  {
+    "symbol": "pwa_get_manifest_GET",
+    "type": "route",
+    "file": "apps/api/routers/pwa.py"
+  },
+  {
+    "symbol": "pwa_get_offline_data_info_GET",
+    "type": "route",
+    "file": "apps/api/routers/pwa.py"
+  },
+  {
+    "symbol": "pwa_get_offline_page_GET",
+    "type": "route",
+    "file": "apps/api/routers/pwa.py"
+  },
+  {
+    "symbol": "pwa_get_pwa_capabilities_GET",
+    "type": "route",
+    "file": "apps/api/routers/pwa.py"
+  },
+  {
+    "symbol": "pwa_get_service_worker_GET",
+    "type": "route",
+    "file": "apps/api/routers/pwa.py"
+  },
+  {
+    "symbol": "pwa_get_storage_schema_GET",
+    "type": "route",
+    "file": "apps/api/routers/pwa.py"
+  },
+  {
+    "symbol": "pwa_handle_shared_content_POST",
+    "type": "route",
+    "file": "apps/api/routers/pwa.py"
+  },
+  {
+    "symbol": "pwa_track_install_analytics_POST",
+    "type": "route",
+    "file": "apps/api/routers/pwa.py"
+  },
+  {
+    "symbol": "pwa_update_sync_status_POST",
+    "type": "route",
+    "file": "apps/api/routers/pwa.py"
+  },
+  {
+    "symbol": "reviews_create_review_POST",
+    "type": "route",
+    "file": "apps/api/routers/reviews.py"
+  },
+  {
+    "symbol": "reviews_delete_review_DELETE",
+    "type": "route",
+    "file": "apps/api/routers/reviews.py"
+  },
+  {
+    "symbol": "reviews_flag_review_POST",
+    "type": "route",
+    "file": "apps/api/routers/reviews.py"
+  },
+  {
+    "symbol": "reviews_get_review_GET",
+    "type": "route",
+    "file": "apps/api/routers/reviews.py"
+  },
+  {
+    "symbol": "reviews_get_review_statistics_GET",
+    "type": "route",
+    "file": "apps/api/routers/reviews.py"
+  },
+  {
+    "symbol": "reviews_get_reviews_GET",
+    "type": "route",
+    "file": "apps/api/routers/reviews.py"
+  },
+  {
+    "symbol": "reviews_update_review_PUT",
+    "type": "route",
+    "file": "apps/api/routers/reviews.py"
+  },
+  {
+    "symbol": "reviews_vote_on_review_POST",
+    "type": "route",
+    "file": "apps/api/routers/reviews.py"
+  },
+  {
+    "symbol": "simple_server_root_GET",
+    "type": "route",
+    "file": "apps/api/simple_server.py"
+  },
+  {
+    "symbol": "system_clear_cache_POST",
+    "type": "route",
+    "file": "apps/api/routers/system.py"
+  },
+  {
+    "symbol": "system_create_backup_POST",
+    "type": "route",
+    "file": "apps/api/routers/system.py"
+  },
+  {
+    "symbol": "system_detailed_health_check_GET",
+    "type": "route",
+    "file": "apps/api/routers/system.py"
+  },
+  {
+    "symbol": "system_health_check_GET",
+    "type": "route",
+    "file": "apps/api/routers/system.py"
+  },
+  {
+    "symbol": "system_liveness_check_GET",
+    "type": "route",
+    "file": "apps/api/routers/system.py"
+  },
+  {
+    "symbol": "system_readiness_check_GET",
+    "type": "route",
+    "file": "apps/api/routers/system.py"
+  },
+  {
+    "symbol": "system_system_metrics_GET",
+    "type": "route",
+    "file": "apps/api/routers/system.py"
+  },
+  {
+    "symbol": "system_system_status_GET",
+    "type": "route",
+    "file": "apps/api/routers/system.py"
+  },
+  {
+    "symbol": "system_toggle_maintenance_mode_POST",
+    "type": "route",
+    "file": "apps/api/routers/system.py"
+  },
+  {
+    "symbol": "verification_admin_verify_skill_POST",
+    "type": "route",
+    "file": "apps/api/routers/verification.py"
+  },
+  {
+    "symbol": "verification_award_verification_badge_POST",
+    "type": "route",
+    "file": "apps/api/routers/verification.py"
+  },
+  {
+    "symbol": "verification_complete_assessment_test_POST",
+    "type": "route",
+    "file": "apps/api/routers/verification.py"
+  },
+  {
+    "symbol": "verification_endorse_skill_verification_POST",
+    "type": "route",
+    "file": "apps/api/routers/verification.py"
+  },
+  {
+    "symbol": "verification_get_available_badges_GET",
+    "type": "route",
+    "file": "apps/api/routers/verification.py"
+  },
+  {
+    "symbol": "verification_get_eligible_verification_badges_GET",
+    "type": "route",
+    "file": "apps/api/routers/verification.py"
+  },
+  {
+    "symbol": "verification_get_my_badges_GET",
+    "type": "route",
+    "file": "apps/api/routers/verification.py"
+  },
+  {
+    "symbol": "verification_get_my_skill_verifications_GET",
+    "type": "route",
+    "file": "apps/api/routers/verification.py"
+  },
+  {
+    "symbol": "verification_get_organization_trust_score_GET",
+    "type": "route",
+    "file": "apps/api/routers/verification.py"
+  },
+  {
+    "symbol": "verification_get_organization_verification_badges_GET",
+    "type": "route",
+    "file": "apps/api/routers/verification.py"
+  },
+  {
+    "symbol": "verification_get_skill_verification_details_GET",
+    "type": "route",
+    "file": "apps/api/routers/verification.py"
+  },
+  {
+    "symbol": "verification_get_top_trusted_organizations_GET",
+    "type": "route",
+    "file": "apps/api/routers/verification.py"
+  },
+  {
+    "symbol": "verification_get_trust_levels_GET",
+    "type": "route",
+    "file": "apps/api/routers/verification.py"
+  },
+  {
+    "symbol": "verification_get_trust_system_statistics_GET",
+    "type": "route",
+    "file": "apps/api/routers/verification.py"
+  },
+  {
+    "symbol": "verification_get_verification_leaderboard_GET",
+    "type": "route",
+    "file": "apps/api/routers/verification.py"
+  },
+  {
+    "symbol": "verification_get_verification_stats_GET",
+    "type": "route",
+    "file": "apps/api/routers/verification.py"
+  },
+  {
+    "symbol": "verification_initiate_skill_verification_POST",
+    "type": "route",
+    "file": "apps/api/routers/verification.py"
+  },
+  {
+    "symbol": "verification_recalculate_trust_score_POST",
+    "type": "route",
+    "file": "apps/api/routers/verification.py"
+  },
+  {
+    "symbol": "verification_upload_verification_document_POST",
+    "type": "route",
+    "file": "apps/api/routers/verification.py"
+  },
+  {
+    "symbol": "websocket_add_participant_POST",
+    "type": "route",
+    "file": "apps/api/routers/websocket.py"
+  },
+  {
+    "symbol": "websocket_create_conversation_POST",
+    "type": "route",
+    "file": "apps/api/routers/websocket.py"
+  },
+  {
+    "symbol": "websocket_get_conversation_GET",
+    "type": "route",
+    "file": "apps/api/routers/websocket.py"
+  },
+  {
+    "symbol": "websocket_get_conversation_messages_GET",
+    "type": "route",
+    "file": "apps/api/routers/websocket.py",
+    "report": "I"
+  },
+  {
+    "symbol": "websocket_get_messaging_stats_GET",
+    "type": "route",
+    "file": "apps/api/routers/websocket.py",
+    "report": "I"
+  },
+  {
+    "symbol": "websocket_get_my_conversations_GET",
+    "type": "route",
+    "file": "apps/api/routers/websocket.py",
+    "report": "I"
+  },
+  {
+    "symbol": "websocket_get_online_users_GET",
+    "type": "route",
+    "file": "apps/api/routers/websocket.py",
+    "report": "I"
+  },
+  {
+    "symbol": "websocket_remove_participant_DELETE",
+    "type": "route",
+    "file": "apps/api/routers/websocket.py",
+    "report": "C"
+  }
+]

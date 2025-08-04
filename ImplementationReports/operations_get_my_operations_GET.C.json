@@ -1,0 +1,81 @@
+{
+  "symbol": "operations_get_my_operations_GET",
+  "commit": "a602ba5",
+  "status": "C",
+  "hops": [
+    {
+      "layer": "Router Configuration",
+      "file": "apps/api/main.py",
+      "line": 193,
+      "message": "Operations router properly included in FastAPI application"
+    },
+    {
+      "layer": "Route Definition",
+      "file": "apps/api/routers/operations.py",
+      "line": 17,
+      "message": "Router configured with prefix '/v1/operations' and proper tags"
+    },
+    {
+      "layer": "Endpoint Implementation",
+      "file": "apps/api/routers/operations.py",
+      "line": 182,
+      "message": "GET /my-operations endpoint properly implemented with authentication, filtering, and pagination"
+    },
+    {
+      "layer": "Authentication",
+      "file": "apps/api/routers/operations.py",
+      "line": 184,
+      "message": "Uses get_current_user dependency for authentication - properly configured"
+    },
+    {
+      "layer": "Database Session",
+      "file": "apps/api/routers/operations.py",
+      "line": 185,
+      "message": "Database session dependency properly configured via get_session"
+    },
+    {
+      "layer": "Business Logic",
+      "file": "apps/api/routers/operations.py",
+      "line": 192,
+      "message": "Fetches user operations from loading_manager with filtering and sorting"
+    },
+    {
+      "layer": "Response Formatting",
+      "file": "apps/api/routers/operations.py",
+      "line": 231,
+      "message": "Returns structured JSON with operations, metadata, and endpoint links"
+    },
+    {
+      "layer": "Dependencies",
+      "file": "apps/api/middleware/loading_states.py",
+      "line": 225,
+      "message": "LoadingStateManager properly configured as global singleton"
+    },
+    {
+      "layer": "Testing",
+      "file": "apps/api/tests/test_api_routers_basic.py",
+      "line": 85,
+      "message": "Basic router activation test exists - confirms router is functional"
+    }
+  ],
+  "defects": [
+    {
+      "severity": "low",
+      "file": "apps/web/lib/api.ts",
+      "line": 0,
+      "msg": "No frontend implementation found for operations endpoints - missing client-side integration"
+    },
+    {
+      "severity": "low",
+      "file": "apps/api/tests/",
+      "line": 0,
+      "msg": "No specific unit tests found for get_my_operations endpoint - only basic router tests exist"
+    },
+    {
+      "severity": "low",
+      "file": "apps/api/routers/operations.py",
+      "line": 412,
+      "msg": "Import statement 'import time' at end of file should be moved to top with other imports"
+    }
+  ]
+}

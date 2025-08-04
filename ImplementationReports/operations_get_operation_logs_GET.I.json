@@ -1,0 +1,87 @@
+{
+  "symbol": "operations_get_operation_logs_GET",
+  "commit": "a602ba5",
+  "status": "I",
+  "hops": [
+    {
+      "layer": "Backend Route",
+      "file": "apps/api/routers/operations.py",
+      "line": 135,
+      "message": "Function get_operation_logs() implements GET /v1/operations/{operation_id}/logs endpoint"
+    },
+    {
+      "layer": "Backend Route Registration",
+      "file": "apps/api/main.py",
+      "line": 193,
+      "message": "Operations router included in main FastAPI app"
+    },
+    {
+      "layer": "Loading State Manager",
+      "file": "apps/api/middleware/loading_states.py",
+      "line": 225,
+      "message": "Global loading_manager provides operation state storage and retrieval"
+    },
+    {
+      "layer": "Loading State Class",
+      "file": "apps/api/middleware/loading_states.py",
+      "line": 17,
+      "message": "LoadingState class stores operation steps and metadata"
+    },
+    {
+      "layer": "Authentication",
+      "file": "apps/api/routers/auth.py",
+      "line": null,
+      "message": "get_current_user dependency ensures authenticated access"
+    },
+    {
+      "layer": "Database",
+      "file": "apps/api/database.py",
+      "line": null,
+      "message": "get_session dependency provides database access"
+    }
+  ],
+  "defects": [
+    {
+      "severity": "high",
+      "file": "apps/api/routers/operations.py",
+      "line": 174,
+      "message": "Missing import: 'time' module used in _calculate_success_rate but imported at end of file (line 412)"
+    },
+    {
+      "severity": "high", 
+      "file": "apps/api/routers/operations.py",
+      "line": 175,
+      "message": "Undefined variable: total_duration calculation uses 'time.time()' without proper loading_state.start_time access"
+    },
+    {
+      "severity": "medium",
+      "file": "apps/api/routers/operations.py",
+      "line": 356,
+      "message": "LoadingState missing 'metadata' attribute check in _user_can_access_operation helper"
+    },
+    {
+      "severity": "medium",
+      "file": "apps/api/routers/operations.py",
+      "line": 397,
+      "message": "_calculate_step_duration helper returns 0 for first step - should calculate from loading_state.start_time"
+    },
+    {
+      "severity": "low",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\web",
+      "line": null,
+      "message": "No frontend implementation found for consuming operation logs endpoint"
+    },
+    {
+      "severity": "low",
+      "file": "apps/api/tests",
+      "line": null,
+      "message": "No specific tests found for get_operation_logs endpoint"
+    },
+    {
+      "severity": "medium",
+      "file": "apps/api/routers/operations.py",
+      "line": 123,
+      "message": "Missing timezone import: datetime.timezone.utc used but not imported"
+    }
+  ]
+}

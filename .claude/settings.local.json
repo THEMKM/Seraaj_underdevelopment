@@ -74,7 +74,10 @@
       "Bash(ruff check:*)",
       "Bash(black:*)",
       "Bash(pytest:*)",
-      "Bash(ruff check:*)"
+      "Bash(ruff check:*)",
+      "Bash(/agents use path-tracer symbol=admin_activate_user_POST)",
+      "Bash(git rev-parse:*)",
+      "Bash(cat:*)"
     ],
     "deny": []
   }

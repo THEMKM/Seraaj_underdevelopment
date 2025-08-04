@@ -1,0 +1,87 @@
+{
+  "symbol": "websocket_get_online_users_GET",
+  "commit": "a602ba5",
+  "status": "I",
+  "hops": [
+    {
+      "layer": "frontend",
+      "file": "apps/web/contexts/WebSocketContext.tsx",
+      "line": 312,
+      "message": "Frontend attempts WebSocket connection but calls wrong URL pattern - uses `/ws/` instead of `/v1/messaging/online-users`"
+    },
+    {
+      "layer": "frontend",
+      "file": "apps/web/contexts/WebSocketContext.tsx", 
+      "line": 301,
+      "message": "onlineUsers state managed but no direct REST API call to get online users endpoint"
+    },
+    {
+      "layer": "backend-router",
+      "file": "apps/api/routers/websocket.py",
+      "line": 32,
+      "message": "Router prefix is `/v1/messaging` but function name suggests different endpoint pattern"
+    },
+    {
+      "layer": "backend-endpoint",
+      "file": "apps/api/routers/websocket.py",
+      "line": 386,
+      "message": "Function `get_online_users` defined with route `/online-users` creating full path `/v1/messaging/online-users`"
+    },
+    {
+      "layer": "backend-service",
+      "file": "apps/api/websocket/connection_manager.py",
+      "line": 155,
+      "message": "ConnectionManager.get_online_users() returns List[int] of user IDs"
+    },
+    {
+      "layer": "backend-websocket-handler",
+      "file": "apps/api/websocket/message_handler.py",
+      "line": 343,
+      "message": "WebSocket message handler provides `get_online_users` for real-time queries"
+    },
+    {
+      "layer": "integration",
+      "file": "apps/api/main.py",
+      "line": 187,
+      "message": "WebSocket router included in main app but routes not accessible via expected URLs"
+    }
+  ],
+  "defects": [
+    {
+      "severity": "high",
+      "file": "apps/web/contexts/WebSocketContext.tsx",
+      "line": 312,
+      "msg": "Frontend WebSocket URL construction uses wrong pattern - expects `/ws/` but backend provides different WebSocket endpoint structure"
+    },
+    {
+      "severity": "high", 
+      "file": "scripts/targets.json",
+      "line": 1066,
+      "msg": "Symbol name `websocket_get_online_users_GET` suggests REST endpoint but actual implementation is at `/v1/messaging/online-users`"
+    },
+    {
+      "severity": "medium",
+      "file": "apps/api/routers/websocket.py",
+      "line": 53,
+      "msg": "WebSocket endpoint `/ws/{conversation_id}` not prefixed with `/v1/` unlike REST endpoints"
+    },
+    {
+      "severity": "medium",
+      "file": "apps/web/contexts/WebSocketContext.tsx",
+      "line": 341,
+      "msg": "Frontend falls back to mock data on WebSocket connection failure instead of calling REST API endpoint"
+    },
+    {
+      "severity": "low",
+      "file": "apps/api/routers/websocket.py",
+      "line": 389,
+      "msg": "REST endpoint returns raw connection_manager data without proper API response format"
+    },
+    {
+      "severity": "low",
+      "file": "apps/api/tests/test_websocket.py",
+      "line": 20,
+      "msg": "Tests use `/v1/ws/` URL pattern but actual WebSocket endpoint is not prefixed"
+    }
+  ]
+}

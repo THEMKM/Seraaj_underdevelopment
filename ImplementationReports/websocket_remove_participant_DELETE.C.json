@@ -1,0 +1,57 @@
+{
+  "symbol": "websocket_remove_participant_DELETE",
+  "commit": "a602ba5",
+  "status": "C",
+  "hops": [
+    {
+      "layer": "Backend API Router",
+      "file": "apps/api/routers/websocket.py",
+      "line": 328,
+      "message": "DELETE endpoint remove_participant implemented with proper authentication, authorization, and database operations"
+    },
+    {
+      "layer": "Database Models", 
+      "file": "apps/api/models/conversation.py",
+      "line": null,
+      "message": "ConversationParticipant model referenced and properly used for participant management"
+    },
+    {
+      "layer": "WebSocket Connection Manager",
+      "file": "apps/api/websocket/connection_manager.py", 
+      "line": 116,
+      "message": "leave_conversation method properly implemented to remove user from active conversation participants"
+    },
+    {
+      "layer": "Real-time Notifications",
+      "file": "apps/api/routers/websocket.py",
+      "line": 370,
+      "message": "Participant removal notifications properly broadcast to remaining conversation members"
+    },
+    {
+      "layer": "Main Application",
+      "file": "apps/api/main.py",
+      "line": 187,
+      "message": "WebSocket router properly included in main FastAPI application"
+    }
+  ],
+  "defects": [
+    {
+      "severity": "low",
+      "file": "apps/web/contexts/WebSocketContext.tsx",
+      "line": null,
+      "msg": "Frontend WebSocket context does not implement participant removal functionality - missing removeParticipant method"
+    },
+    {
+      "severity": "low", 
+      "file": "apps/web/components/messaging/MessageInterface.tsx",
+      "line": null,
+      "msg": "Message interface UI does not provide participant management controls (add/remove participants)"
+    },
+    {
+      "severity": "low",
+      "file": "apps/api/tests/test_websocket.py",
+      "line": null,
+      "msg": "WebSocket tests do not specifically test participant removal functionality"
+    }
+  ]
+}
