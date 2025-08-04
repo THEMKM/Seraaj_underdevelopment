@@ -16,9 +16,9 @@ To enable a feature: Remove init=False from the relationship and ensure the targ
 """
 
 from datetime import datetime
-from typing import Optional, TYPE_CHECKING
+from typing import Optional, List, TYPE_CHECKING
 from enum import Enum
-from sqlmodel import SQLModel, Field, Column, JSON
+from sqlmodel import SQLModel, Field, Column, JSON, Relationship
 from pydantic import EmailStr
 
 from .types import (
@@ -31,11 +31,12 @@ from .types import (
 )
 
 if TYPE_CHECKING:
-    pass
-    # Temporarily disabled push notification imports due to relationship configuration issues
-    # from .push_notification import (
-    #     PushSubscription, PushNotification, NotificationSettings
-    # )
+    from .organisation import Organisation
+    from .volunteer import Volunteer
+    from .review import Review
+    from .message import Message
+    from .conversation import Conversation
+    from .guided_tour import GuidedTour, UserTourProgress, TourFeedback
 
 
 class UserRole(str, Enum):
@@ -106,8 +107,9 @@ class User(UserBase, TimestampMixin, table=True):
 
     id: Optional[int] = id_field()
 
-    # Relationships will be added back once the models are stable and imports are fixed
-    # For now, access related data through direct queries
+    # Relationships - core relationships only for stability
+    organisation: Optional["Organisation"] = Relationship(back_populates="user")
+    volunteer: Optional["Volunteer"] = Relationship(back_populates="user")
 
 
 class UserCreate(SQLModel):

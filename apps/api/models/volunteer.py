@@ -73,8 +73,8 @@ class Volunteer(VolunteerBase, TimestampMixin, table=True):
 
     id: Optional[int] = id_field()
 
-    # Relationships - temporarily disabled until User model relationships are restored
-    # user: "User" = Relationship(back_populates="volunteer")  # Disabled due to missing relationship on User model
+    # Relationships
+    user: "User" = Relationship(back_populates="volunteer")
     applications: List["Application"] = Relationship(back_populates="volunteer")
     reviews: List["Review"] = Relationship(back_populates="reviewed_volunteer")
 
