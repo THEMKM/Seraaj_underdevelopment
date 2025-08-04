@@ -1,0 +1,87 @@
+{
+  "symbol": "verification_upload_verification_document_POST",
+  "commit": "0115171",
+  "status": "I",
+  "hops": [
+    {
+      "layer": "Backend API Route",
+      "file": "apps/api/routers/verification.py",
+      "line": 341,
+      "message": "POST /v1/verification/skills/{verification_id}/documents endpoint defined, accepts multipart form data with file and document_type"
+    },
+    {
+      "layer": "Router Registration",
+      "file": "apps/api/main.py",
+      "line": 191,
+      "message": "Verification router included in main FastAPI app"
+    },
+    {
+      "layer": "Route Handler Implementation",
+      "file": "apps/api/routers/verification.py",
+      "line": 341,
+      "message": "Function upload_verification_document implemented with authentication, validation, and file processing"
+    },
+    {
+      "layer": "File Upload Service",
+      "file": "apps/api/routers/verification.py",
+      "line": 392,
+      "message": "References file_handler.upload_file() but import statement is missing"
+    },
+    {
+      "layer": "Database Integration",
+      "file": "apps/api/routers/verification.py",
+      "line": 402,
+      "message": "Updates verification.evidence_data with uploaded document metadata"
+    },
+    {
+      "layer": "Test Coverage",
+      "file": "apps/api/tests/test_verification.py",
+      "line": 177,
+      "message": "Test case test_upload_verification_document_success exists"
+    },
+    {
+      "layer": "Frontend Integration",
+      "file": "none",
+      "line": 0,
+      "message": "No frontend components found that call this endpoint"
+    }
+  ],
+  "defects": [
+    {
+      "severity": "high",
+      "file": "apps/api/routers/verification.py",
+      "line": 392,
+      "msg": "Missing import: 'from file_management import file_handler' - endpoint will fail at runtime"
+    },
+    {
+      "severity": "high",
+      "file": "apps/api/routers/verification.py", 
+      "line": 410,
+      "msg": "Missing import: 'from datetime import timezone' - datetime.timezone.utc will cause NameError"
+    },
+    {
+      "severity": "high",
+      "file": "apps/api/routers/verification.py",
+      "line": 724,
+      "msg": "Missing import: 'import logging' - logger references will cause NameError"
+    },
+    {
+      "severity": "medium",
+      "file": "apps/api/routers/verification.py",
+      "line": 696,
+      "msg": "Missing import: Organisation model used but not imported"
+    },
+    {
+      "severity": "low",
+      "file": "none",
+      "line": 0,
+      "msg": "No frontend integration found - endpoint is not called by any frontend components"
+    },
+    {
+      "severity": "medium",
+      "file": "apps/api/tests/test_verification.py",
+      "line": 177,
+      "msg": "Test expects status codes [200, 400] indicating uncertainty about file handling behavior"
+    }
+  ]
+}

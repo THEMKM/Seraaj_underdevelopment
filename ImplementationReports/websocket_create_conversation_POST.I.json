@@ -1,0 +1,81 @@
+{
+  "symbol": "websocket_create_conversation_POST",
+  "commit": "0115171",
+  "status": "I",
+  "hops": [
+    {
+      "layer": "API Router",
+      "file": "apps/api/routers/websocket.py",
+      "line": 129,
+      "message": "REST endpoint create_conversation defined with POST /v1/messaging/conversations"
+    },
+    {
+      "layer": "Models", 
+      "file": "apps/api/models/conversation.py",
+      "line": 76,
+      "message": "ConversationCreate model properly defined with participant_ids field"
+    },
+    {
+      "layer": "Database",
+      "file": "apps/api/models/conversation.py", 
+      "line": 60,
+      "message": "Conversation table with proper relationships to User, Message, Opportunity, Application"
+    },
+    {
+      "layer": "WebSocket Support",
+      "file": "apps/api/websocket/connection_manager.py",
+      "line": 105,
+      "message": "Connection manager supports joining conversations via join_conversation method"
+    },
+    {
+      "layer": "Frontend Context",
+      "file": "apps/web/contexts/WebSocketContext.tsx",
+      "line": 406,
+      "message": "createConversation method exists but only creates local mock data"
+    },
+    {
+      "layer": "Integration",
+      "file": "apps/api/main.py", 
+      "line": 187,
+      "message": "WebSocket router properly included in main FastAPI app"
+    }
+  ],
+  "defects": [
+    {
+      "severity": "high",
+      "file": "apps/web/contexts/WebSocketContext.tsx",
+      "line": 406,
+      "message": "Frontend createConversation only creates mock data, no API call to backend /v1/messaging/conversations endpoint"
+    },
+    {
+      "severity": "high", 
+      "file": "apps/api/routers/websocket.py",
+      "line": 129,
+      "message": "API inconsistency: conversation model uses participant_ids List[int] but route handler expects ConversationCreate.participant_ids"
+    },
+    {
+      "severity": "medium",
+      "file": "apps/api/models/conversation.py",
+      "line": 34,
+      "message": "participant_ids stored as JSON field but also has separate ConversationParticipant table - data duplication risk"
+    },
+    {
+      "severity": "medium", 
+      "file": "apps/api/tests/test_websocket.py",
+      "line": 1,
+      "message": "WebSocket tests exist but don't specifically test conversation creation endpoint"
+    },
+    {
+      "severity": "low",
+      "file": "apps/api/routers/websocket.py", 
+      "line": 163,
+      "message": "Missing input validation for ConversationCreate.participant_ids (empty list, duplicates, etc.)"
+    },
+    {
+      "severity": "low",
+      "file": "apps/api/routers/websocket.py",
+      "line": 160,
+      "message": "No notification sent to participants when conversation is created"
+    }
+  ]
+}

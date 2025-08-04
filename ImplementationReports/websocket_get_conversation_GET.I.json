@@ -1,0 +1,87 @@
+{
+  "symbol": "websocket_get_conversation_GET",
+  "commit": "0115171",
+  "status": "I",
+  "hops": [
+    {
+      "layer": "Backend Route",
+      "file": "apps/api/routers/websocket.py",
+      "line": 190,
+      "message": "Function `get_conversation` implements REST endpoint GET /v1/messaging/conversations/{conversation_id}"
+    },
+    {
+      "layer": "Authentication",
+      "file": "apps/api/routers/websocket.py",
+      "line": 193,
+      "message": "Uses Depends(get_current_user) for authentication middleware"
+    },
+    {
+      "layer": "Database Access",
+      "file": "apps/api/routers/websocket.py",
+      "line": 198,
+      "message": "Queries ConversationParticipant table to verify user authorization"
+    },
+    {
+      "layer": "Database Access",
+      "file": "apps/api/routers/websocket.py",
+      "line": 211,
+      "message": "Queries Conversation table using session.get() to retrieve conversation data"
+    },
+    {
+      "layer": "Response Model",
+      "file": "apps/api/models/conversation.py",
+      "line": 80,
+      "message": "Returns ConversationRead model with conversation data"
+    },
+    {
+      "layer": "Frontend Integration",
+      "file": "apps/web/contexts/WebSocketContext.tsx",
+      "line": 304,
+      "message": "WebSocket context uses mock data, no direct API calls to this endpoint found"
+    },
+    {
+      "layer": "Frontend UI",
+      "file": "apps/web/components/messaging/MessageInterface.tsx",
+      "line": 13,
+      "message": "Message interface consumes conversation data but via WebSocket context, not direct API calls"
+    },
+    {
+      "layer": "Test Coverage",
+      "file": "apps/api/tests/test_api_routers_basic.py",
+      "line": 141,
+      "message": "Basic router test confirms /v1/messaging/conversations endpoint is active"
+    }
+  ],
+  "defects": [
+    {
+      "severity": "high",
+      "file": "apps/web/contexts/WebSocketContext.tsx",
+      "line": 304,
+      "msg": "Frontend uses mock data instead of actual API integration - no HTTP calls to REST endpoint found"
+    },
+    {
+      "severity": "medium",
+      "file": "apps/api/routers/websocket.py",
+      "line": 190,
+      "msg": "Function name `get_conversation` doesn't follow naming convention expected by symbol `websocket_get_conversation_GET`"
+    },
+    {
+      "severity": "medium",
+      "file": "apps/api/tests/test_websocket.py",
+      "line": 1,
+      "msg": "No specific unit tests for get_conversation REST endpoint, only WebSocket tests exist"
+    },
+    {
+      "severity": "low",
+      "file": "apps/api/routers/websocket.py",
+      "line": 217,
+      "msg": "ConversationRead.model_validate() could potentially fail without proper error handling"
+    },
+    {
+      "severity": "low",
+      "file": "apps/api/models/conversation.py",
+      "line": 117,
+      "msg": "ConversationParticipant model has role field missing from model definition but used in other endpoints"
+    }
+  ]
+}

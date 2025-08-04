@@ -1,0 +1,63 @@
+{
+  "symbol": "admin_get_opportunity_statistics_GET",
+  "commit": "0115171",
+  "status": "I",
+  "hops": [
+    {
+      "layer": "backend",
+      "file": "apps/api/routers/admin.py",
+      "line": 349,
+      "message": "FastAPI route handler implementation found at GET /v1/admin/stats/opportunities"
+    },
+    {
+      "layer": "backend",
+      "file": "apps/api/main.py",
+      "line": 185,
+      "message": "Admin router properly included in FastAPI application"
+    },
+    {
+      "layer": "database",
+      "file": "apps/api/models/__init__.py",
+      "line": 1,
+      "message": "Required models (User, Opportunity, Organisation) are imported and available"
+    },
+    {
+      "layer": "frontend",
+      "file": "apps/web/components/admin/AdminConsole.tsx",
+      "line": 198,
+      "message": "Admin console component exists but uses mock data only"
+    }
+  ],
+  "defects": [
+    {
+      "severity": "high",
+      "file": "apps/web/components/admin/AdminConsole.tsx",
+      "line": 53,
+      "message": "Frontend uses hardcoded mock data instead of calling the actual API endpoint"
+    },
+    {
+      "severity": "high",
+      "file": "apps/web/lib/api.ts",
+      "line": 122,
+      "message": "No admin API functions defined - missing integration layer between frontend and backend admin endpoints"
+    },
+    {
+      "severity": "medium",
+      "file": "apps/api/tests/",
+      "line": 0,
+      "message": "No unit tests found for admin_get_opportunity_statistics endpoint"
+    },
+    {
+      "severity": "medium",
+      "file": "apps/api/routers/admin.py",
+      "line": 349,
+      "message": "Function lacks proper response model definition - returns raw dict instead of typed response"
+    },
+    {
+      "severity": "low",
+      "file": "apps/api/routers/admin.py",
+      "line": 355,
+      "message": "Docstring could be more detailed about return data structure and query parameters"
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "symbol": "websocket_add_participant_POST",
+  "commit": "0115171",
+  "status": "I",
+  "hops": [
+    {
+      "layer": "Backend API Route",
+      "file": "apps/api/routers/websocket.py",
+      "line": 260,
+      "message": "POST /v1/messaging/conversations/{conversation_id}/participants - Function 'add_participant' for adding participants to conversations"
+    },
+    {
+      "layer": "Authentication",
+      "file": "apps/api/routers/auth.py",
+      "line": 27,
+      "message": "Uses get_current_user dependency for authentication"
+    },
+    {
+      "layer": "Database Models",
+      "file": "apps/api/models/conversation.py",
+      "line": 94,
+      "message": "ConversationParticipant model with proper foreign key relationships"
+    },
+    {
+      "layer": "WebSocket Integration",
+      "file": "apps/api/websocket/connection_manager.py",
+      "line": 72,
+      "message": "Uses connection_manager.send_to_conversation for real-time notifications"
+    },
+    {
+      "layer": "Frontend Context (Missing)",
+      "file": "apps/web/contexts/WebSocketContext.tsx",
+      "line": 0,
+      "message": "No frontend implementation for adding participants - context only has participants data structure"
+    }
+  ],
+  "defects": [
+    {
+      "severity": "high",
+      "file": "apps/api/routers/websocket.py",
+      "line": 263,
+      "msg": "Function parameter 'user_id' expects body payload but should use request body model - violates REST API conventions"
+    },
+    {
+      "severity": "high",
+      "file": "apps/web/contexts/WebSocketContext.tsx",
+      "line": 68,
+      "msg": "Missing frontend function to add participants to conversations - WebSocketContext has no addParticipant method"
+    },
+    {
+      "severity": "medium",
+      "file": "apps/api/routers/websocket.py",
+      "line": 305,
+      "msg": "Missing role parameter in ConversationParticipant creation - hardcoded to 'member' role"
+    },
+    {
+      "severity": "medium",
+      "file": "apps/api/routers/websocket.py",
+      "line": 313,
+      "msg": "Notification timestamp uses datetime.now(datetime.timezone.utc).isoformat() - inconsistent with other model timestamp formats"
+    },
+    {
+      "severity": "low",
+      "file": "apps/api/routers/websocket.py",
+      "line": 260,
+      "msg": "Missing OpenAPI response model documentation for success and error responses"
+    },
+    {
+      "severity": "low",
+      "file": "scripts/targets.json",
+      "line": 1047,
+      "msg": "Symbol naming convention 'websocket_add_participant_POST' doesn't match function name 'add_participant'"
+    }
+  ]
+}

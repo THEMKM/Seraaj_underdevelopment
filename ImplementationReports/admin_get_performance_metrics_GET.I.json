@@ -1,0 +1,75 @@
+{
+  "symbol": "admin_get_performance_metrics_GET",
+  "commit": "0115171",
+  "status": "I",
+  "hops": [
+    {
+      "layer": "targets.json",
+      "file": "scripts/targets.json",
+      "line": 1046,
+      "message": "Symbol defined as route in admin.py but actual function name differs"
+    },
+    {
+      "layer": "backend",
+      "file": "apps/api/routers/admin.py",
+      "line": 500,
+      "message": "Function exists as 'get_performance_metrics' with route '/system/performance', not matching expected symbol name"
+    },
+    {
+      "layer": "backend",
+      "file": "apps/api/main.py",
+      "line": 185,
+      "message": "Admin router properly mounted with prefix '/v1/admin'"
+    },
+    {
+      "layer": "database",
+      "file": "apps/api/models/analytics.py",
+      "line": 221,
+      "message": "PerformanceMetric model exists and properly defined"
+    },
+    {
+      "layer": "frontend",
+      "file": "apps/web/lib/api.ts",
+      "line": null,
+      "message": "No admin API service implementation found"
+    },
+    {
+      "layer": "frontend",
+      "file": "apps/web/components/admin/AdminConsole.tsx",
+      "line": null,
+      "message": "Admin UI exists but uses mock data, no API integration"
+    }
+  ],
+  "defects": [
+    {
+      "severity": "high",
+      "file": "scripts/targets.json",
+      "line": 1046,
+      "msg": "Symbol name 'admin_get_performance_metrics_GET' doesn't match actual function name 'get_performance_metrics'"
+    },
+    {
+      "severity": "high",
+      "file": "apps/web/lib/api.ts",
+      "line": null,
+      "msg": "Missing admin API service - no frontend integration for performance metrics endpoint"
+    },
+    {
+      "severity": "medium",
+      "file": "apps/web/components/admin/AdminConsole.tsx",
+      "line": 116,
+      "msg": "Admin console uses mock performance alerts instead of real API data"
+    },
+    {
+      "severity": "medium",
+      "file": "apps/api/routers/admin.py",
+      "line": 500,
+      "msg": "Route path '/system/performance' inconsistent with admin router prefix - should be accessible via '/v1/admin/system/performance'"
+    },
+    {
+      "severity": "low",
+      "file": "apps/api/tests",
+      "line": null,
+      "msg": "No unit tests found for get_performance_metrics function"
+    }
+  ]
+}

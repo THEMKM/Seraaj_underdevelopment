@@ -26,12 +26,14 @@
   {
     "symbol": "admin_get_all_users_GET",
     "type": "route",
-    "file": "apps/api/routers/admin.py"
+    "file": "apps/api/routers/admin.py",
+    "report": "I"
   },
   {
     "symbol": "admin_get_moderation_reports_GET",
     "type": "route",
-    "file": "apps/api/routers/admin.py"
+    "file": "apps/api/routers/admin.py",
+    "report": "I"
   },
   {
     "symbol": "admin_get_opportunity_statistics_GET",
@@ -566,22 +568,26 @@
   {
     "symbol": "operations_get_operations_statistics_GET",
     "type": "route",
-    "file": "apps/api/routers/operations.py"
+    "file": "apps/api/routers/operations.py",
+    "report": "I"
   },
   {
     "symbol": "operations_stream_operation_progress_GET",
     "type": "route",
-    "file": "apps/api/routers/operations.py"
+    "file": "apps/api/routers/operations.py",
+    "report": "I"
   },
   {
     "symbol": "opportunities_create_opportunity_POST",
     "type": "route",
-    "file": "apps/api/routers/opportunities.py"
+    "file": "apps/api/routers/opportunities.py",
+    "report": "I"
   },
   {
     "symbol": "opportunities_delete_opportunity_DELETE",
     "type": "route",
-    "file": "apps/api/routers/opportunities.py"
+    "file": "apps/api/routers/opportunities.py",
+    "report": "I"
   },
   {
     "symbol": "opportunities_get_featured_opportunities_GET",
@@ -1036,22 +1042,26 @@
   {
     "symbol": "verification_upload_verification_document_POST",
     "type": "route",
-    "file": "apps/api/routers/verification.py"
+    "file": "apps/api/routers/verification.py",
+    "report": "I"
   },
   {
     "symbol": "websocket_add_participant_POST",
     "type": "route",
-    "file": "apps/api/routers/websocket.py"
+    "file": "apps/api/routers/websocket.py",
+    "report": "I"
   },
   {
     "symbol": "websocket_create_conversation_POST",
     "type": "route",
-    "file": "apps/api/routers/websocket.py"
+    "file": "apps/api/routers/websocket.py",
+    "report": "I"
   },
   {
     "symbol": "websocket_get_conversation_GET",
     "type": "route",
-    "file": "apps/api/routers/websocket.py"
+    "file": "apps/api/routers/websocket.py",
+    "report": "I"
   },
   {
     "symbol": "websocket_get_conversation_messages_GET",

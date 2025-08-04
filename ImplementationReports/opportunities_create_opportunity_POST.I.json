@@ -1,0 +1,69 @@
+{
+  "symbol": "opportunities_create_opportunity_POST",
+  "commit": "0115171",
+  "status": "I", 
+  "hops": [
+    {
+      "layer": "Router Registration",
+      "file": "apps/api/main.py",
+      "line": 180,
+      "message": "Router properly registered with /v1/opportunities prefix"
+    },
+    {
+      "layer": "API Endpoint",
+      "file": "apps/api/routers/opportunities.py", 
+      "line": 50,
+      "message": "POST /v1/opportunities/ endpoint implemented with authentication and validation"
+    },
+    {
+      "layer": "Data Models",
+      "file": "apps/api/models/opportunity.py",
+      "line": 162,
+      "message": "OpportunityCreate model properly defined with validation"
+    },
+    {
+      "layer": "Validation Layer",
+      "file": "apps/api/utils/validation.py",
+      "line": 214,
+      "message": "validate_opportunity_data function implements comprehensive validation"
+    },
+    {
+      "layer": "Response Formatting",
+      "file": "apps/api/utils/response_formatter.py",
+      "line": 287,
+      "message": "created_resource function provides standardized 201 response"
+    },
+    {
+      "layer": "Frontend API Missing",
+      "file": "apps/web/lib/api.ts",
+      "line": 107,
+      "message": "Frontend opportunities API lacks create function - only has getAll and apply"
+    }
+  ],
+  "defects": [
+    {
+      "severity": "high",
+      "file": "apps/web/lib/api.ts",
+      "line": 107,
+      "message": "Frontend API client missing create opportunity function - breaks end-to-end functionality"
+    },
+    {
+      "severity": "medium", 
+      "file": "apps/api/routers/opportunities.py",
+      "line": 96,
+      "message": "Missing import for timedelta despite usage in duplicate check logic"
+    },
+    {
+      "severity": "medium",
+      "file": "apps/api/tests/test_opportunities.py",
+      "line": 1,
+      "message": "Test file exists but lacks any POST/create operation tests"
+    },
+    {
+      "severity": "low",
+      "file": "apps/api/routers/opportunities.py",
+      "line": 124,
+      "message": "Duplicate import of timedelta after first usage - should be moved to top"
+    }
+  ]
+}

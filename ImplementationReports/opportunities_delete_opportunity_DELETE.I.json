@@ -1,0 +1,81 @@
+{
+  "symbol": "opportunities_delete_opportunity_DELETE",
+  "commit": "0115171",
+  "status": "I",
+  "hops": [
+    {
+      "layer": "backend_route",
+      "file": "apps/api/routers/opportunities.py",
+      "line": 313,
+      "message": "DELETE endpoint exists at `/v1/opportunities/{opportunity_id}` with authentication and authorization"
+    },
+    {
+      "layer": "backend_model",
+      "file": "apps/api/models/opportunity.py",
+      "line": 144,
+      "message": "Opportunity model exists with relationships to applications, reviews, and conversations"
+    },
+    {
+      "layer": "backend_database",
+      "file": "apps/api/database.py",
+      "line": 51,
+      "message": "Foreign key constraints enabled in SQLite, but no explicit cascade behavior defined"
+    },
+    {
+      "layer": "frontend_api_client",
+      "file": "apps/web/lib/api.ts",
+      "line": 107,
+      "message": "No delete opportunity method exists in frontend API client"
+    },
+    {
+      "layer": "api_documentation",
+      "file": "docs/API.md",
+      "line": 0,
+      "message": "DELETE endpoint documented but lacks detailed response schema"
+    },
+    {
+      "layer": "tests",
+      "file": "apps/api/tests/test_opportunities.py",
+      "line": 0,
+      "message": "No tests exist for delete opportunity endpoint"
+    }
+  ],
+  "defects": [
+    {
+      "severity": "high",
+      "file": "apps/web/lib/api.ts",
+      "line": 107,
+      "msg": "Frontend API client completely missing delete opportunity method - frontend cannot call this endpoint"
+    },
+    {
+      "severity": "high",
+      "file": "apps/api/tests/test_opportunities.py",
+      "line": 0,
+      "msg": "No unit tests for delete operation - critical functionality untested"
+    },
+    {
+      "severity": "medium",
+      "file": "apps/api/models/opportunity.py",
+      "line": 154,
+      "msg": "Missing cascade delete behavior - related records (applications, reviews, conversations) may become orphaned"
+    },
+    {
+      "severity": "medium",
+      "file": "apps/api/routers/opportunities.py",
+      "line": 342,
+      "msg": "Direct session.delete() without checking or handling related records explicitly"
+    },
+    {
+      "severity": "low",
+      "file": "docs/API.md",
+      "line": 0,
+      "msg": "API documentation lacks detailed response schema and error cases for delete operation"
+    },
+    {
+      "severity": "low",
+      "file": "apps/api/routers/opportunities.py",
+      "line": 313,
+      "msg": "Missing OpenAPI response examples and error documentation"
+    }
+  ]
+}

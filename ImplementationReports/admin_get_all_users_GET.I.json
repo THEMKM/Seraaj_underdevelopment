@@ -1,0 +1,75 @@
+{
+  "symbol": "admin_get_all_users_GET",
+  "commit": "0115171",
+  "status": "I",
+  "hops": [
+    {
+      "layer": "Frontend",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\web\\components\\admin\\AdminConsole.tsx",
+      "line": 54,
+      "message": "Frontend uses mock data instead of API calls - no actual integration with backend endpoint"
+    },
+    {
+      "layer": "Backend Route",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\api\\routers\\admin.py",
+      "line": 39,
+      "message": "Route defined as GET /v1/admin/users with proper pagination and filtering"
+    },
+    {
+      "layer": "Authentication",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\api\\routers\\admin.py",
+      "line": 29,
+      "message": "Uses require_admin dependency which depends on get_current_user from auth.py"
+    },
+    {
+      "layer": "Database",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\api\\routers\\admin.py",
+      "line": 50,
+      "message": "Queries User model with SQLModel select, supports filtering by role, status, and search"
+    },
+    {
+      "layer": "Data Model",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\api\\models\\user.py",
+      "line": 105,
+      "message": "User model with proper fields and UserRead response model defined"
+    },
+    {
+      "layer": "Main App",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\api\\main.py",
+      "line": 185,
+      "message": "Admin router properly included in FastAPI application"
+    },
+    {
+      "layer": "Testing",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\api\\tests\\test_api_routers_basic.py",
+      "line": 69,
+      "message": "Basic router test exists but only tests 401 response, no comprehensive endpoint testing"
+    }
+  ],
+  "defects": [
+    {
+      "severity": "high",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\web\\components\\admin\\AdminConsole.tsx",
+      "line": 54,
+      "msg": "Frontend uses hardcoded mock data instead of calling the actual /v1/admin/users API endpoint - complete disconnect between UI and backend"
+    },
+    {
+      "severity": "medium",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\api\\tests\\test_api_routers_basic.py",
+      "line": 69,
+      "msg": "No comprehensive test for admin users endpoint - only tests basic 401 authentication error"
+    },
+    {
+      "severity": "medium",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\web\\components\\admin\\AdminConsole.tsx",
+      "line": 7,
+      "msg": "Frontend User interface doesn't match backend UserRead model - missing fields like is_verified, email_verified, profile_completion"
+    },
+    {
+      "severity": "low",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\api\\routers\\admin.py",
+      "line": 40,
+      "msg": "Function name 'get_all_users' doesn't follow the expected naming convention from targets.json which suggests 'admin_get_all_users_GET'"
+    }
+  ]
+}

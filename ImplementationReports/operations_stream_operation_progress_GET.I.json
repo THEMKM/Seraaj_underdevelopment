@@ -1,0 +1,93 @@
+{
+  "symbol": "operations_stream_operation_progress_GET",
+  "commit": "0115171",
+  "status": "I",
+  "hops": [
+    {
+      "layer": "Route Definition",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\api\\routers\\operations.py",
+      "line": 65,
+      "message": "Function stream_operation_progress() defined but has critical issues"
+    },
+    {
+      "layer": "Router Registration",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\api\\main.py",
+      "line": 193,
+      "message": "operations.router properly included in main application"
+    },
+    {
+      "layer": "Middleware Dependencies",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\api\\middleware\\loading_states.py",
+      "line": 342,
+      "message": "create_progress_stream() function exists but has implementation issues"
+    },
+    {
+      "layer": "Error Handling",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\api\\middleware\\error_handler.py",
+      "line": 409,
+      "message": "Error handling functions available but not optimally used"
+    },
+    {
+      "layer": "Frontend Integration",
+      "file": "NOT_FOUND",
+      "line": 0,
+      "message": "No frontend consumers found for this streaming endpoint"
+    },
+    {
+      "layer": "Testing",
+      "file": "NOT_FOUND", 
+      "line": 0,
+      "message": "No unit tests found for streaming functionality"
+    }
+  ],
+  "defects": [
+    {
+      "severity": "high",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\api\\routers\\operations.py",
+      "line": 86,
+      "msg": "Function returns StreamingResponse from create_progress_stream but does not handle potential None return value"
+    },
+    {
+      "severity": "high",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\api\\middleware\\loading_states.py",
+      "line": 355,
+      "msg": "Infinite loop potential in generate_progress_stream() - while loop with only sleep, no timeout or max iteration limit"
+    },
+    {
+      "severity": "high",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\api\\middleware\\loading_states.py",
+      "line": 347,
+      "msg": "Stale loading_state object reference - object retrieved once but status changes not re-fetched in loop"
+    },
+    {
+      "severity": "medium",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\api\\routers\\operations.py",
+      "line": 67,
+      "msg": "Missing proper Content-Type and Cache-Control headers for SSE streaming response"
+    },
+    {
+      "severity": "medium",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\api\\middleware\\loading_states.py",
+      "line": 363,
+      "msg": "Fixed 500ms sleep interval may cause unnecessary resource consumption for fast operations"
+    },
+    {
+      "severity": "medium",
+      "file": "NOT_FOUND",
+      "line": 0,
+      "msg": "No rate limiting implemented for streaming endpoints - potential DoS vector"
+    },
+    {
+      "severity": "low",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\api\\routers\\operations.py",
+      "line": 71,
+      "msg": "Missing OpenAPI documentation for streaming response format"
+    },
+    {
+      "severity": "low",
+      "file": "NOT_FOUND",
+      "line": 0,
+      "msg": "No monitoring or logging for streaming connection lifecycle"
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "symbol": "operations_get_operations_statistics_GET",
+  "commit": "0115171",
+  "status": "I",
+  "hops": [
+    {
+      "layer": "router",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\api\\routers\\operations.py",
+      "line": 282,
+      "message": "Route handler implemented: GET /v1/operations/stats"
+    },
+    {
+      "layer": "middleware",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\api\\middleware\\loading_states.py",
+      "line": 192,
+      "message": "Uses loading_manager.get_user_loading_states() method"
+    },
+    {
+      "layer": "application",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\api\\main.py",
+      "line": 193,
+      "message": "Operations router included in FastAPI app"
+    }
+  ],
+  "defects": [
+    {
+      "severity": "high",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\api\\middleware\\loading_states.py",
+      "line": 357,
+      "message": "LoadingState class missing 'metadata' attribute referenced in operations.py line 357"
+    },
+    {
+      "severity": "medium",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\web\\lib\\api.ts",
+      "line": 0,
+      "message": "No frontend API client method to consume operations statistics endpoint"
+    },
+    {
+      "severity": "medium",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\api\\tests",
+      "line": 0,
+      "message": "No specific unit tests for get_operations_statistics endpoint"
+    },
+    {
+      "severity": "low",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\api\\routers\\operations.py",
+      "line": 412,
+      "message": "Import statement for 'time' module appears at end of file instead of top"
+    },
+    {
+      "severity": "medium",
+      "file": "C:\\Users\\Mohamad\\Documents\\Claude\\Seraaj\\apps\\api\\routers\\operations.py",
+      "line": 341,
+      "message": "Hard-coded 86400 seconds (24 hours) magic number should be configurable constant"
+    }
+  ]
+}

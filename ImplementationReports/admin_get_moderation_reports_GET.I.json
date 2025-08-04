@@ -1,0 +1,81 @@
+{
+  "symbol": "admin_get_moderation_reports_GET",
+  "commit": "0115171",
+  "status": "I",
+  "hops": [
+    {
+      "layer": "Backend Route",
+      "file": "apps/api/routers/admin.py",
+      "line": 403,
+      "message": "Route implemented as '/moderation/reports' GET endpoint with admin authentication required"
+    },
+    {
+      "layer": "Database Model",
+      "file": "apps/api/models/review.py",
+      "line": 115,
+      "message": "Uses Review model with flagged field for moderation"
+    },
+    {
+      "layer": "Model Import",
+      "file": "apps/api/models/__init__.py",
+      "line": 49,
+      "message": "Review model properly exported from models package"
+    },
+    {
+      "layer": "Router Registration",
+      "file": "apps/api/main.py",
+      "line": 185,
+      "message": "Admin router included in FastAPI application"
+    },
+    {
+      "layer": "Frontend Integration",
+      "file": "N/A",
+      "line": 0,
+      "message": "NO FRONTEND IMPLEMENTATION - AdminConsole.tsx uses mock data only"
+    },
+    {
+      "layer": "Tests",
+      "file": "N/A",
+      "line": 0,
+      "message": "NO TESTS FOUND - No unit or integration tests for moderation reports endpoint"
+    }
+  ],
+  "defects": [
+    {
+      "severity": "high",
+      "file": "apps/api/routers/admin.py",
+      "line": 412,
+      "msg": "SIMPLIFIED IMPLEMENTATION - Using Review model as proxy for reports instead of dedicated moderation report system"
+    },
+    {
+      "severity": "high",
+      "file": "apps/web/components/admin/AdminConsole.tsx",
+      "line": 90,
+      "msg": "PHANTOM ENDPOINT - Frontend uses mock data instead of calling actual API endpoint"
+    },
+    {
+      "severity": "medium",
+      "file": "apps/api/routers/admin.py",
+      "line": 414,
+      "msg": "INCOMPLETE QUERY LOGIC - Hardcoded query for flagged reviews without proper report model structure"
+    },
+    {
+      "severity": "medium",
+      "file": "N/A",
+      "line": 0,
+      "msg": "MISSING TESTS - No unit tests, integration tests, or API tests for moderation reports functionality"
+    },
+    {
+      "severity": "low",
+      "file": "apps/api/routers/admin.py",
+      "line": 424,
+      "msg": "INCONSISTENT RESPONSE FORMAT - Returns custom dict structure instead of proper moderation report model"
+    },
+    {
+      "severity": "low",
+      "file": "apps/api/models/review.py",
+      "line": 182,
+      "msg": "REVIEW FLAG MODEL EXISTS - ReviewFlag model exists but not used in moderation reports endpoint"
+    }
+  ]
+}
